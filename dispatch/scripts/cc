@@ -1,0 +1,235 @@
+#!/bin/bash
+#
+# cc - Claude Code wrapper with automatic task coordination
+#
+# This wrapper ensures CLAUDE_CODE_TASK_LIST_ID is always set.
+# Install: ln -s ~/.claude/skills/dispatch/scripts/cc /usr/local/bin/cc
+#
+# Usage:
+#   cc                    # Resume last session or create new
+#   cc my-project         # Use specific task list
+#   cc --new              # Force new task list (auto-archives previous)
+#   cc --archive          # Archive current list before starting
+#   cc --help             # Show help
+#
+
+TASKS_DIR="$HOME/.claude/tasks"
+ARCHIVE_DIR="$HOME/.claude/tasks-archive"
+CURRENT_LIST_FILE="$TASKS_DIR/.current-list-id"
+SKILL_DIR="$HOME/.claude/skills/dispatch"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+show_help() {
+  echo ""
+  echo "cc - Claude Code with task coordination"
+  echo ""
+  echo "Usage:"
+  echo "  cc                    Resume last task list or create new"
+  echo "  cc <list-id>          Use specific task list"
+  echo "  cc --new [id]         Force create new task list (archives previous)"
+  echo "  cc --archive          Archive current list before starting"
+  echo "  cc --archive-all      Archive all non-empty task lists"
+  echo "  cc --no-archive       Skip auto-archive when using --new"
+  echo "  cc --dangerous        Skip permission prompts"
+  echo "  cc --list             Show available task lists"
+  echo "  cc --help             Show this help"
+  echo ""
+  echo "Shortcuts:"
+  echo "  ccd                   Same as 'cc --dangerous'"
+  echo ""
+  echo "Archival:"
+  echo "  Tasks are preserved in: ~/.claude/tasks-archive/"
+  echo "  Auto-archives previous list when using --new"
+  echo ""
+  echo "Examples:"
+  echo "  cc my-feature         Start/resume 'my-feature' task list"
+  echo "  cc --new big-refactor Create new list (archives previous)"
+  echo "  cc --archive          Archive current, then resume it"
+  echo "  ccd my-feature        Task list + skip permissions"
+  echo ""
+}
+
+list_tasks() {
+  echo ""
+  echo "Available task lists:"
+  echo ""
+
+  for dir in "$TASKS_DIR"/*/; do
+    [ -d "$dir" ] || continue
+    id=$(basename "$dir")
+    [[ "$id" == .* ]] && continue
+
+    count=$(find "$dir" -name "*.json" -type f 2>/dev/null | wc -l | tr -d ' ')
+
+    if [ -f "$CURRENT_LIST_FILE" ] && [ "$(cat "$CURRENT_LIST_FILE")" = "$id" ]; then
+      echo -e "  ${GREEN}* $id${NC} ($count tasks) [current]"
+    else
+      echo "    $id ($count tasks)"
+    fi
+  done
+  echo ""
+}
+
+# Archive a task list
+archive_list() {
+  local list_id="$1"
+  local list_dir="$TASKS_DIR/$list_id"
+
+  # Check if list has tasks
+  local task_count=$(find "$list_dir" -name "*.json" -type f 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$task_count" -eq 0 ]; then
+    return 0  # Nothing to archive
+  fi
+
+  # Create archive directory with timestamp
+  local timestamp=$(date +%Y%m%d-%H%M%S)
+  local archive_name="${list_id}-${timestamp}"
+  local archive_path="$ARCHIVE_DIR/$archive_name"
+
+  mkdir -p "$archive_path"
+
+  # Copy all task files
+  cp "$list_dir"/*.json "$archive_path/" 2>/dev/null
+
+  # Create manifest
+  cat > "$archive_path/manifest.json" << EOF
+{
+  "listId": "$list_id",
+  "archivedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "taskCount": $task_count,
+  "sourceDir": "$list_dir"
+}
+EOF
+
+  echo -e "${CYAN}📦${NC} Archived $task_count task(s) → $archive_name"
+  return 0
+}
+
+# Parse arguments
+LIST_ID=""
+FORCE_NEW=false
+DANGEROUS_MODE=false
+DO_ARCHIVE=false
+ARCHIVE_ALL=false
+NO_ARCHIVE=false
+CLAUDE_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --help|-h)
+      show_help
+      exit 0
+      ;;
+    --list|-l)
+      list_tasks
+      exit 0
+      ;;
+    --new|-n)
+      FORCE_NEW=true
+      shift
+      ;;
+    --archive|-a)
+      DO_ARCHIVE=true
+      shift
+      ;;
+    --archive-all)
+      ARCHIVE_ALL=true
+      shift
+      ;;
+    --no-archive)
+      NO_ARCHIVE=true
+      shift
+      ;;
+    --dangerous|-d)
+      DANGEROUS_MODE=true
+      shift
+      ;;
+    -*)
+      # Pass through to claude
+      CLAUDE_ARGS+=("$1")
+      shift
+      ;;
+    *)
+      if [ -z "$LIST_ID" ]; then
+        LIST_ID="$1"
+      else
+        CLAUDE_ARGS+=("$1")
+      fi
+      shift
+      ;;
+  esac
+done
+
+# Ensure directories exist
+mkdir -p "$TASKS_DIR"
+mkdir -p "$ARCHIVE_DIR"
+
+# Archive all non-empty lists if requested
+if [ "$ARCHIVE_ALL" = true ]; then
+  echo -e "${BLUE}Archiving all task lists...${NC}"
+  for dir in "$TASKS_DIR"/*/; do
+    [ -d "$dir" ] || continue
+    id=$(basename "$dir")
+    [[ "$id" == .* ]] && continue
+    archive_list "$id"
+  done
+  echo ""
+fi
+
+# Get current list ID before potentially changing it
+PREVIOUS_LIST_ID=""
+if [ -f "$CURRENT_LIST_FILE" ]; then
+  PREVIOUS_LIST_ID=$(cat "$CURRENT_LIST_FILE")
+fi
+
+# Archive current list if requested
+if [ "$DO_ARCHIVE" = true ] && [ -n "$PREVIOUS_LIST_ID" ]; then
+  archive_list "$PREVIOUS_LIST_ID"
+fi
+
+# Determine list ID
+if [ "$FORCE_NEW" = true ]; then
+  # Auto-archive previous list when creating new (unless --no-archive)
+  if [ "$NO_ARCHIVE" = false ] && [ -n "$PREVIOUS_LIST_ID" ] && [ "$PREVIOUS_LIST_ID" != "$LIST_ID" ]; then
+    archive_list "$PREVIOUS_LIST_ID"
+  fi
+
+  if [ -z "$LIST_ID" ]; then
+    LIST_ID="session-$(date +%s)"
+  fi
+  echo -e "${BLUE}Creating new task list:${NC} $LIST_ID"
+elif [ -n "$LIST_ID" ]; then
+  echo -e "${BLUE}Using task list:${NC} $LIST_ID"
+elif [ -f "$CURRENT_LIST_FILE" ]; then
+  LIST_ID=$(cat "$CURRENT_LIST_FILE")
+  echo -e "${BLUE}Resuming task list:${NC} $LIST_ID"
+else
+  LIST_ID="session-$(date +%s)"
+  echo -e "${BLUE}Creating new task list:${NC} $LIST_ID"
+fi
+
+# Create list directory and update current
+mkdir -p "$TASKS_DIR/$LIST_ID"
+echo "$LIST_ID" > "$CURRENT_LIST_FILE"
+
+# Count tasks
+TASK_COUNT=$(find "$TASKS_DIR/$LIST_ID" -name "*.json" -type f 2>/dev/null | wc -l | tr -d ' ')
+
+echo -e "${GREEN}✓${NC} Task coordination enabled ($TASK_COUNT existing tasks)"
+
+if [ "$DANGEROUS_MODE" = true ]; then
+  echo -e "${YELLOW}⚠${NC} Dangerous mode: permissions auto-approved"
+  CLAUDE_ARGS=("--dangerously-skip-permissions" "${CLAUDE_ARGS[@]}")
+fi
+
+echo ""
+
+# Start Claude
+exec env CLAUDE_CODE_TASK_LIST_ID="$LIST_ID" claude "${CLAUDE_ARGS[@]}"

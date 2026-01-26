@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# ccd - Claude Code with task coordination + dangerous mode
+#
+# Same as 'cc' but with --dangerously-skip-permissions
+#
+
+SCRIPT_DIR="$(dirname "$0")"
+
+# Pass --dangerous flag and all arguments to cc
+exec "$SCRIPT_DIR/cc" --dangerous "$@"
