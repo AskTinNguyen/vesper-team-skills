@@ -94,6 +94,32 @@ cc feature-auth
 CLAUDE_CODE_TASK_LIST_ID=my-feature claude
 ```
 
+### Checking Coordination Status
+
+```bash
+# Inside Claude, check if coordination is enabled
+bun run ~/.claude/skills/dispatch/scripts/init-session.ts --check
+
+# Or for Team Skills location
+bun run ~/.vesper/team-skills/dispatch/scripts/init-session.ts --check
+```
+
+### Recovery: Forgot to Set Env Var?
+
+If you created tasks but forgot to set `CLAUDE_CODE_TASK_LIST_ID`:
+
+```bash
+# Migrate current session's tasks to a shared list
+bun run ~/.claude/skills/dispatch/scripts/migrate-session.ts my-project
+
+# Or merge multiple orphaned lists
+bun run ~/.claude/skills/dispatch/scripts/sync-tasks.ts --list
+bun run ~/.claude/skills/dispatch/scripts/sync-tasks.ts --target my-project
+
+# Then restart Claude with the shared list
+CLAUDE_CODE_TASK_LIST_ID=my-project claude
+```
+
 ## Contents
 
 ```
