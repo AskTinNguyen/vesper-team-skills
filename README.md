@@ -1,6 +1,6 @@
 # Vesper Team Skills
 
-Shared skills for distribution via Vesper's Team Skills feature.
+Shared skills and commands for distribution via Vesper's Team Skills feature.
 
 ## Available Skills
 
@@ -38,6 +38,55 @@ Shared skills for distribution via Vesper's Team Skills feature.
 | [scheduled-codebase-review](./scheduled-codebase-review/) | Multi-agent codebase analysis | No |
 | [skill-creator](./skill-creator/) | Skill creation guidance | No |
 
+## Available Commands
+
+Slash commands invoked with `/command-name` in Claude Code.
+
+| Command | Description |
+|---------|-------------|
+| `/agent-native-audit` | Run comprehensive agent-native architecture review |
+| `/brand` | Brand profile management |
+| `/changelog` | Generate changelogs from recent merges |
+| `/contribute` | Share improvements (issues, PRs, skills) |
+| `/create-agent-skill` | Create or edit Claude Code skills |
+| `/deepen-plan` | Enhance plans with parallel research agents |
+| `/deploy-docs` | Validate and prepare docs for deployment |
+| `/design` | Design refinement workflow |
+| `/feature-video` | Record feature walkthrough for PR |
+| `/generate_command` | Create new custom slash commands |
+| `/generate-voiceover` | Generate AI voiceover from script |
+| `/heal-skill` | Fix incorrect SKILL.md files |
+| `/lfg` | Full autonomous engineering workflow |
+| `/plan_review` | Multi-agent plan review |
+| `/record-demo` | Guided Playwright browser recording |
+| `/redub` | Redub video with different voice |
+| `/release-docs` | Build and update documentation site |
+| `/report-bug` | Report a bug workflow |
+| `/reproduce-bug` | Bug investigation workflow |
+| `/resolve_parallel` | Resolve TODO comments in parallel |
+| `/resolve_pr_parallel` | Resolve PR comments in parallel |
+| `/resolve_todo_parallel` | Resolve CLI todos in parallel |
+| `/scene-review` | Scene review workflow |
+| `/setup-statusline` | Setup ccstatusline integration |
+| `/skills` | List installed skills or create new |
+| `/template` | List available templates |
+| `/test-browser` | Run browser tests for PR |
+| `/triage` | Triage and categorize findings |
+| `/versions` | Check dependency versions |
+| `/video` | Video project management |
+| `/xcode-test` | Build and test iOS apps on simulator |
+
+### Workflows
+
+Core workflows in `commands/workflows/`:
+
+| Workflow | Command | Description |
+|----------|---------|-------------|
+| Work | `/workflows:work` | Execute work plans efficiently |
+| Plan | `/workflows:plan` | Transform features into structured project plans |
+| Review | `/workflows:review` | Exhaustive multi-agent code reviews |
+| Compound | `/workflows:compound` | Document solved problems to compound knowledge |
+
 ## Usage
 
 ### For Team Admins
@@ -48,12 +97,35 @@ Shared skills for distribution via Vesper's Team Skills feature.
 
 ### For Team Members
 
+#### Skills (Auto-Sync via Vesper)
+
 1. Open Vesper Settings → Workspace → Team Skills
 2. Enter repo URL: `AskTinNguyen/vesper-team-skills`
 3. Enter GitHub PAT (with `repo` scope for private repos)
 4. Click "Save & Sync"
 
 Skills will appear in your skills list with a "Team" badge.
+
+#### Commands (Manual Install)
+
+Commands need to be copied to your local Claude Code directory:
+
+```bash
+# Clone repo (if not already)
+git clone https://github.com/AskTinNguyen/vesper-team-skills /tmp/vesper-team-skills
+
+# Copy commands to Claude Code
+cp -r /tmp/vesper-team-skills/commands/* ~/.claude/commands/
+
+# Verify
+ls ~/.claude/commands/
+```
+
+To update commands later:
+```bash
+cd /tmp/vesper-team-skills && git pull
+cp -r commands/* ~/.claude/commands/
+```
 
 ## Post-Sync Setup
 
@@ -95,14 +167,29 @@ icon: optional-emoji
 3. Commit and push
 4. Team members click "Sync" to get the new skill
 
-## Skill Structure
+## Adding New Commands
+
+1. Create a markdown file: `commands/my-command.md`
+2. Add command content (no frontmatter needed)
+3. Commit and push
+4. Team members copy to `~/.claude/commands/`
+
+## Repository Structure
 
 ```
-skill-name/
-├── SKILL.md          # Required: YAML frontmatter + instructions
-├── setup.sh          # Optional: Post-sync setup script
-├── scripts/          # Optional: Helper scripts
-├── references/       # Optional: Reference documentation
-├── templates/        # Optional: File templates
-└── ...               # Any additional files
+vesper-team-skills/
+├── README.md
+├── commands/           # Slash commands (manual install)
+│   ├── *.md           # Individual commands
+│   └── workflows/     # Core workflow commands
+│       ├── work.md
+│       ├── plan.md
+│       ├── review.md
+│       └── compound.md
+└── <skill-name>/      # Skills (auto-sync via Vesper)
+    ├── SKILL.md       # Required: YAML frontmatter + instructions
+    ├── setup.sh       # Optional: Post-sync setup script
+    ├── scripts/       # Optional: Helper scripts
+    ├── references/    # Optional: Reference documentation
+    └── templates/     # Optional: File templates
 ```
