@@ -1,0 +1,41 @@
+#!/bin/bash
+# ralph: Minimal PRD-driven build loop for Claude Code
+# Usage: ralph build [iterations] [--prd=N]
+#        ralph plan [--prd=N]
+#        ralph init
+
+set -euo pipefail
+
+RALPH_DIR="${RALPH_ROOT:-.ralph}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+case "${1:-help}" in
+  build)
+    shift
+    source "$SCRIPT_DIR/lib/loop.sh"
+    run_build "$@"
+    ;;
+  plan)
+    shift
+    source "$SCRIPT_DIR/lib/loop.sh"
+    run_plan "$@"
+    ;;
+  init)
+    mkdir -p "$RALPH_DIR"
+    echo "Created $RALPH_DIR directory"
+    echo "Next: Create your PRD at $RALPH_DIR/prd.md"
+    ;;
+  help|--help|-h|*)
+    echo "ralph - Minimal PRD-driven build loop"
+    echo ""
+    echo "Usage:"
+    echo "  ralph init              Initialize .ralph directory"
+    echo "  ralph plan [--prd=N]    Create plan from PRD"
+    echo "  ralph build [N]         Run N build iterations (default: 5)"
+    echo ""
+    echo "Environment:"
+    echo "  RALPH_ROOT     Override .ralph directory location"
+    echo "  MODEL          Claude model (haiku, sonnet, opus)"
+    echo "  AGENT_TIMEOUT  Agent timeout in seconds (default: 600)"
+    ;;
+esac

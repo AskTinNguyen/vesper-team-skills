@@ -1,0 +1,37 @@
+{
+  "name": "Sample Auto Claude UI Test",
+  "description": "Example test suite demonstrating CDP testing capabilities",
+  "steps": [
+    {
+      "action": "screenshot",
+      "output": "test-01-initial.png",
+      "description": "Capture initial state"
+    },
+    {
+      "action": "eval",
+      "expression": "typeof window.electronAPI",
+      "description": "Verify electronAPI is available"
+    },
+    {
+      "action": "eval",
+      "expression": "document.title",
+      "description": "Get page title"
+    },
+    {
+      "action": "wait",
+      "ms": 500,
+      "description": "Wait for any animations"
+    },
+    {
+      "action": "click",
+      "text": "Create",
+      "description": "Click create button (if visible)",
+      "required": false
+    },
+    {
+      "action": "screenshot",
+      "output": "test-02-after-click.png",
+      "description": "Capture state after interaction"
+    }
+  ]
+}
