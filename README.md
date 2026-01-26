@@ -174,6 +174,42 @@ icon: optional-emoji
 3. Commit and push
 4. Team members copy to `~/.claude/commands/`
 
+## Skill Precedence and Deduplication
+
+Vesper loads skills from three locations with a **first-wins** precedence order:
+
+| Priority | Source | Location | Use Case |
+|----------|--------|----------|----------|
+| 1 (highest) | Workspace | `~/.vesper/workspaces/{id}/skills/` | Local overrides for specific projects |
+| 2 | Team | `~/.vesper/team-skills/` | Shared team skills (this repo) |
+| 3 (lowest) | Claude Code | `~/.claude/skills/` | Personal/global skills |
+
+### How Deduplication Works
+
+- Skills are deduplicated by **slug** (directory name), not by the `name` in frontmatter
+- If the same skill exists in multiple locations, only the highest-priority version is loaded
+- Each skill is tagged with its `source` (`workspace`, `team`, or `claude-code`)
+
+### Examples
+
+| Scenario | Result |
+|----------|--------|
+| `dispatch` in both team and claude-code | **Team version** used |
+| `dispatch` in workspace, team, and claude-code | **Workspace version** used |
+| `my-skill` only in claude-code | **Claude-code version** used |
+
+### Overriding Team Skills
+
+To customize a team skill for a specific workspace:
+
+1. Copy the skill to your workspace: `cp -r ~/.vesper/team-skills/my-skill ~/.vesper/workspaces/{id}/skills/`
+2. Modify the workspace copy
+3. The workspace version will take precedence
+
+### Migration Note
+
+If you have skills in both `~/.claude/skills/` and `~/.vesper/team-skills/` with the same slug, the team version takes precedence. You can safely keep both - no duplicates will appear in the skills list.
+
 ## Repository Structure
 
 ```
