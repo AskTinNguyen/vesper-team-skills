@@ -97,6 +97,10 @@ export function registerQmdIpcHandlers(): void {
         'status',
         'embed',
         'update',
+        'cleanup',
+        'context',
+        'get',
+        'multi-get',
       ]
       const subcommand = args[0]?.toLowerCase()
       if (!subcommand || !allowedSubcommands.includes(subcommand)) {
