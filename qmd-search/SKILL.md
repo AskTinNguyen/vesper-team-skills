@@ -1,19 +1,23 @@
 ---
 name: qmd-search
-description: On-device search engine for markdown documents using QMD (Query My Data). Use when searching personal notes, meeting transcripts, documentation, or knowledge bases. Supports keyword search (BM25), semantic search (vectors), and hybrid search with LLM re-ranking.
+description: This skill should be used when implementing on-device semantic search for markdown documents using QMD (Query My Data). It applies when building search features for personal notes, meeting transcripts, documentation, or knowledge bases. Provides patterns for Electron app integration, IPC handlers, React components, and security sanitization. Triggers on requests like "add vector search", "implement semantic search", "integrate QMD", "search my notes", or building local document search features.
 ---
 
 # QMD Search Skill
 
-On-device search engine for markdown documents, notes, transcripts, and knowledge bases.
+On-device semantic search engine for markdown documents, notes, transcripts, and knowledge bases.
 
 ## When to Use This Skill
 
+**For Users:**
 - Searching personal notes or documentation indexed by QMD
 - Finding meeting transcripts or conversation logs
 - Querying knowledge bases with semantic understanding
-- Retrieving context from indexed markdown collections
-- When the user mentions "search my notes", "find in my docs", or references QMD
+
+**For Developers:**
+- Integrating QMD into Electron/desktop applications
+- Building local semantic search features
+- Implementing secure CLI wrapper patterns
 
 ## Prerequisites
 
@@ -153,19 +157,6 @@ Add to `~/.claude/settings.json`:
 | `mcp__qmd__qmd_multi_get` | Batch retrieval via glob/list |
 | `mcp__qmd__qmd_status` | Index health and collection info |
 
-### MCP Tool Examples
-
-```
-Tool: mcp__qmd__qmd_query
-Args: {"query": "API authentication best practices", "n": 5}
-
-Tool: mcp__qmd__qmd_get
-Args: {"path": "#abc123", "lines": 100}
-
-Tool: mcp__qmd__qmd_status
-Args: {}
-```
-
 ## Understanding Scores
 
 Search results include relevance scores from 0.0 to 1.0:
@@ -178,6 +169,130 @@ Search results include relevance scores from 0.0 to 1.0:
 | 0.0 - 0.2 | Low relevance, may be noise |
 
 Use `--min-score 0.5` to filter out low-quality matches.
+
+---
+
+# Developer Integration Guide
+
+This section covers how to integrate QMD into Electron/desktop applications.
+
+## Architecture Overview
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    RENDERER PROCESS                          │
+│                                                              │
+│  ┌─────────────────┐    ┌─────────────────┐                 │
+│  │   VectorSearch  │───▶│  Jotai Atoms    │                 │
+│  │   Component     │    │  (State)        │                 │
+│  └────────┬────────┘    └─────────────────┘                 │
+│           │                                                  │
+│           │ window.electronAPI.vectorSearchExecute()        │
+│           ▼                                                  │
+└───────────┼──────────────────────────────────────────────────┘
+            │ IPC
+┌───────────┼──────────────────────────────────────────────────┐
+│           ▼                   MAIN PROCESS                   │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │                    IPC Handler                          ││
+│  │  1. Validate subcommand against allowlist               ││
+│  │  2. Sanitize arguments (remove shell metacharacters)    ││
+│  │  3. Resolve QMD binary path                             ││
+│  │  4. Execute via execFile (shell: false)                 ││
+│  │  5. Return { stdout, stderr }                           ││
+│  └────────┬────────────────────────────────────────────────┘│
+│           │                                                  │
+│           ▼                                                  │
+│  ┌─────────────────┐                                        │
+│  │    QMD CLI      │  (External Rust binary)                │
+│  └─────────────────┘                                        │
+└──────────────────────────────────────────────────────────────┘
+```
+
+## Implementation Components
+
+### 1. Type Definitions
+
+```typescript
+// Search modes supported by QMD
+type SearchMode = 'keyword' | 'semantic' | 'hybrid'
+
+// Result from QMD CLI execution
+interface VectorSearchExecuteResult {
+  stdout: string
+  stderr: string
+}
+
+// Search result from QMD
+interface VectorSearchResult {
+  filePath: string
+  snippet: string
+  score: number
+  collection: string
+  title?: string
+}
+
+// Collection info from QMD
+interface CollectionInfo {
+  name: string
+  url: string           // qmd://collection-name/
+  pattern: string       // Glob pattern e.g., **/*.md
+  files: number
+  updated: string
+  rootPath?: string     // Absolute root path for resolving relative paths
+}
+
+// QMD collection configuration
+interface VectorSearchCollectionConfig {
+  name: string
+  path: string          // Absolute root path
+  pattern: string
+}
+
+// Search state for UI
+interface SearchState {
+  query: string
+  mode: SearchMode
+  results: VectorSearchResult[]
+  error: string | null
+  isSearching: boolean
+}
+```
+
+### 2. IPC Handler (Main Process)
+
+See `references/ipc-handler.ts` for complete implementation including:
+- Subcommand allowlist validation
+- Argument sanitization against shell injection
+- QMD binary path resolution
+- Safe execution with `execFile` (shell: false)
+- Config file parsing from `~/.config/qmd/index.yml`
+
+### 3. React Components (Renderer)
+
+See `references/react-components.md` for:
+- VectorSearch main component
+- AddCollectionModal for indexing new folders
+- CollectionList for management
+- State atoms (Jotai)
+
+### 4. Security Considerations
+
+**Critical:** Always sanitize user input before passing to CLI:
+
+```typescript
+// Sanitize function - removes shell metacharacters
+function sanitizeArg(arg: string): string {
+  return arg.replace(/[`$(){}|;&\n\r\0]/g, '').slice(0, 1000)
+}
+```
+
+**Security patterns:**
+- Allowlist valid subcommands
+- Use `execFile()` with `shell: false`
+- Sanitize ALL user-provided arguments
+- Limit argument length (1000 chars)
+- Handle ENOENT gracefully
 
 ## Workflow Examples
 
@@ -266,4 +381,14 @@ Shows: collection count, document count, embedding coverage, and any issues.
 
 - [QMD Repository](https://github.com/tobi/qmd)
 - Index location: `~/.cache/qmd/index.sqlite`
+- Config location: `~/.config/qmd/index.yml`
 - Models auto-download on first use (~1.5GB total)
+
+## Resources
+
+This skill includes reference implementations:
+
+### references/
+- `ipc-handler.ts` - Complete IPC handler implementation with security patterns
+- `react-components.md` - React/Jotai component implementations
+- `security-tests.ts` - Security test suite for input sanitization
