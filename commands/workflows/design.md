@@ -1,5 +1,5 @@
 ---
-name: design
+name: workflows:design
 description: Deep-dive visual refinement for video scenes with parallel design agents
 argument-hint: "[scene-id, project path, or empty for discovery]"
 ---

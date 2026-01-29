@@ -200,3 +200,22 @@ Based on problem type, these agents can enhance documentation:
 
 - `/research [topic]` - Deep investigation (searches docs/solutions/ for patterns)
 - `/workflows:plan` - Planning workflow (references documented solutions)
+
+---
+
+## Workflow Pipeline
+
+```
+workflows:plan → workflows:design → workflows:work → workflows:review → workflows:compound
+                                                                              ↑
+                                                                        You are here
+```
+
+| Command | Purpose | Artifacts |
+|---------|---------|-----------|
+| `/workflows:plan` | Research and plan | `plans/*.md` |
+| `/workflows:design` | Visual refinement (video/UI scenes) | Updated components |
+| `/workflows:work` | Execute the plan | Code + tests |
+| `/workflows:review` | Multi-agent code review | `todos/*.md` |
+| `/workflows:compound` | **You are here** — Document solutions | `docs/solutions/*.md` |
+| `/start-new-feature` | Parallel task dispatch | Task list + agents |

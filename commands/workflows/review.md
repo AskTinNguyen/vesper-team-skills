@@ -512,3 +512,36 @@ The subagent will:
 
 Any **🔴 P1 (CRITICAL)** findings must be addressed before merging the PR. Present these prominently and ensure they're resolved before accepting the PR.
 ```
+
+---
+
+## Workflow Pipeline
+
+```
+workflows:plan → workflows:design → workflows:work → workflows:review → workflows:compound
+                                                           ↑
+                                                     You are here
+```
+
+| Command | Purpose | Artifacts |
+|---------|---------|-----------|
+| `/workflows:plan` | Research and plan | `plans/*.md` |
+| `/workflows:design` | Visual refinement (video/UI scenes) | Updated components |
+| `/workflows:work` | Execute the plan | Code + tests |
+| `/workflows:review` | **You are here** — Multi-agent code review | `todos/*.md` |
+| `/workflows:compound` | Document solutions | `docs/solutions/*.md` |
+| `/start-new-feature` | Parallel task dispatch | Task list + agents |
+
+## XML Tag Reference
+
+These structured tags guide agent behavior across workflow commands:
+
+| Tag | Purpose | Example |
+|-----|---------|---------|
+| `<command_purpose>` | Declares what the command does | Scoping the agent's focus |
+| `<role>` | Sets cognitive frame and expertise | Senior architect, design director |
+| `<thinking>` | Triggers step-by-step reasoning | Before synthesis or decisions |
+| `<ultrathink_instruction>` | Requests maximum cognitive effort | Deep analysis phases |
+| `<parallel_tasks>` | Marks agents to run simultaneously | Research, review, analysis |
+| `<critical_requirement>` | Non-skippable constraint | Quality gates, output format |
+| `<review_target>` | Captures user input via `#$ARGUMENTS` | Entry point for commands |

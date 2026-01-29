@@ -361,3 +361,22 @@ For most features: tests + linting + following patterns is sufficient.
 - **Forgetting TodoWrite** - Track progress or lose track of what's done
 - **80% done syndrome** - Finish the feature, don't move on early
 - **Over-reviewing simple changes** - Save reviewer agents for complex work
+
+---
+
+## Workflow Pipeline
+
+```
+workflows:plan → workflows:design → workflows:work → workflows:review → workflows:compound
+                                         ↑
+                                   You are here
+```
+
+| Command | Purpose | Artifacts |
+|---------|---------|-----------|
+| `/workflows:plan` | Research and plan | `plans/*.md` |
+| `/workflows:design` | Visual refinement (video/UI scenes) | Updated components |
+| `/workflows:work` | **You are here** — Execute the plan | Code + tests |
+| `/workflows:review` | Multi-agent code review | `todos/*.md` |
+| `/workflows:compound` | Document solutions | `docs/solutions/*.md` |
+| `/start-new-feature` | Parallel task dispatch | Task list + agents |
