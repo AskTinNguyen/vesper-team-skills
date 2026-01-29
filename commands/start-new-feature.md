@@ -1,11 +1,11 @@
 ---
-description: Initialize a new feature with task coordination and parallel agent dispatch
+description: Initialize a new feature with task coordination using the Dispatch skill
 argument-hint: <feature-name-or-issue>
 ---
 
 # Start New Feature
 
-Initialize a feature development environment with task coordination and parallel agent dispatch.
+Initialize a feature development environment using the **Dispatch** skill for multi-agent task coordination.
 
 ## Arguments
 
@@ -30,25 +30,39 @@ else
 fi
 ```
 
-### 2. Create Task Environment
+### 2. Start Coordinated Session with Dispatch
 
-Start a new terminal session with task coordination:
+**Use `ccd` (Claude Code with Dispatch + dangerous mode):**
 
 ```bash
-# Create task list for this feature
-ccd "$FEATURE_NAME"
+# Start new terminal or tmux session
+tmux new-session -d -s "$FEATURE_NAME" -c "$(pwd)"
+tmux send-keys -t "$FEATURE_NAME" "ccd $FEATURE_NAME" Enter
 ```
 
-This creates:
-- Task list at `~/.claude/tasks/$FEATURE_NAME/`
-- Claude Code session with dangerous mode (skip permission prompts)
+This automatically:
+- Creates task list at `~/.claude/tasks/$FEATURE_NAME/`
+- Sets `CLAUDE_CODE_TASK_LIST_ID` environment variable
+- Enables dangerous mode (skip permission prompts)
+- Auto-archives previous task list
 
-### 3. Set Up Context
+### 3. Pre-Flight Check (from Dispatch skill)
 
-If working from a GitHub issue, load the issue context:
+Before creating tasks, verify:
+
+```bash
+echo "List: $CLAUDE_CODE_TASK_LIST_ID"
+TaskList
+```
+
+If tasks exist, warn before proceeding.
+
+### 4. Load Issue Context (if applicable)
+
+If working from a GitHub issue:
 
 ```markdown
-## Issue Context (if applicable)
+## Issue Context
 
 **Issue:** #$ISSUE_NUM
 **Title:** $ISSUE_TITLE
@@ -58,40 +72,89 @@ If working from a GitHub issue, load the issue context:
 $ISSUE_BODY
 ```
 
-### 4. Create Implementation Plan
+### 5. Decompose into Tasks
 
-Before coding, create a focused plan:
-
-1. **Understand the scope** - Read the issue or feature description
-2. **Identify affected files** - Search codebase for relevant code
-3. **Break into tasks** - Split into 2-5 independent sub-tasks
-4. **Define success criteria** - What does "done" look like?
-
-Write plan to `.claude/tasks/$FEATURE_NAME/PLAN.md`
-
-### 5. Dispatch Parallel Agents
-
-For each independent sub-task, dispatch an agent:
+**Use Dispatch's TaskCreate for each sub-task:**
 
 ```
-Task("Sub-task 1: [specific scope]")
-Task("Sub-task 2: [specific scope]")
-...
+TaskCreate(
+  subject: "Imperative title for sub-task 1",
+  description: "Requirements:\n- item\n- item\n\nFiles: src/foo.ts",
+  activeForm: "Implementing sub-task 1"
+)
 ```
 
-**Dispatch rules:**
-- One agent per independent problem domain
-- Each agent gets specific scope and clear goal
-- Agents should not edit the same files
-- Use `dispatching-parallel-agents` skill for guidance
+**Guidelines (from Dispatch skill):**
+- 3-10 discrete tasks
+- Each task: atomic, independent files, testable
+- Include `Files:` in description for conflict detection
+- Tasks should be 30min+ of work (avoid over-decomposition)
 
-### 6. Monitor and Integrate
+### 6. Set Dependencies
 
-1. Wait for all agents to complete
-2. Review each agent's summary
-3. Check for conflicts between changes
-4. Run tests to verify
-5. Commit with conventional commit message
+```
+TaskUpdate(taskId: "2", addBlockedBy: ["1"])
+TaskUpdate(taskId: "3", addBlockedBy: ["1"])
+TaskUpdate(taskId: "4", addBlockedBy: ["2", "3"])
+```
+
+### 7. Validate Before Spawning
+
+```bash
+SKILL=~/.claude/skills/dispatch
+bun run $SKILL/scripts/validate-dependency-graph.ts
+bun run $SKILL/scripts/detect-file-conflicts.ts
+```
+
+### 8. Spawn Parallel Agents
+
+For each ready task (no blockedBy or all blockedBy completed):
+
+```
+TaskUpdate(taskId: "1", status: "in_progress", owner: "agent-1")
+
+Task(
+  subagent_type: "general-purpose",
+  model: "sonnet",
+  prompt: """
+## Your Assignment
+
+Task ID: 1
+Subject: [task subject]
+
+[Full task description]
+
+## On Completion
+
+Mark complete: TaskUpdate(taskId: "1", status: "completed")
+""",
+  description: "Task 1: [subject]"
+)
+```
+
+**Model selection:**
+| Model | Use For |
+|-------|---------|
+| opus | Architecture, complex logic |
+| sonnet | Features, tests, integrations |
+
+### 9. Monitor Progress
+
+```bash
+TaskList                                          # Quick status
+bun run $SKILL/scripts/task-dashboard.ts --watch  # Visual dashboard
+```
+
+### 10. Report on Completion
+
+```markdown
+## Progress: X/Y tasks
+
+**Completed:** 1, 2, 3
+**In Progress:** 4, 5
+**Blocked:** 6 (waiting: 4, 5)
+**Ready:** 7
+```
 
 ## Quick Start Example
 
@@ -99,21 +162,32 @@ Task("Sub-task 2: [specific scope]")
 # From issue number
 /start-new-feature 48
 
-# From feature name  
+# From feature name
 /start-new-feature search-installed-skills
 ```
 
 ## Success Criteria
 
-- [ ] Task list created at `~/.claude/tasks/$FEATURE_NAME/`
-- [ ] Implementation plan written
-- [ ] Sub-tasks identified and dispatched
-- [ ] All agents completed successfully
-- [ ] Tests pass
+- [ ] Task list created via `ccd $FEATURE_NAME`
+- [ ] Issue context loaded (if applicable)
+- [ ] Tasks decomposed with TaskCreate
+- [ ] Dependencies set with TaskUpdate
+- [ ] Dependency graph validated
+- [ ] Agents spawned for ready tasks
+- [ ] All tasks completed
 - [ ] Changes committed
 
 ## Related Skills
 
-- `dispatching-parallel-agents` - For parallel agent dispatch patterns
+- **Dispatch** - Core skill for task coordination (`/dispatch`)
 - `using-git-worktrees` - For isolated workspace setup
 - `verification-before-completion` - For final verification
+
+## Anti-Patterns (from Dispatch)
+
+- ❌ Starting Claude without `CLAUDE_CODE_TASK_LIST_ID` set
+- ❌ Tasks < 30 min work (over-decomposition)
+- ❌ Vague descriptions (under-specification)
+- ❌ Circular dependencies (validate first)
+- ❌ Spawning blocked tasks (check blockedBy)
+- ❌ Parallel tasks on same files (serialize via blockedBy)
