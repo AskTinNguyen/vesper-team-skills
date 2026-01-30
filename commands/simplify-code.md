@@ -35,35 +35,29 @@ For each target file, count lines with `wc -l`. Record as `baseline_lines` per f
 
 ## Step 3: Pass 1 — Reducing Entropy
 
-Invoke the **Reducing Entropy** skill. Follow its full process:
+Read and follow the **Reducing Entropy** skill:
 
-1. List the files in its `references/` directory
-2. Read frontmatter descriptions, pick the most relevant reference mindset(s)
-3. Load at least one reference mindset and state which was loaded and its core principle
-4. For each target file, apply the three questions:
-   - What's the smallest codebase that solves this?
-   - Does this code result in more code than needed?
-   - What can we delete?
-5. Watch for red flags: "keep what exists" bias, unnecessary flexibility, over-separation, type safety costing too many lines
-6. Edit files directly — delete dead code, remove unnecessary abstractions, collapse verbose structures, inline single-use helpers
+1. Read the SKILL.md file. Search for it in these locations (use the first one found):
+   - `.clawdbot/skills/reducing-entropy/SKILL.md`
+   - `~/.clawdbot/skills/reducing-entropy/SKILL.md`
+   - `~/.claude/skills/reducing-entropy/SKILL.md`
+2. Follow the skill's instructions exactly — including loading reference mindsets from its `references/` directory
+3. Apply the skill to all target files identified in Step 1
+4. Edit files directly as the skill instructs
 
 After all edits, count lines again. Record as `post_entropy_lines`.
 
 ## Step 4: Pass 2 — Code Simplifier
 
-Invoke the **Code Simplifier** skill on the same files (now already trimmed by Pass 1). Follow its process:
+Read and follow the **Code Simplifier** skill on the same files (now already trimmed by Pass 1):
 
-1. Analyze each file for:
-   - Unnecessary complexity and nesting
-   - Redundant code and abstractions
-   - Overly clever solutions that are hard to understand
-   - Variable/function naming clarity
-   - Opportunities to consolidate related logic
-   - Unnecessary comments describing obvious code
-   - Nested ternaries (prefer if/else or switch)
-2. Apply project standards from CLAUDE.md (import sorting, naming conventions, error handling patterns)
-3. Prioritize clarity over brevity — explicit code beats clever one-liners
-4. Edit files directly
+1. Read the SKILL.md file. Search for it in these locations (use the first one found):
+   - `.clawdbot/skills/code-simplifier/SKILL.md`
+   - `~/.clawdbot/skills/code-simplifier/SKILL.md`
+   - `~/.claude/skills/code-simplifier/SKILL.md`
+2. Follow the skill's instructions exactly — it will guide analysis and edits for clarity, consistency, and maintainability
+3. Apply the skill to all target files identified in Step 1
+4. Edit files directly as the skill instructs
 
 After all edits, count lines again. Record as `post_simplifier_lines`.
 
