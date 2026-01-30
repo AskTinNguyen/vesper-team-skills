@@ -35,29 +35,21 @@ For each target file, count lines with `wc -l`. Record as `baseline_lines` per f
 
 ## Step 3: Pass 1 — Reducing Entropy
 
-Read and follow the **Reducing Entropy** skill:
+Invoke `skill: reducing-entropy` on all target files.
 
-1. Read the SKILL.md file. Search for it in these locations (use the first one found):
-   - `.clawdbot/skills/reducing-entropy/SKILL.md`
-   - `~/.clawdbot/skills/reducing-entropy/SKILL.md`
-   - `~/.claude/skills/reducing-entropy/SKILL.md`
-2. Follow the skill's instructions exactly — including loading reference mindsets from its `references/` directory
-3. Apply the skill to all target files identified in Step 1
-4. Edit files directly as the skill instructs
+1. Load the skill and follow its full process — including loading reference mindsets from its `references/` directory
+2. Apply to all target files identified in Step 1
+3. Edit files directly as the skill instructs
 
 After all edits, count lines again. Record as `post_entropy_lines`.
 
 ## Step 4: Pass 2 — Code Simplifier
 
-Read and follow the **Code Simplifier** skill on the same files (now already trimmed by Pass 1):
+Invoke `skill: code-simplifier` on the same files (now already trimmed by Pass 1).
 
-1. Read the SKILL.md file. Search for it in these locations (use the first one found):
-   - `.clawdbot/skills/code-simplifier/SKILL.md`
-   - `~/.clawdbot/skills/code-simplifier/SKILL.md`
-   - `~/.claude/skills/code-simplifier/SKILL.md`
-2. Follow the skill's instructions exactly — it will guide analysis and edits for clarity, consistency, and maintainability
-3. Apply the skill to all target files identified in Step 1
-4. Edit files directly as the skill instructs
+1. Load the skill and follow its full process — it will guide analysis and edits for clarity, consistency, and maintainability
+2. Apply to all target files identified in Step 1
+3. Edit files directly as the skill instructs
 
 After all edits, count lines again. Record as `post_simplifier_lines`.
 
