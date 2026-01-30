@@ -7,32 +7,34 @@ argument-hint: [target] — branch:name, file:path, pr:number, or blank for git 
 
 Compose two existing skills — **Reducing Entropy** and **Code Simplifier** — via sequential sub-agents to minimize and clean code without changing functionality.
 
-> **Design note:** Tested three approaches on 833 lines of TypeScript. Skill instructions
-> without reference mindsets achieved 41.6% reduction vs 31.9% with mindsets loaded.
-> Philosophical priming adds caution, not capability — the agent already knows these
-> patterns. This command invokes skills but skips optional reference mindset loading.
+> **Design note:** Early testing on 833 lines of TypeScript showed skill instructions
+> without reference mindsets achieved 41.6% reduction vs 31.9% with mindsets loaded (N=1).
+> This command skips mindset loading by default for speed, but the reducing-entropy skill
+> treats it as optional — agents may load mindsets if they determine it would help.
 
 ## What This Command Does
 
 1. **Identify target files** from the argument
 2. **Count baseline** line counts
-3. **Agent 1: Reducing Entropy** — sub-agent applies the skill's core heuristics to delete and shrink
-4. **Agent 2: Code Simplifier** — sub-agent applies the skill to clarify and polish (runs after Agent 1 completes)
-5. **Synthesis** — verify no functionality changed, type-check, commit
-6. **Report** — before/after line counts, % reduction, what changed
+3. **Snapshot** — stash uncommitted work for rollback safety
+4. **Agent 1: Reducing Entropy** — sub-agent applies the skill's core heuristics to delete and shrink
+5. **Agent 2: Code Simplifier** — sub-agent applies the skill to clarify and polish (runs after Agent 1 completes)
+6. **Synthesis** — verify no functionality changed, type-check; rollback if broken
+7. **Report** — before/after line counts, % reduction, what changed
 
 ## Step 1: Identify Target Files
 
 <task_list>
 
 - [ ] Parse the argument to determine target:
-  - **No argument**: `git diff --name-only HEAD` for uncommitted changes; if none, `git diff --name-only main..HEAD` for branch changes
-  - **`branch:<name>`**: `git diff --name-only main..<name> -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py'`
+  - **No argument**: `git diff --name-only HEAD` for uncommitted changes; if none, `git diff --name-only main..HEAD` for branch changes. Filter to source code extensions.
+  - **`branch:<name>`**: `git diff --name-only main..<name>` — filter to source code files
   - **`file:<path>`**: Use the specified file
-  - **`pr:<number>`**: `gh pr diff <number> --name-only`
-- [ ] Filter to source code files only (skip configs, lockfiles, generated files)
+  - **`pr:<number>`**: `gh pr diff <number> --name-only` — filter to source code files
+- [ ] Filter to source code files only (skip configs, lockfiles, generated files, images, fonts). Include common extensions: `*.ts *.tsx *.js *.jsx *.py *.rb *.go *.rs *.java *.kt *.swift *.c *.cpp *.h`
 - [ ] Read CLAUDE.md for project conventions
 - [ ] If no target files found, report "No files to simplify" and stop
+- [ ] Write the final file list to `/tmp/simplify-target-files.txt` (one absolute path per line) for sub-agents to consume
 
 </task_list>
 
@@ -43,7 +45,24 @@ Compose two existing skills — **Reducing Entropy** and **Code Simplifier** —
 - [ ] For each target file, count ONLY the target file lines with `wc -l` (not entire files if targeting new code on a branch)
 - [ ] Record `baseline_lines` per file and `total_baseline`
 - [ ] Display file list and total lines to establish the scoreboard
-- [ ] Save the file list to a variable for passing to agents
+
+</task_list>
+
+## Step 2.5: Snapshot for Rollback
+
+<task_list>
+
+- [ ] Create a rollback checkpoint before agents make destructive edits:
+  ```bash
+  git stash push -m "pre-simplify-snapshot" --include-untracked
+  git stash pop
+  git tag _pre_simplify_checkpoint HEAD 2>/dev/null || true
+  ```
+  This creates a tagged checkpoint. If synthesis fails in Step 5, rollback with:
+  ```bash
+  git checkout _pre_simplify_checkpoint -- .
+  ```
+- [ ] Confirm checkpoint exists before proceeding
 
 </task_list>
 
@@ -59,27 +78,27 @@ Task(
   prompt: """
 ## Assignment: Reducing Entropy Pass
 
-Invoke `skill: reducing-entropy` on the following files. Skip loading reference
-mindsets — apply only the skill's core instructions (three questions, red flags,
-line counting).
+Invoke `skill: reducing-entropy` on the target files listed in `/tmp/simplify-target-files.txt`.
+Read that file first to get the full list of absolute paths.
 
-Target files:
-[LIST TARGET FILES HERE WITH FULL PATHS]
+Skip loading reference mindsets for speed — apply the skill's core instructions
+(three questions, red flags, line counting) directly.
 
 ### Process:
-1. Load the reducing-entropy skill
-2. SKIP the 'Before You Begin' mindset loading step — go straight to 'The Goal'
-3. For each file, apply the three questions:
+1. Read `/tmp/simplify-target-files.txt` to get the target file list
+2. Load the reducing-entropy skill
+3. Skip the 'Prerequisites' mindset loading step — go straight to 'The Goal'
+4. For each file, apply the three questions:
    - What's the smallest codebase that solves this?
    - Does this code result in more code than needed?
    - What can we delete?
-4. Watch for red flags: status quo bias, unnecessary flexibility, over-separation, type safety costing too many lines
-5. Be aggressive — replace verbose control flow (switch/case) with data structures (lookup tables/maps) where possible
-6. Inline helper functions called only once
-7. Delete dead code, unnecessary abstractions, verbose JSDoc on self-documenting code
-8. Edit files directly — do NOT just report findings
-9. NEVER change functionality — only reduce code size
-10. After all edits, run `wc -l` on each TARGET FILE and report line counts
+5. Watch for red flags: status quo bias, unnecessary flexibility, over-separation, type safety costing too many lines
+6. Be aggressive — replace verbose control flow (switch/case) with data structures (lookup tables/maps) where possible
+7. Inline helper functions called only once
+8. Delete dead code, unnecessary abstractions, verbose JSDoc on self-documenting code
+9. Edit files directly — do NOT just report findings
+10. NEVER change functionality — only reduce code size
+11. After all edits, run `wc -l` on each TARGET FILE and report line counts
 
 ### Output:
 Report per-file line counts (before → after) and list what was removed.
@@ -100,20 +119,17 @@ Spawn a sub-agent to run the second pass on the already-trimmed code:
 
 ```
 Task(
-  subagent_type: "general-purpose",
+  subagent_type: "code-simplifier",
   prompt: """
 ## Assignment: Code Simplifier Pass
 
-Invoke `skill: code-simplifier` on the following files (already trimmed by a prior
-entropy reduction pass).
-
-Target files:
-[LIST TARGET FILES HERE WITH FULL PATHS]
+Apply code simplification to the target files listed in `/tmp/simplify-target-files.txt`.
+These files have already been trimmed by a prior entropy reduction pass.
 
 ### Process:
-1. Load the code-simplifier skill and follow its process
+1. Read `/tmp/simplify-target-files.txt` to get the target file list
 2. Read CLAUDE.md for project-specific conventions and standards
-3. Analyze each file for:
+3. For each file, analyze and fix:
    - Unnecessary complexity and nesting
    - Redundant code and abstractions
    - Overly clever solutions
@@ -145,10 +161,21 @@ After both agents complete:
 <task_list>
 
 - [ ] Review the cumulative changes from both passes
-- [ ] Run type checking if available (`bun run typecheck:all`, `tsc --noEmit`, `npx tsc`, or equivalent) — no NEW errors should be introduced
+- [ ] Run type checking if available — detect the right command:
+  - Check `package.json` scripts for `typecheck`, `type-check`, `tsc`, or similar
+  - Fallback order: `bun run typecheck:all` → `npx tsc --noEmit` → `tsc --noEmit`
+  - For Python: `mypy` or `pyright` if configured
+  - For Go: `go vet ./...`
+  - No NEW errors should be introduced
 - [ ] Verify no functionality was changed — code does exactly what it did before
 - [ ] Ensure imports are still correct after deletions
-- [ ] Fix any issues found during verification
+- [ ] If verification fails:
+  ```bash
+  git checkout _pre_simplify_checkpoint -- .
+  ```
+  Report what broke and stop. Do not commit broken code.
+- [ ] Fix any minor issues found during verification
+- [ ] Clean up checkpoint tag: `git tag -d _pre_simplify_checkpoint 2>/dev/null || true`
 
 </task_list>
 
@@ -156,11 +183,13 @@ After both agents complete:
 
 <task_list>
 
-- [ ] Commit all changes:
-  ```
-  git add -A && git commit -m "refactor: simplify [scope] (reducing-entropy + code-simplifier)"
+- [ ] Stage only the target files (read the list from `/tmp/simplify-target-files.txt`):
+  ```bash
+  xargs git add < /tmp/simplify-target-files.txt
+  git commit -m "refactor: simplify [scope] (reducing-entropy + code-simplifier)"
   ```
   Where `[scope]` describes the target (branch name, feature name, or file scope)
+- [ ] Clean up: `rm -f /tmp/simplify-target-files.txt`
 
 </task_list>
 
@@ -175,13 +204,14 @@ Display a summary table:
 |------|----------|---------------|------------------|---|
 | ... | ... | ... | ... | ... |
 
-**Total: [baseline] → [final] lines ([X]% reduction)**
+**Total: [baseline] → [final] lines ([X]% change)**
 
 ### What was removed (Pass 1 — Entropy):
 - [List key removals — dead code, unnecessary abstractions, YAGNI, etc.]
 
 ### What was clarified (Pass 2 — Simplifier):
 - [List key improvements — naming, structure, consolidation, etc.]
+- Note: Pass 2 may increase line count if expanding dense code for clarity.
 ```
 
 ## Rules
@@ -189,10 +219,13 @@ Display a summary table:
 - **NEVER change functionality** — only change HOW code does things, not WHAT it does
 - **Both agents must run sequentially** — Agent 2 depends on Agent 1's output
 - **Each agent invokes its skill directly** — don't recreate skill logic in this command
-- **Skip reference mindsets** — tested and proven: core heuristics outperform philosophical priming (41.6% vs 31.9% reduction on same codebase)
+- **Agent 2 uses the native `code-simplifier` subagent type** — not `general-purpose`
+- **File list via `/tmp/simplify-target-files.txt`** — sub-agents read this file, no placeholder interpolation
 - **Be aggressive on Pass 1** — prefer data structures over control flow, inline single-use helpers, delete verbose comments
 - **Edit directly** — agents make changes, not just report findings
 - **Count only target files** — don't report line counts for entire pre-existing files
 - **Measure everything** — line counts at baseline, after each pass, and final
 - **Type-check after** — ensure no compilation errors were introduced
+- **Rollback if broken** — use the pre-simplify checkpoint to revert on failure
+- **Stage only target files** — never use `git add -A` or `git add .`
 - **Commit the result** — leave a clean git trail
