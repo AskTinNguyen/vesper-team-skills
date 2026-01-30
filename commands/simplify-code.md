@@ -1,101 +1,182 @@
 ---
-description: Run dual-pass code simplification using Reducing Entropy + Code Simplifier skills. Composes both skills sequentially, then combines results.
+description: Run dual-pass code simplification using Reducing Entropy + Code Simplifier skills via sequential sub-agents, then synthesize results.
 argument-hint: [target] — branch:name, file:path, pr:number, or blank for git diff
 ---
 
 # Simplify Code
 
-Compose two existing skills — **Reducing Entropy** and **Code Simplifier** — in sequence to minimize and clean code without changing functionality.
+Compose two existing skills — **Reducing Entropy** and **Code Simplifier** — via sequential sub-agents to minimize and clean code without changing functionality.
 
 ## What This Command Does
 
 1. **Identify target files** from the argument
-2. **Count baseline** line counts for all target files
-3. **Pass 1: Reducing Entropy** — invoke the skill to delete, shrink, and remove unnecessary code
-4. **Pass 2: Code Simplifier** — invoke the skill to clarify, clean, and polish what remains
-5. **Final combination** — review both passes together, resolve any conflicts, ensure nothing was broken
-6. **Report** — before/after line counts, % reduction, what was removed
+2. **Count baseline** line counts
+3. **Agent 1: Reducing Entropy** — sub-agent applies the skill to delete and shrink
+4. **Agent 2: Code Simplifier** — sub-agent applies the skill to clarify and polish (runs after Agent 1 completes)
+5. **Synthesis** — verify no functionality changed, type-check, commit
+6. **Report** — before/after line counts, % reduction, what changed
 
 ## Step 1: Identify Target Files
 
-Parse the argument to determine which files to simplify:
+<task_list>
 
-- **No argument**: Run `git diff --name-only HEAD` to find recently modified files. If no uncommitted changes, use `git diff --name-only main..HEAD` for branch changes.
-- **`branch:<name>`**: Run `git diff --name-only main..<name> -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py'` to find all changed source files on that branch.
-- **`file:<path>`**: Use the single specified file.
-- **`pr:<number>`**: Run `gh pr diff <number> --name-only` to find files changed in that PR.
+- [ ] Parse the argument to determine target:
+  - **No argument**: `git diff --name-only HEAD` for uncommitted changes; if none, `git diff --name-only main..HEAD` for branch changes
+  - **`branch:<name>`**: `git diff --name-only main..<name> -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py'`
+  - **`file:<path>`**: Use the specified file
+  - **`pr:<number>`**: `gh pr diff <number> --name-only`
+- [ ] Filter to source code files only (skip configs, lockfiles, generated files)
+- [ ] Read CLAUDE.md for project conventions
+- [ ] If no target files found, report "No files to simplify" and stop
 
-Filter to only source code files (skip configs, lockfiles, generated files). Read CLAUDE.md for project conventions before proceeding.
-
-If no target files are found, report "No files to simplify" and stop.
+</task_list>
 
 ## Step 2: Count Baseline
 
-For each target file, count lines with `wc -l`. Record as `baseline_lines` per file and `total_baseline`. Display the file list and total lines to establish the scoreboard.
+<task_list>
 
-## Step 3: Pass 1 — Reducing Entropy
+- [ ] For each target file, count lines with `wc -l`
+- [ ] Record `baseline_lines` per file and `total_baseline`
+- [ ] Display file list and total lines to establish the scoreboard
+- [ ] Save the file list to a variable for passing to agents
 
-Invoke `skill: reducing-entropy` on all target files.
+</task_list>
 
-1. Load the skill and follow its full process — including loading reference mindsets from its `references/` directory
-2. Apply to all target files identified in Step 1
-3. Edit files directly as the skill instructs
+## Step 3: Agent 1 — Reducing Entropy
 
-After all edits, count lines again. Record as `post_entropy_lines`.
+Spawn a sub-agent to run the first pass:
 
-## Step 4: Pass 2 — Code Simplifier
+<agent_task>
 
-Invoke `skill: code-simplifier` on the same files (now already trimmed by Pass 1).
+```
+Task(
+  subagent_type: "general-purpose",
+  prompt: """
+## Assignment: Reducing Entropy Pass
 
-1. Load the skill and follow its full process — it will guide analysis and edits for clarity, consistency, and maintainability
-2. Apply to all target files identified in Step 1
-3. Edit files directly as the skill instructs
+Apply `skill: reducing-entropy` to simplify the following files:
 
-After all edits, count lines again. Record as `post_simplifier_lines`.
+[LIST TARGET FILES HERE]
 
-## Step 5: Final Combination
+### Instructions:
+1. Load the reducing-entropy skill and follow its FULL process
+2. Load at least one reference mindset from the skill's references/ directory
+3. State which mindset you loaded and its core principle
+4. For each file, apply the skill's three questions:
+   - What's the smallest codebase that solves this?
+   - Does this code result in more code than needed?
+   - What can we delete?
+5. Edit files directly — delete dead code, remove unnecessary abstractions, inline single-use helpers, collapse verbose structures
+6. NEVER change functionality — only reduce code size
+7. After all edits, run `wc -l` on each file and report line counts
 
-Review the cumulative changes from both passes together:
+### Output:
+Report per-file line counts (before → after) and list what was removed.
+""",
+  description: "Pass 1: Reducing Entropy"
+)
+```
 
-1. Run type checking if available (`bun run typecheck:all`, `tsc --noEmit`, `npx tsc`, or equivalent) — the output should show no NEW errors introduced by the simplification
-2. Verify no functionality was changed — the code should do exactly what it did before, just with less code and more clarity
-3. If both passes touched the same code in conflicting ways, prefer the version that is both smaller AND clearer
-4. Ensure imports are still correct after deletions
+</agent_task>
+
+Wait for Agent 1 to complete before proceeding. Record `post_entropy_lines`.
+
+## Step 4: Agent 2 — Code Simplifier
+
+Spawn a sub-agent to run the second pass on the already-trimmed code:
+
+<agent_task>
+
+```
+Task(
+  subagent_type: "general-purpose",
+  prompt: """
+## Assignment: Code Simplifier Pass
+
+Apply `skill: code-simplifier` to refine the following files (already trimmed by a prior entropy reduction pass):
+
+[LIST TARGET FILES HERE]
+
+### Instructions:
+1. Load the code-simplifier skill and follow its FULL process
+2. Read CLAUDE.md for project-specific conventions and standards
+3. Analyze each file for:
+   - Unnecessary complexity and nesting
+   - Redundant code and abstractions
+   - Overly clever solutions
+   - Variable/function naming clarity
+   - Opportunities to consolidate related logic
+   - Unnecessary comments describing obvious code
+   - Nested ternaries (prefer if/else or switch)
+4. Apply project standards from CLAUDE.md
+5. Prioritize clarity over brevity
+6. Edit files directly
+7. NEVER change functionality — only improve clarity and consistency
+8. After all edits, run `wc -l` on each file and report line counts
+
+### Output:
+Report per-file line counts (before → after) and list what was clarified.
+""",
+  description: "Pass 2: Code Simplifier"
+)
+```
+
+</agent_task>
+
+Wait for Agent 2 to complete. Record `post_simplifier_lines`.
+
+## Step 5: Synthesis
+
+After both agents complete:
+
+<task_list>
+
+- [ ] Review the cumulative changes from both passes
+- [ ] Run type checking if available (`bun run typecheck:all`, `tsc --noEmit`, `npx tsc`, or equivalent) — no NEW errors should be introduced
+- [ ] Verify no functionality was changed — code does exactly what it did before
+- [ ] Ensure imports are still correct after deletions
+- [ ] Fix any issues found during verification
+
+</task_list>
 
 ## Step 6: Commit and Report
 
-Commit all changes with:
-```
-git add -A && git commit -m "refactor: simplify [scope] (reducing-entropy + code-simplifier)"
-```
+<task_list>
 
-Where `[scope]` describes the target (e.g., "session context maps", "heatmap parser", the branch name).
+- [ ] Commit all changes:
+  ```
+  git add -A && git commit -m "refactor: simplify [scope] (reducing-entropy + code-simplifier)"
+  ```
+  Where `[scope]` describes the target (branch name, feature name, or file scope)
+
+</task_list>
 
 ### Report Format
 
 Display a summary table:
 
-```
+```markdown
 ## Simplification Report
 
-| File | Before | After Entropy | After Simplifier | Δ |
-|------|--------|---------------|------------------|---|
+| File | Baseline | After Entropy | After Simplifier | Δ |
+|------|----------|---------------|------------------|---|
 | ... | ... | ... | ... | ... |
 
 **Total: [baseline] → [final] lines ([X]% reduction)**
 
-### What was removed:
-- [List key removals — dead code, unnecessary abstractions, verbose comments, etc.]
+### What was removed (Pass 1 — Entropy):
+- [List key removals — dead code, unnecessary abstractions, YAGNI, etc.]
 
-### What was clarified:
-- [List key clarity improvements — naming, structure, consolidation, etc.]
+### What was clarified (Pass 2 — Simplifier):
+- [List key improvements — naming, structure, consolidation, etc.]
 ```
 
 ## Rules
 
 - **NEVER change functionality** — only change HOW code does things, not WHAT it does
-- **Both skills must run** — don't skip either pass
-- **Edit directly** — don't just report findings, make the changes
-- **Measure everything** — line counts before, between, and after
+- **Both agents must run sequentially** — Agent 2 depends on Agent 1's output
+- **Each agent invokes its skill directly** — don't recreate skill logic in this command
+- **Edit directly** — agents make changes, not just report findings
+- **Measure everything** — line counts at baseline, after each pass, and final
 - **Type-check after** — ensure no compilation errors were introduced
 - **Commit the result** — leave a clean git trail
