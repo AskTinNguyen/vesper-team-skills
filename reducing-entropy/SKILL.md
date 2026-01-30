@@ -39,6 +39,8 @@ Count lines before and after. If after > before, reject it.
 
 ### 3. What can be deleted?
 
+See `references/detection-patterns.md` for concrete grep patterns to find dead code, unused imports, shims, and inline candidates.
+
 Every change is an opportunity to delete. Ask:
 
 - What does this make obsolete?

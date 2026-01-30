@@ -174,6 +174,38 @@ After both agents complete:
 
 </task_list>
 
+## Step 5.5: Quality Score
+
+Calculate a heuristic quality score (0–100) for each target file, before and after simplification. This quantifies improvement beyond line counts.
+
+<task_list>
+
+- [ ] For each target file, compute `Score = 100 - penalties` (floor at 0) using the baseline snapshot and current state:
+
+| Metric | Threshold | Penalty |
+|--------|-----------|---------|
+| Cyclomatic complexity per function (if/else/for/while/case/&&/\|\|/catch/ternary) | >10 per function | -5 each |
+| Cyclomatic complexity per function | >20 per function | -10 each (instead of -5) |
+| Function size | >50 lines | -3 each |
+| File size | >500 lines | -5 per file |
+| Nesting depth (indentation levels) | >3 levels | -3 each |
+| Parameter count | >4 params per function | -2 each |
+
+- [ ] Use heuristic grep/awk checks — exact AST parsing is not required:
+  ```bash
+  # Cyclomatic complexity: count branching keywords per function
+  grep -cP '\b(if|else|for|while|case|catch)\b|\?\s|&&|\|\|' FILE
+  # Function size: count lines between function boundaries
+  # Nesting depth: measure leading whitespace/indentation depth
+  awk '{ match($0, /^[ \t]*/); depth=RLENGTH/2; if(depth>max) max=depth } END { print max }' FILE
+  # Parameter count: count commas+1 in function signatures
+  grep -oP '\([^)]{20,}\)' FILE  # long parameter lists
+  ```
+- [ ] Record `before_score` (from git stash or checkpoint) and `after_score` (current state) per file
+- [ ] Interpretation: 90–100 Excellent, 70–89 Acceptable, <70 Needs Work
+
+</task_list>
+
 ## Step 6: Commit and Report
 
 <task_list>
@@ -201,6 +233,14 @@ Display a summary table:
 
 **Total: [baseline] → [final] lines ([X]% change)**
 
+### Quality Score
+
+| File | Before | After | Change |
+|------|--------|-------|--------|
+| ... | ... | ... | ... |
+
+**Overall: [before_avg] → [after_avg] ([interpretation])**
+
 ### What was removed (Pass 1 — Entropy):
 - [List key removals — dead code, unnecessary abstractions, YAGNI, etc.]
 
@@ -224,3 +264,4 @@ Display a summary table:
 - **Rollback if broken** — use the pre-simplify checkpoint to revert on failure
 - **Stage only target files** — never use `git add -A` or `git add .`
 - **Commit the result** — leave a clean git trail
+- **Calculate quality scores** — quantify improvement beyond line counts
