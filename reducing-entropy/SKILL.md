@@ -9,19 +9,6 @@ More code begets more code. Entropy accumulates. This skill biases toward the sm
 
 **Core question:** "What does the codebase look like *after*?"
 
-## Prerequisites (Optional)
-
-Reference mindsets in `references/` provide philosophical grounding for simplicity decisions. Loading one before starting can improve calibration on ambiguous cases.
-
-1. List the files in the `references/` directory
-2. Read frontmatter descriptions to pick which applies
-3. Load at least one
-4. State which was loaded and its core principle
-
-Mindset loading is recommended but optional. When invoked for speed (e.g., from `/simplify-code`), skip directly to "The Goal" below.
-
-To add new mindsets, see `adding-reference-mindsets.md`.
-
 ## The Goal
 
 The goal is **less total code in the final codebase** — not less code to write right now.
@@ -71,10 +58,6 @@ Every change is an opportunity to delete. Ask:
 - The codebase is already minimal for what it does
 - The codebase is in a framework with strong conventions (do not fight it)
 - Regulatory/compliance requirements mandate certain structures
-
-## Reference Mindsets
-
-See `references/` for philosophical grounding.
 
 ---
 

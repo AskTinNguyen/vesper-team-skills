@@ -7,10 +7,9 @@ argument-hint: [target] — branch:name, file:path, pr:number, or blank for git 
 
 Compose two existing skills — **Reducing Entropy** and **Code Simplifier** — via sequential sub-agents to minimize and clean code without changing functionality.
 
-> **Design note:** Early testing on 833 lines of TypeScript showed skill instructions
-> without reference mindsets achieved 41.6% reduction vs 31.9% with mindsets loaded (N=1).
-> This command skips mindset loading by default for speed, but the reducing-entropy skill
-> treats it as optional — agents may load mindsets if they determine it would help.
+> **Design note:** Early testing on 833 lines of TypeScript showed 41.6% reduction.
+> The reducing-entropy skill focuses on three core questions and red flags —
+> no additional context loading needed.
 
 ## What This Command Does
 
@@ -81,14 +80,10 @@ Task(
 Invoke `skill: reducing-entropy` on the target files listed in `/tmp/simplify-target-files.txt`.
 Read that file first to get the full list of absolute paths.
 
-Skip loading reference mindsets for speed — apply the skill's core instructions
-(three questions, red flags, line counting) directly.
-
 ### Process:
 1. Read `/tmp/simplify-target-files.txt` to get the target file list
 2. Load the reducing-entropy skill
-3. Skip the 'Prerequisites' mindset loading step — go straight to 'The Goal'
-4. For each file, apply the three questions:
+3. For each file, apply the three questions:
    - What's the smallest codebase that solves this?
    - Does this code result in more code than needed?
    - What can we delete?
