@@ -186,6 +186,7 @@ ls -la ~/.claude/commands/
 │   │   ├── work.md
 │   │   ├── plan.md
 │   │   ├── review.md
+│   │   ├── bulk-review.md
 │   │   └── compound.md
 │   └── ...
 └── team-skills/               # Source repo (if using Method 1)
@@ -350,6 +351,7 @@ Core workflows in `commands/workflows/`:
 | Work | `/workflows:work` | Execute work plans efficiently |
 | Plan | `/workflows:plan` | Transform features into structured project plans |
 | Review | `/workflows:review` | Exhaustive multi-agent code reviews |
+| Bulk Review | `/workflows:bulk-review` | Batched single-agent reviews for 4+ PRs |
 | Compound | `/workflows:compound` | Document solved problems to compound knowledge |
 
 ---
@@ -483,6 +485,7 @@ vesper-team-skills/
 │       ├── work.md
 │       ├── plan.md
 │       ├── review.md
+│       ├── bulk-review.md
 │       └── compound.md
 └── <skill-name>/      # Skills (auto-sync via Vesper or manual install)
     ├── SKILL.md       # Required: YAML frontmatter + instructions
