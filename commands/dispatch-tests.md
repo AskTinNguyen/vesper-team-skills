@@ -1,6 +1,7 @@
 ---
 description: Partition tests into zones and dispatch parallel agents per zone. Optionally specify zones as arguments.
 argument-hint: "[zone1,zone2,...] — e.g., frontend,api,models or blank for auto-detection"
+allowed-tools: [Skill(tasklist-env), Skill(verify-and-ship), Task, TaskCreate, TaskUpdate, TaskList, TaskGet, Bash, Read, Grep, Glob]
 ---
 
 # Dispatch Tests
@@ -49,6 +50,11 @@ Detect project test structure, partition into zones, and use `/dispatch` to spaw
 - [ ] If empty, warn user to restart with `cc <list-name>`
 - [ ] Check existing tasks with `TaskList` — warn if task list is not empty
 - [ ] Verify test runner is available (detect from package.json, Makefile, go.mod, etc.)
+- [ ] Invoke task environment check:
+  ```
+  skill: tasklist-env
+  ```
+  Verify the active task list environment is correct before creating zone tasks.
 
 </task_list>
 
@@ -159,8 +165,19 @@ Report as structured text:
 
 </task_list>
 
+## Step 6: Ship Fixes (Optional)
+
+If test failures were found and fixed by agents, invoke the verify-and-ship skill to commit and push:
+
+```
+skill: verify-and-ship
+```
+
+Tell the skill: "Auto-ship mode. Verify and push any uncommitted test fixes."
+
 ## Rules
 
+- **Invoke skills directly** — Use `skill: github-sync`, `skill: verify-and-ship`, `skill: tasklist-env` instead of hardcoding script paths
 - **Dispatch conventions** — Follow `/dispatch` task creation and agent spawning patterns
 - **Parallel by default** — Zones without dependencies run concurrently
 - **Never skip failing tests** — Report all failures, don't suppress output

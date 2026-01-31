@@ -1,6 +1,7 @@
 ---
 description: Pull GitHub issues into the task list and dispatch parallel agents to work on them. Optionally filter by label.
 argument-hint: "[label:name] — e.g., label:bug, label:enhancement, or blank for all open issues"
+allowed-tools: [Skill(github-sync), Skill(verify-and-ship), Task, TaskCreate, TaskUpdate, TaskList, TaskGet, Bash, Read, Grep, Glob]
 ---
 
 # Dispatch Issues
@@ -21,18 +22,12 @@ Sync open GitHub issues into the task list and dispatch parallel agents to work 
 - [ ] Parse arguments for filters:
   - `label:<name>` — filter by label (e.g., `label:bug`)
   - No arguments — sync all open issues
-- [ ] Run `github-sync` to pull issues into the task list:
-  ```bash
-  bash ~/.claude/skills/github-sync/scripts/sync-issues-to-tasks.sh [--label LABEL]
+- [ ] Invoke the `github-sync` skill to pull issues into the task list:
   ```
-- [ ] Process the sync output — for each `"action": "create"` line, call:
+  skill: github-sync
   ```
-  TaskCreate(
-    subject: [from sync output],
-    description: [from sync output],
-    activeForm: [from sync output]
-  )
-  ```
+  Tell the skill: "Sync open issues to the task list" with the appropriate label filter if provided.
+  The skill will run `sync-issues-to-tasks.sh` internally and create tasks via `TaskCreate` for each new issue, deduplicating by issue number.
 - [ ] Report: N new tasks created, M already existed (skipped)
 
 </task_list>
@@ -130,7 +125,7 @@ Task ID: [task_id]
 - Skipped: N
 
 ### Next Steps
-- Run `/verify-and-ship` to create PRs for completed work
+- Invoke `skill: verify-and-ship` in auto-ship mode to create PRs for completed work
 - Resolve blocked issues manually or re-dispatch after dependencies complete
 ```
 
