@@ -2,6 +2,27 @@
 
 Shared skills and commands for distribution via Vesper's Team Skills feature or direct installation with Claude Code CLI.
 
+## 🔌 Recommended: Anthropic's Official Knowledge Work Plugins
+
+Anthropic open-sourced **11 enterprise plugins** for Claude Cowork & Claude Code — covering sales, finance, legal, data, marketing, support, product management, and more. These are high-quality, officially maintained plugins with connectors to popular tools (Slack, Notion, Jira, HubSpot, Snowflake, etc.).
+
+**GitHub:** https://github.com/anthropics/knowledge-work-plugins
+**Blog:** https://claude.com/blog/cowork-plugins
+
+```bash
+# Add the marketplace
+claude plugin marketplace add anthropics/knowledge-work-plugins
+
+# Install all 11 plugins
+for p in productivity sales finance data legal marketing customer-support product-management enterprise-search bio-research cowork-plugin-management; do
+  claude plugin install "$p@knowledge-work-plugins"
+done
+```
+
+These complement our team skills — use Anthropic's plugins for general business workflows and our skills below for Ather-specific development workflows.
+
+---
+
 ## Quick Start
 
 ### For Claude Code CLI Users (No Vesper Required)
