@@ -116,7 +116,7 @@ The agent will:
 1. Read your repo (README, docs, code) to understand the product
 2. Identify key features, target audience, and value proposition
 3. Apply the feelings-first framework
-4. Generate a complete 11-slide sales deck
+4. Generate a complete sales deck (length varies based on product complexity — typically 8-15 slides)
 
 ### Usage Patterns
 
@@ -166,7 +166,7 @@ This skill includes reference materials and templates:
 
 ### Assets (`assets/`)
 Ready-to-use templates for immediate customization:
-- `sales-deck-template.md` — 11-slide feelings-first sales deck
+- `sales-deck-template.md` — Feelings-first sales deck template (flexible length, typically 8-15 slides)
 - `pitch-deck-template.md` — Investor/partner pitch deck
 - `one-pager-template.md` — Single-page summary
 
@@ -187,7 +187,18 @@ Detailed guides and methodology:
 
 ## Sales Deck Structure
 
-### 11-Slide Sales Deck Template
+### Flexible Framework
+
+This is a **framework**, not a rigid formula. The actual deck length depends on:
+- **Product complexity** — Simple tools need fewer slides; complex platforms need more
+- **Audience** — Executives prefer brevity (8-10 slides); practitioners want detail (12-15)
+- **Context** — Email attachments can be longer; live pitches should be tighter
+- **Stage** — Early conversations: shorter; Final presentations: more comprehensive
+
+**Typical range:** 8-15 slides  
+**Sweet spot:** 10-12 slides for most B2B products
+
+### Sales Deck Structure Template
 
 ```markdown
 ## SLIDE 1: The Opening (Feel the Problem)
