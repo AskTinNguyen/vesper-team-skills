@@ -1,6 +1,6 @@
 ---
 name: sales-materials-creator
-description: Create sales decks, pitch decks, and sales materials using a feelings-first philosophy. Transforms features into emotional outcomes and builds compelling narratives for B2B sales.
+description: Create sales decks, pitch decks, and sales materials using a feelings-first philosophy. Works with any product repository - the agent reads your codebase to understand features and transforms them into emotional narratives for B2B sales.
 triggers:
   - create sales deck
   - make a pitch deck
@@ -48,6 +48,64 @@ Use this skill when:
 - Crafting value propositions
 - Preparing for sales calls or demos
 - Creating one-pagers or leave-behinds
+
+---
+
+## How to Use This Skill
+
+### Quick Start: Install Once, Use Anywhere
+
+This skill works with **any product repository**. Simply navigate to your project and ask:
+
+```
+"Create a sales deck for this product"
+```
+
+The agent will:
+1. Read your repo (README, docs, code) to understand the product
+2. Identify key features, target audience, and value proposition
+3. Apply the feelings-first framework
+4. Generate a complete 11-slide sales deck
+
+### Usage Patterns
+
+**Basic:**
+```
+"Create a sales deck"
+"Make a pitch deck for investors"
+"Create sales materials"
+```
+
+**With audience:**
+```
+"Create a sales deck for enterprise CTOs"
+"Make a pitch deck for seed investors"
+```
+
+**Specific format:**
+```
+"Create a one-pager I can email to prospects"
+"Create cold outreach messages"
+```
+
+**Full suite:**
+```
+"Create complete sales materials: deck, one-pager, and email templates"
+```
+
+### What the Agent Reads
+
+When you use this skill in a repo, the agent automatically analyzes:
+
+| File | What It Learns |
+|------|----------------|
+| `README.md` | Product description, key features |
+| `package.json` / `Cargo.toml` / `pyproject.toml` | Tech stack, dependencies |
+| `docs/` or `docs/` | Architecture, use cases, guides |
+| `src/` or `app/` | Core functionality, capabilities |
+| `CHANGELOG.md` | Recent features, improvements |
+| `CONTRIBUTING.md` | Target audience, community |
+| GitHub issues (if available) | User pain points, feature requests |
 
 ---
 
