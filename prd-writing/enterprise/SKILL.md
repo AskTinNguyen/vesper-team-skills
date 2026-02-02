@@ -1,733 +1,362 @@
 ---
 name: prd-enterprise
-description: "Generate enterprise-grade Product Requirements Documents (PRD) using strategic product management frameworks, risk analysis, and stakeholder alignment methodologies. Use when planning complex features, enterprise products, AI/ML features, or when executive-level documentation is required. Triggers on: enterprise prd, strategic product doc, comprehensive requirements, big-four style prd, AI product spec."
-version: 2.0.0
+description: "Generate strategic PRDs for enterprise products, stakeholder alignment, and complex initiatives. Structured yet efficient—30-45 min to complete. Use for customer-facing features, AI/ML products, compliance requirements, or when cross-functional coordination needed. Triggers on: enterprise prd, strategic spec, team prd, ai product spec, stakeholder doc."
+version: 2.1.0
 ---
 
 # Enterprise PRD Generator
 
-Create strategic, investment-grade Product Requirements Documents that align cross-functional teams, satisfy stakeholder governance, and de-risk complex product initiatives.
+Create strategic PRDs that align teams and de-risk initiatives—in **30-45 minutes**, not hours.
 
 ---
 
-## Philosophy: The Logical Thinking Framework
+## Philosophy: The 4-Sentence Foundation
 
-Every PRD answers five fundamental questions in sequence:
+Before writing, be able to answer:
 
-```
-1. WHY (Existence)    → Strategic alignment, business case, problem validation
-2. WHAT (Definition)  → Scope, capabilities, user value proposition  
-3. WHO (Actors)       → Personas, stakeholders, decision-makers
-4. HOW (Execution)    → Technical approach, integration, delivery
-5. WHEN (Timeline)    → Phases, milestones, dependencies, gates
-```
-
-**Constraint:** No section N can be written until section N-1 is logically sound.
+1. **Why:** What problem are we solving, and why now?
+2. **What:** What's the smallest solution that delivers value?
+3. **Who:** Who are the users, and who decides if this ships?
+4. **How:** What's our approach, and what could go wrong?
 
 ---
 
-## Phase 1: Strategic Discovery
+## Phase 1: Rapid Discovery (5 min)
 
-Before writing, establish the **Problem-Solution-Fit** through structured inquiry.
-
-### 1.1 Strategic Clarification Questions
-
-Ask 5-7 questions covering these dimensions:
-
-| Dimension | Question Purpose | Example |
-|-----------|------------------|---------|
-| **Business Objective** | Link to OKR/strategic pillar | "Which quarterly OKR does this advance?" |
-| **Problem Severity** | Validate need exists | "What's the cost of NOT solving this?" |
-| **Target Segment** | Define ICP (Ideal Customer Profile) | "Enterprise, SMB, or specific vertical?" |
-| **Competitive Context** | Market positioning | "How do competitors solve this today?" |
-| **Success Metrics** | Quantifiable outcomes | "What metric movement defines success?" |
-| **Constraints** | Guardrails and risks | "Any regulatory, security, or compliance requirements?" |
-| **Dependencies** | External blockers | "What teams/systems must coordinate?" |
-
-**Question Format:**
+Ask 4 targeted questions:
 
 ```
-1. [Question text] (Select primary driver)
-   A. [Option with business rationale]
-   B. [Option with business rationale]
-   C. [Option with business rationale]
-   D. Other: [specify with quantified impact if possible]
+1. What's the business driver?
+   A. Revenue/Growth    B. Retention/Expansion    C. Efficiency/Cost    D. Compliance/Risk
+
+2. Who's the primary user?
+   A. End users         B. Admins/Ops            C. Developers         D. Executives
+
+3. What's the risk level?
+   A. Low (well-understood)  B. Medium (some unknowns)  C. High (complex/new)
+
+4. Any hard constraints?
+   A. Compliance/Security  B. Performance/Scale  C. Integration requirements  D. Timeline pressure
 ```
 
-### 1.2 The Strategic Assessment Matrix
-
-After receiving answers, validate alignment:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ STRATEGIC ASSESSMENT                                         │
-├─────────────────────────────────────────────────────────────┤
-│ Business Alignment:     □ High    □ Medium    □ Low         │
-│ Technical Feasibility:  □ High    □ Medium    □ Low         │
-│ Market Urgency:         □ High    □ Medium    □ Low         │
-│ Risk Level:             □ High    □ Medium    □ Low         │
-│ Investment Required:    □ High    □ Medium    □ Low         │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Decision Gate:** If 2+ dimensions are "Low" or "High Risk", recommend PRD scope reduction or spike investigation before proceeding.
+**Response:** "1A, 2A, 3B, 4A" format
 
 ---
 
-## Phase 2: PRD Structure
+## Phase 2: Efficient PRD Structure (25-40 min)
 
-### Document Header
+### Document Header (1 min)
 
 ```markdown
 # PRD: [Feature/Product Name]
 
-| Attribute        | Value                          |
-|------------------|--------------------------------|
-| **Version**      | 1.0.0                          |
-| **Status**       | Draft / Review / Approved      |
-| **Author**       | [Name, Title]                  |
-| **Date**         | YYYY-MM-DD                     |
-| **Review Cycle** | Q[1-4]-20XX                    |
-| **Stakeholders** | [List key approvers]           |
-
-**Classification:** □ Internal  □ Confidential  □ Restricted
+| **Version** | 1.0.0 | **Status** | Draft / Review / Approved |
+| **Author**  | [Name] | **Date** | YYYY-MM-DD |
+| **Stakeholders** | [Key approvers] | **Classification** | Internal/Confidential |
 ```
 
 ---
 
-### Section 1: Executive Summary
-
-**Purpose:** Enable executive decision-making in 2 minutes.
+### Section 1: Executive Summary (3 min)
 
 ```markdown
 ## 1. Executive Summary
 
-### The Ask
-[One sentence: What are we building and for whom?]
+**The Ask:** [One sentence: What for whom?]
 
-### Business Case
-- **Problem:** [Quantified pain point - e.g., "Support tickets up 40% QoQ"]
-- **Opportunity:** [Quantified benefit - e.g., "$2M ARR expansion potential"]
-- **Strategic Fit:** [Link to company objective - e.g., "Supports Platform pillar"]
+**Business Case:**
+- **Problem:** [Quantified pain - e.g., "40% support tickets on X"]
+- **Opportunity:** [Quantified gain - e.g., "$500K ARR potential"]
+- **Strategic Fit:** [Link to OKR/pillar]
 
-### Investment
-- **Timeline:** [Duration]
-- **Team Size:** [FTE count]
-- **Estimated Cost:** [Range with confidence level]
+**Investment:** [Timeline] • [Team size] • [Cost estimate]
 
-### Success Criteria
-[1-2 metrics that prove ROI - be specific: "Reduce churn by 15% within 90 days of launch"]
-
-### Recommendation
-□ Proceed as specified  □ Proceed with modifications  □ Spike required  □ Defer
+**Success:** [1 metric - e.g., "Reduce churn 15% in 90 days"]
 ```
 
 ---
 
-### Section 2: Strategic Context
-
-**Purpose:** Document the "WHY" with evidence.
+### Section 2: Context & Users (5 min)
 
 ```markdown
-## 2. Strategic Context
+## 2. Context & Users
 
-### 2.1 Problem Statement
-[Use this formula: When [situation], [user type] struggles with [problem] 
-because [root cause], resulting in [quantified impact].]
+### Problem
+[When [situation], [users] struggle with [problem] because [cause], 
+resulting in [impact].]
 
-**Evidence:**
-- Customer data: [support tickets, churn reasons, NPS feedback]
-- Market data: [competitor analysis, industry trends]
-- Internal data: [usage analytics, funnel drop-offs]
+**Evidence:** [Support tickets, churn data, NPS, market analysis]
 
-### 2.2 Strategic Alignment
+### Strategic Alignment
+| Company Goal | Our Contribution |
+|--------------|------------------|
+| [OKR] | [Specific linkage] |
 
-| Company Objective | This PRD's Contribution | Measurement |
-|-------------------|------------------------|-------------|
-| [OKR/Pillar]      | [Specific linkage]      | [Metric]    |
-
-### 2.3 Market Context
-- **Competitive Landscape:** [Who else solves this? How? Gaps?]
-- **Differentiation:** [Our unique approach/advantage]
-- **Timing Rationale:** [Why now? Market window?]
-
-### 2.4 Risk-Adjusted Value
-
-| Scenario   | Probability | Value Impact | Expected Value |
-|------------|-------------|--------------|----------------|
-| Best Case  | X%          | $X           | $X             |
-| Base Case  | X%          | $X           | $X             |
-| Worst Case | X%          | $X           | $X             |
-| **Weighted EV** |         |              | **$X**         |
-```
-
----
-
-### Section 3: User & Stakeholder Analysis
-
-**Purpose:** Define the "WHO" with precision.
-
-```markdown
-## 3. User & Stakeholder Analysis
-
-### 3.1 Primary Personas
-
-#### Persona A: [Name] - [Role]
+### Primary Persona
 
 | Attribute | Detail |
 |-----------|--------|
-| **Demographics** | [Age, seniority, industry] |
-| **Goals** | [What they want to achieve] |
-| **Pain Points** | [Current frustrations] |
-| **Tech Savvy** | [Low / Medium / High] |
-| **Decision Authority** | [User / Influencer / Buyer] |
-| **Success Looks Like** | [Their desired outcome] |
+| **Role** | [Title/type] |
+| **Goal** | [What they want] |
+| **Pain** | [Current frustration] |
+| **Decision Power** | [User/Influencer/Buyer] |
 
-**Quote:** "[Representative statement in their voice]"
+### Stakeholders
 
-### 3.2 Stakeholder Map
-
-```
-                    HIGH INTEREST
-                          │
-            ┌─────────────┼─────────────┐
-            │   MANAGE    │   ENGAGE    │
-            │  (Keep      │  (Satisfy   │
-            │   informed) │   closely)  │
-LOW POWER   ├─────────────┼─────────────┤   HIGH POWER
-            │   MONITOR   │   COLLAB    │
-            │  (Minimal   │  (Key       │
-            │   effort)   │   partners) │
-            └─────────────┼─────────────┘
-                          │
-                    LOW INTEREST
-```
-
-| Stakeholder | Role | Interest | Power | Engagement Strategy |
-|-------------|------|----------|-------|---------------------|
-| [Name]      | [Title] | High/Low | High/Low | [Approach] |
-
-### 3.3 Decision Makers & Approvers
-
-| Role | Name | Approval Needed | Decision Criteria |
-|------|------|-----------------|-------------------|
-| [e.g., CPO] | [Name] | Go/No-go | Strategic fit, resource allocation |
-| [e.g., CTO] | [Name] | Technical approach | Architecture alignment, tech debt |
-| [e.g., Legal] | [Name] | Compliance | Regulatory adherence |
+| Role | Name | Approval | Criteria |
+|------|------|----------|----------|
+| [e.g., CPO] | [Name] | Go/No-go | Strategic fit |
+| [e.g., CTO] | [Name] | Technical | Architecture |
+| [e.g., Legal] | [Name] | Compliance | Regulatory |
 ```
 
 ---
 
-### Section 4: Product Requirements
-
-**Purpose:** Define the "WHAT" with completeness.
+### Section 3: Requirements (10 min)
 
 ```markdown
-## 4. Product Requirements
+## 3. Requirements
 
-### 4.1 User Stories (The "Jobs-to-be-Done")
+### User Stories by Priority
 
-**Story Mapping Principle:**
-- Group by user journey phase (Discover → Evaluate → Adopt → Use → Retain)
-- Order by priority within each phase (MoSCoW: Must, Should, Could, Won't)
+#### 🔴 Must Have
 
-#### Epic: [Journey Phase Name]
-
-**Epic Goal:** [One-sentence outcome for this phase]
-
-##### Story US-[XXX]: [Story Title]
-
-**Priority:** 🔴 Must / 🟡 Should / 🟢 Could  
-**Complexity:** [S / M / L / XL]  
-**Dependencies:** [Blockers or prerequisites]
-
-**User Story:**
+**US-1: [Title]**
 > As a [persona], I want [action], so that [outcome].
 
-**Acceptance Criteria:**
+| # | Acceptance Criteria | Test |
+|---|---------------------|------|
+| 1 | [Specific condition] | [Unit/E2E] |
+| 2 | [Specific condition] | [Unit/E2E] |
+| 3 | [Edge case] | [E2E] |
+| 4 | **UI:** Verified in browser | Manual |
 
-| # | Criteria | Test Method | Definition of Done |
-|---|----------|-------------|-------------------|
-| 1 | [Specific, verifiable condition] | [Unit/Integration/E2E] | □ |
-| 2 | [Specific, verifiable condition] | [Unit/Integration/E2E] | □ |
-| 3 | [Edge case handling] | [Test type] | □ |
-| 4 | [Performance/scale requirement] | [Benchmark] | □ |
-| 5 | [UX/Accessibility standard] | [Review/Testing] | □ |
+**Notes:** [Files, APIs, dependencies]
+
+**US-2:** [Repeat for each Must-have]
+
+---
+
+#### 🟡 Should Have
+
+**US-X:** [Title and story - 2-3 items max]
+
+---
+
+#### 🟢 Could Have
+
+[Deferred to next iteration]
+
+### Non-Functional Requirements
+
+| Category | Requirement | Target |
+|----------|-------------|--------|
+| Performance | [Metric] | [Target] |
+| Security | [Standard] | [Target] |
+| Compliance | [Requirement] | [Target] |
+
+### Out of Scope
+
+| Item | Reason | Future |
+|------|--------|--------|
+| [Feature] | [Why excluded] | [When considered] |
+```
+
+---
+
+### Section 4: Technical Approach (5 min)
+
+```markdown
+## 4. Technical Approach
+
+**Architecture:** [Brief description or link to diagram]
+
+**Key Components:**
+| Component | Tech | Owner |
+|-----------|------|-------|
+| [Name] | [Stack] | [Team] |
+
+**Integrations:**
+| System | Type | Contract |
+|--------|------|----------|
+| [System] | [API/Event] | [Link] |
+
+**Risks & Mitigations:**
+| Risk | Likelihood | Mitigation |
+|------|------------|------------|
+| [Description] | H/M/L | [Plan] |
+
+**Key Decisions:**
+- [Decision]: [Rationale]
+```
+
+---
+
+### Section 5: Release & Success (4 min)
+
+```markdown
+## 5. Release & Success
+
+### Release Strategy
+
+**Approach:** □ Big Bang  □ Phased  □ Feature Flags  □ Beta→GA
+
+| Phase | Deliverable | Audience | Gate |
+|-------|-------------|----------|------|
+| Alpha | Core | Internal | [Criteria] |
+| Beta | Full | Partners | [Criteria] |
+| GA | Production | All | [Criteria] |
+
+### Go/No-Go Criteria
+
+- [ ] [Criterion 1 - e.g., "Zero P0 bugs"]
+- [ ] [Criterion 2 - e.g., "Performance targets met"]
+- [ ] [Criterion 3 - e.g., "Security review passed"]
+
+### Success Metrics
+
+| Category | Metric | Baseline | Target |
+|----------|--------|----------|--------|
+| Adoption | [Metric] | [Value] | [Value] |
+| Engagement | [Metric] | [Value] | [Value] |
+| Business | [Metric] | [Value] | [Value] |
+
+**Counter-Metrics:** [What shouldn't degrade]
+```
+
+---
+
+### Section 6: Risk & Operations (2 min)
+
+```markdown
+## 6. Risk & Operations
+
+### Risk Register
+
+| ID | Risk | Category | L | I | Score | Mitigation |
+|----|------|----------|---|---|-------|------------|
+| R1 | [Risk] | Tech/Product | H/M/L | H/M/L | [L×I] | [Plan] |
+
+### Operational Readiness
+
+- [ ] Support plan defined
+- [ ] Monitoring configured
+- [ ] Documentation complete
+- [ ] Rollback plan ready
+
+**Response Times:** SEV1 [X min] / SEV2 [Y min] / SEV3 [Z min]
+```
+
+---
+
+### Section 7: Appendix (Optional)
+
+```markdown
+## 7. Appendix
+
+**Questions & Answers:**
+1. [Q] → [A]
+
+**Assumptions:**
+- [Assumption]: [Validation]
 
 **Open Questions:**
-- [Any unresolved decisions blocking this story]
+- [Question]: [Who answers]
 
-**Notes:**
-- [Design references, API contracts, relevant docs]
-- [UI stories: Include "Verify in browser using dev-browser skill" as final AC]
-
----
-
-### 4.2 Functional Requirements (System Behaviors)
-
-**Use when:** Requirements span multiple stories or define system contracts.
-
-| ID | Requirement | Priority | Acceptance Criteria | Owner |
-|----|-------------|----------|---------------------|-------|
-| FR-001 | [System behavior] | P0/P1/P2 | [Measurable condition] | [Team] |
-| FR-002 | [System behavior] | P0/P1/P2 | [Measurable condition] | [Team] |
-
-### 4.3 Non-Functional Requirements
-
-| Category | Requirement | Target | Measurement |
-|----------|-------------|--------|-------------|
-| **Performance** | Page load time | < 2s | Lighthouse, RUM |
-| **Performance** | API response | < 200ms | p95 latency |
-| **Availability** | Uptime | 99.9% | Monitoring |
-| **Security** | Auth standard | OAuth 2.0 + MFA | Security review |
-| **Scalability** | Concurrent users | 10,000 | Load testing |
-| **Compliance** | Data residency | [Region-specific] | Legal review |
-| **Accessibility** | WCAG level | AA | Automated + manual audit |
-
-### 4.4 Out of Scope (Non-Goals)
-
-Explicitly excluded to manage expectations and prevent scope creep:
-
-| Item | Reason for Exclusion | Future Consideration |
-|------|---------------------|---------------------|
-| [Feature] | [Why not in this iteration] | [When it might be considered] |
-
-**Scope Change Protocol:**
-- Minor changes: Product Lead approval
-- Major changes: Stakeholder re-review required
+**Decision Log:**
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| [Date] | [What] | [Why] |
 ```
 
 ---
 
-### Section 5: Technical & Implementation Approach
+## Quick Reference: Decision Frameworks
 
-**Purpose:** Define the "HOW" with architectural rigor.
-
-```markdown
-## 5. Technical & Implementation Approach
-
-### 5.1 Solution Architecture
-
-```
-[Insert architecture diagram or component diagram]
-```
-
-**Components:**
-| Component | Technology | Responsibility | Owner |
-|-----------|------------|----------------|-------|
-| [Name] | [Stack] | [Function] | [Team] |
-
-### 5.2 Integration Points
-
-| System | Integration Type | Data Flow | Contract |
-|--------|-----------------|-----------|----------|
-| [System A] | [API/Event/DB] | [Direction] | [Link to spec] |
-
-### 5.3 Data Model (If Applicable)
-
-**Key Entities:**
-- [Entity]: [Attributes, relationships]
-
-### 5.4 API Contracts (If Applicable)
-
-| Endpoint | Method | Purpose | Request | Response |
-|----------|--------|---------|---------|----------|
-| /api/v1/... | GET/POST | [Function] | [Schema] | [Schema] |
-
-### 5.5 Technical Risks & Mitigations
-
-| Risk | Likelihood | Impact | Mitigation Strategy | Owner |
-|------|------------|--------|---------------------|-------|
-| [Technical risk] | H/M/L | H/M/L | [Contingency plan] | [Name] |
-
-### 5.6 Technical Debt & Trade-offs
-
-| Decision | Trade-off | Rationale | Pay-down Plan |
-|----------|-----------|-----------|---------------|
-| [Choice made] | [What we sacrificed] | [Why] | [When/how we fix] |
-```
-
----
-
-### Section 6: Release Strategy
-
-**Purpose:** Define the "WHEN" with milestones.
-
-```markdown
-## 6. Release Strategy
-
-### 6.1 Phasing Approach
-
-**Selected Strategy:** □ Big Bang  □ Phased Rollout  □ Feature Flags  □ Beta → GA
-
-**Rationale:** [Why this approach fits the risk profile]
-
-### 6.2 Release Phases
-
-| Phase | Deliverables | Audience | Success Gate | Timeline |
-|-------|--------------|----------|--------------|----------|
-| **Alpha** | Core functionality | Internal team | [Criteria] | Week X |
-| **Beta** | Full feature set | Design partners (n=5) | [Criteria] | Week Y |
-| **GA** | Production ready | All users | [Criteria] | Week Z |
-
-### 6.3 Milestone Timeline
-
-```
-Week 1-2: [Milestone] ──→ Week 3-4: [Milestone] ──→ Week 5-6: [Milestone]
-    │                        │                        │
-    ▼                        ▼                        ▼
-[Deliverable]            [Deliverable]            [Deliverable]
-```
-
-### 6.4 Go/No-Go Criteria
-
-**Launch is approved when ALL are true:**
-- [ ] [Criterion 1 - e.g., "Zero P0 bugs"]
-- [ ] [Criterion 2 - e.g., "Performance benchmarks met"]
-- [ ] [Criterion 3 - e.g., "Security review passed"]
-- [ ] [Criterion 4 - e.g., "Documentation complete"]
-- [ ] [Criterion 5 - e.g., "Support team trained"]
-
-### 6.5 Rollback Plan
-
-**Trigger Conditions:**
-- [Specific metric thresholds that trigger rollback]
-
-**Rollback Procedure:**
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
-**Estimated Recovery Time:** [Duration]
-```
-
----
-
-### Section 7: Success Metrics & Measurement
-
-**Purpose:** Define how we prove value was delivered.
-
-```markdown
-## 7. Success Metrics & Measurement
-
-### 7.1 North Star Metric
-[The single metric that best captures product success]
-
-### 7.2 KPI Framework
-
-| Category | Metric | Baseline | Target | Measurement Method | Owner |
-|----------|--------|----------|--------|-------------------|-------|
-| **Adoption** | [Metric] | [Value] | [Value] | [Tool/method] | [Name] |
-| **Engagement** | [Metric] | [Value] | [Value] | [Tool/method] | [Name] |
-| **Retention** | [Metric] | [Value] | [Value] | [Tool/method] | [Name] |
-| **Revenue** | [Metric] | [Value] | [Value] | [Tool/method] | [Name] |
-| **Efficiency** | [Metric] | [Value] | [Value] | [Tool/method] | [Name] |
-
-### 7.3 Counter-Metrics (Guardrails)
-
-[Metrics that should NOT degrade:]
-- [Metric]: [Why it matters, acceptable range]
-
-### 7.4 Measurement Plan
-
-| Timeframe | Analysis | Deliverable |
-|-----------|----------|-------------|
-| Week 1 post-launch | Initial adoption | [Report type] |
-| Month 1 post-launch | Usage patterns | [Report type] |
-| Quarter 1 post-launch | ROI assessment | [Report type] |
-```
-
----
-
-### Section 8: Risk Assessment
-
-**Purpose:** Identify and mitigate threats to success.
-
-```markdown
-## 8. Risk Assessment
-
-### 8.1 Risk Register
-
-| ID | Risk | Category | Likelihood | Impact | Risk Score | Mitigation | Contingency | Owner |
-|----|------|----------|------------|--------|------------|------------|-------------|-------|
-| R01 | [Description] | Tech/Product/Market/Legal | H/M/L | H/M/L | [L×I] | [Prevention] | [If it happens] | [Name] |
-
-**Risk Score Matrix:**
-- High (7-9): Requires executive attention, mitigation plan mandatory
-- Medium (4-6): Monitor closely, have contingency ready
-- Low (1-3): Accept and monitor
-
-### 8.2 Dependency Risks
-
-| Dependency | Risk if Delayed | Mitigation |
-|------------|-----------------|------------|
-| [Team/System] | [Impact] | [Alternative plan] |
-
-### 8.3 Assumptions
-
-[Assumptions that, if proven false, invalidate this PRD:]
-1. [Assumption]: [Validation method]
-2. [Assumption]: [Validation method]
-
-### 8.4 Compliance & Regulatory
-
-| Requirement | Standard | Verification | Sign-off |
-|-------------|----------|--------------|----------|
-| [e.g., GDPR] | [Article/section] | [Process] | [Role] |
-| [e.g., SOC2] | [Control] | [Process] | [Role] |
-```
-
----
-
-### Section 9: Operational Readiness
-
-**Purpose:** Ensure post-launch success.
-
-```markdown
-## 9. Operational Readiness
-
-### 9.1 Support Plan
-
-| Tier | Issue Types | Response Time | Resolution Time | Escalation Path |
-|------|-------------|---------------|-----------------|-----------------|
-| L1 | [Types] | [Time] | [Time] | [Path] |
-| L2 | [Types] | [Time] | [Time] | [Path] |
-
-### 9.2 Documentation Requirements
-
-- [ ] User documentation
-- [ ] Admin documentation
-- [ ] API documentation
-- [ ] Runbooks
-- [ ] Training materials
-
-### 9.3 Monitoring & Alerting
-
-| Metric | Threshold | Alert Channel | Runbook |
-|--------|-----------|---------------|---------|
-| [Metric] | [Threshold] | [Channel] | [Link] |
-
-### 9.4 Incident Response
-
-**Severity Definitions:**
-- SEV1: [Definition, e.g., "Complete outage"]
-- SEV2: [Definition, e.g., "Major feature degraded"]
-- SEV3: [Definition, e.g., "Minor issue, workaround exists"]
-
-**Response Times:**
-- SEV1: [Time to acknowledge] / [Time to resolve]
-- SEV2: [Time to acknowledge] / [Time to resolve]
-- SEV3: [Time to acknowledge] / [Time to resolve]
-```
-
----
-
-### Section 10: Appendix
-
-```markdown
-## 10. Appendix
-
-### 10.1 Glossary
-
-| Term | Definition |
-|------|------------|
-| [Term] | [Definition] |
-
-### 10.2 Reference Documents
-
-| Document | Link | Description |
-|----------|------|-------------|
-| [Name] | [URL] | [Purpose] |
-
-### 10.3 Decision Log
-
-| Date | Decision | Rationale | Decision Maker |
-|------|----------|-----------|----------------|
-| [Date] | [What was decided] | [Why] | [Name] |
-
-### 10.4 Context & Discovery Notes
-
-#### Clarifying Questions & Answers
-
-1. **[Question]** → **[Answer]**
-2. **[Question]** → **[Answer]**
-
-#### Assumptions Made
-
-- [Assumption]: [Rationale]
-
-#### Open Questions (Post-PRD)
-
-- [Question]: [Why it couldn't be resolved, who needs to answer]
-```
-
----
-
-## Phase 3: Quality Assurance
-
-### PRD Review Checklist
-
-Before marking complete, verify:
-
-#### Strategic Soundness
-- [ ] Business case quantified (not just "improve" but "reduce by X%")
-- [ ] Strategic alignment explicitly stated
-- [ ] Risk-adjusted value calculated
-- [ ] Competitive context documented
-
-#### Completeness
-- [ ] All 5 W's answered (Why, What, Who, How, When)
-- [ ] User stories follow INVEST principles
-- [ ] Each story has verifiable acceptance criteria
-- [ ] Non-goals explicitly listed
-- [ ] Dependencies mapped
-
-#### Feasibility
-- [ ] Technical approach reviewed by engineering
-- [ ] Resource requirements realistic
-- [ ] Timeline accounts for dependencies
-- [ ] Risks have mitigation plans
-
-#### Measurability
-- [ ] Success metrics are SMART
-- [ ] Baseline measurements documented
-- [ ] Counter-metrics identified
-- [ ] Measurement plan defined
-
-#### Operational Readiness
-- [ ] Support plan defined
-- [ ] Monitoring strategy documented
-- [ ] Rollback plan specified
-- [ ] Documentation requirements listed
-
-#### Stakeholder Alignment
-- [ ] Decision makers identified
-- [ ] Approval process documented
-- [ ] Communication plan established
-
----
-
-## Logical Decision Frameworks
-
-### 1. Feature Prioritization: RICE Score
-
+### RICE Scoring (for prioritization)
 ```
 RICE = (Reach × Impact × Confidence) / Effort
 
-Reach:     How many users in a given period? (e.g., 1000 users/quarter)
-Impact:    3 = Massive, 2 = High, 1 = Medium, 0.5 = Low, 0.25 = Minimal
-Confidence: 100% = High, 80% = Medium, 50% = Low
-Effort:    Person-months required
+Reach: Users per time period
+Impact: 3=Massive, 2=High, 1=Medium, 0.5=Low
+Confidence: 100%=High, 80%=Medium, 50%=Low
+Effort: Person-months
 ```
 
-### 2. Scope Decisions: MoSCoW
+### MoSCoW (for scope)
+| Priority | Definition |
+|----------|------------|
+| **Must** | Non-negotiable |
+| **Should** | Important, can launch without |
+| **Could** | Nice-to-have |
+| **Won't** | Out of scope |
 
-| Priority | Definition | Escalation |
-|----------|------------|------------|
-| **Must** | Non-negotiable for launch | Executive approval to remove |
-| **Should** | Important but launch possible without | Product Lead decides |
-| **Could** | Desirable if time permits | Engineering Lead decides |
-| **Won't** | Explicitly out of scope | Future PRD |
-
-### 3. Risk Assessment: Probability × Impact
-
+### Risk Scoring
 ```
-Impact
-  H │  Medium   │   High    │  Critical
-    │   Risk    │   Risk    │    Risk
-  M │   Low     │  Medium   │   High
-    │   Risk    │   Risk    │    Risk
-  L │   Low     │   Low     │  Medium
-    │   Risk    │   Risk    │    Risk
-    └───────────┴───────────┴──────────
-          L           M           H    Probability
+Score = Likelihood × Impact (1-3 scale each)
+7-9 = High: Executive attention required
+4-6 = Medium: Monitor + contingency
+1-3 = Low: Accept and monitor
 ```
 
 ---
 
-## Special Considerations for AI/ML Products
+## AI/ML Quick Add-On
 
-When the PRD involves AI/ML capabilities, add:
+If building AI features, add this section:
 
 ```markdown
-### AI/ML Specific Requirements
+### AI/ML Considerations
 
-#### Model Requirements
-- **Model Type:** [Classification, Generation, Embedding, etc.]
-- **Performance Criteria:**
-  - Accuracy/Precision/Recall targets
-  - Latency requirements (inference time)
-  - Throughput (requests/second)
+**Model:**
+- Type: [Classification/Generation/etc]
+- Performance: [Accuracy/latency targets]
 
-#### Data Requirements
-- **Training Data:** [Source, size, quality criteria]
-- **Privacy:** [PII handling, consent requirements]
-- **Bias Assessment:** [Fairness metrics, testing approach]
+**Data & Safety:**
+- Training data: [Source, privacy]
+- Bias testing: [Approach]
+- Guardrails: [Safety constraints]
+- Human review: [When required]
 
-#### Operational ML
-- **Model Versioning:** [How models are versioned and deployed]
-- **Monitoring:** [Drift detection, performance degradation alerts]
-- **Human-in-the-Loop:** [When human review is required]
-
-#### Safety & Ethics
-- **Failure Modes:** [How the model can fail, harm assessment]
-- **Guardrails:** [Safety constraints, output filtering]
-- **Explainability:** [Requirements for model interpretability]
+**Operations:**
+- Drift detection: [Method]
+- Versioning: [Approach]
+- Explainability: [Requirements]
 ```
 
 ---
 
-## Output & Distribution
+## Time Budget Summary
 
-### File Naming Convention
-```
-prd-[product-name]-[version]-[status].md
-
-Examples:
-- prd-ai-assistant-v1.0-draft.md
-- prd-enterprise-sso-v2.1-approved.md
-```
-
-### Storage Location
-- **Primary:** `.ralph/PRD-N/prd.md` (when using ralph workflow)
-- **Alternative:** `docs/prd/[feature-name]/prd.md`
-- **Archive:** `docs/prd/archive/[feature-name]-[date].md`
-
-### Distribution List
-After approval, distribute to:
-- Engineering Lead
-- Design Lead  
-- QA Lead
-- Support Lead
-- Product Marketing
-- Executive Sponsor
+| Phase | Time |
+|-------|------|
+| Discovery (4 Qs) | 5 min |
+| Header + Executive | 4 min |
+| Context + Users | 5 min |
+| Requirements | 10 min |
+| Technical | 5 min |
+| Release + Success | 4 min |
+| Risk + Ops | 2 min |
+| **Total** | **~35 min** |
 
 ---
 
 ## When to Use Individual PRD Instead
 
-Consider the individual skill when:
-- 👤 Solo developer or side project
-- ⏱️ Need PRD done in 15-30 minutes
-- 🛠️ Building an MVP or internal tool
+Consider downgrading when:
+- 👤 Solo project with no stakeholders
+- ⏱️ Need spec in <20 minutes
+- 🛠️ Simple CRUD or UI feature
 - 🔄 Rapid iteration over formal process
-- 📝 Feature is straightforward (CRUD, UI improvements)
 
 ---
 
-## Summary: The Enterprise PRD Difference
+## Output
 
-| Aspect | Individual PRD | Enterprise PRD |
-|--------|----------------|----------------|
-| **Focus** | Feature description | Strategic investment case |
-| **Audience** | Implementation team | Cross-functional stakeholders |
-| **Rigor** | Functional completeness | Business case + risk analysis |
-| **Metrics** | Output-focused | Outcome-focused |
-| **Governance** | Informal | Structured approval gates |
-| **Scope** | Single feature | Initiative with dependencies |
-| **Risk** | Acknowledged | Quantified and mitigated |
-| **Post-launch** | Ship and move on | Measure, learn, iterate |
+- **Naming:** `prd-[feature]-v1.0-[status].md`
+- **Location:** `.ralph/PRD-N/prd.md` or `docs/prd/[feature]/prd.md`
+- **Distribution:** Engineering, Design, Product, Stakeholders
 
 ---
 
-*"A PRD is not a specification document. It is a shared understanding of the problem, the proposed solution, and the evidence that binds them together."*
+*"A strategic PRD doesn't need to be long. It needs to be clear, aligned, and actionable."*

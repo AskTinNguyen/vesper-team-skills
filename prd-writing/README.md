@@ -1,6 +1,6 @@
 # PRD Writing Skills
 
-Two complementary skills for writing Product Requirements Documents—choose based on your context.
+Two complementary skills for writing Product Requirements Documents—optimized for speed without sacrificing quality.
 
 ---
 
@@ -11,7 +11,7 @@ Two complementary skills for writing Product Requirements Documents—choose bas
 | Building a side project | **Individual** |
 | Writing a quick feature spec | **Individual** |
 | Working solo or in a pair | **Individual** |
-| Need PRD done in 15-30 min | **Individual** |
+| Need PRD done in 10-20 min | **Individual** |
 | Planning an MVP | **Individual** |
 | Building for enterprise customers | **Enterprise** |
 | Need stakeholder/budget approval | **Enterprise** |
@@ -27,26 +27,26 @@ Two complementary skills for writing Product Requirements Documents—choose bas
 
 **Lightweight PRD for developers, side projects, and small teams.**
 
-- ⏱️ **15-30 minutes** to complete
+- ⏱️ **10-20 minutes** to complete
 - 🎯 **3 essential questions** for discovery
-- 📝 **Focused template** with examples
+- 📝 **Concise template** with one complete example
 - 🚫 **Out of scope** guardrails
 - ✅ **Quick checklist** before coding
 
-**Best for:** Personal projects, hackathons, MVPs, weekend builds, small features
+**Best for:** Personal projects, hackathons, MVPs, weekend builds
 
 ---
 
 ### 🏢 [Enterprise SKILL.md](./enterprise/SKILL.md)
 
-**Investment-grade PRD for strategic product initiatives.**
+**Strategic PRD for team alignment and complex initiatives.**
 
-- ⏱️ **1-2 hours** to complete
-- 🎯 **7 strategic dimensions** with assessment matrix
-- 📝 **10 comprehensive sections** (Executive Summary to Appendix)
-- 📊 **Decision frameworks** (RICE, MoSCoW, Risk scoring)
-- 🤖 **AI/ML special section** for safety & ethics
-- ✅ **20+ point checklist** across 6 quality dimensions
+- ⏱️ **30-45 minutes** to complete (not 1-2 hours!)
+- 🎯 **4 strategic questions** with rapid assessment
+- 📝 **7 streamlined sections** (removed redundancy)
+- 📊 **Quick-reference frameworks** (RICE, MoSCoW, Risk)
+- 🤖 **AI/ML add-on** (one section, not separate doc)
+- ✅ **Time budget per section** included
 
 **Best for:** Enterprise products, AI features, stakeholder alignment, governance
 
@@ -54,7 +54,7 @@ Two complementary skills for writing Product Requirements Documents—choose bas
 
 ## Philosophy
 
-Both skills share the same DNA—**clarity before coding**—but serve different needs:
+Both skills share the same DNA—**clarity before coding**—but serve different contexts:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -63,10 +63,12 @@ Both skills share the same DNA—**clarity before coding**—but serve different
 │                                                             │
 │  "What am I building?"            "Why should we invest?"   │
 │  For yourself                     For stakeholders          │
-│  Ship fast                        De-risk strategically     │
-│  Remember decisions               Align organizations       │
+│  10-20 min                        30-45 min                 │
+│  Ship fast                        Align & de-risk           │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+**Key principle:** A PRD's value is in the *thinking*, not the *length*.
 
 ---
 
@@ -76,10 +78,69 @@ Both skills share the same DNA—**clarity before coding**—but serve different
 prd-writing/
 ├── README.md              # This file
 ├── individual/
-│   └── SKILL.md           # Lightweight PRD skill
+│   └── SKILL.md           # 5KB - Lightweight PRD
 └── enterprise/
-    └── SKILL.md           # Enterprise PRD skill
+    └── SKILL.md           # 8KB - Strategic PRD
 ```
+
+**Total:** ~13KB vs. original ~38KB (66% smaller, faster to use)
+
+---
+
+## Comparison
+
+| Dimension | Individual | Enterprise |
+|-----------|------------|------------|
+| **Time** | 10-20 min | 30-45 min |
+| **Questions** | 3 | 4 |
+| **Sections** | 6 | 7 |
+| **Discovery** | Essential only | Strategic only |
+| **Stories** | Simple checklist | Priority-tagged table |
+| **Examples** | 1 complete | Inline snippets |
+| **Frameworks** | Sizing guide | RICE, MoSCoW, Risk matrix |
+| **AI/ML** | N/A | One optional section |
+| **Special sections** | None | Ops readiness, Risk register |
+
+---
+
+## What's Different (v2.1)
+
+### Optimizations Made:
+
+1. **Reduced Enterprise time** from 1-2 hours → 30-45 min
+   - Removed redundant tables
+   - Combined related sections
+   - Provided time budgets per section
+   - Simplified templates
+
+2. **Streamlined both skills**
+   - Removed verbose explanations
+   - Kept only actionable guidance
+   - One example instead of two
+   - Quick-reference formats
+
+3. **Maintained value**
+   - All critical sections preserved
+   - Decision frameworks included
+   - Compliance/risk still covered
+   - AI/ML add-on available
+
+---
+
+## When to Switch
+
+### Upgrade Individual → Enterprise when:
+- 🏢 External stakeholders involved
+- 💰 Budget/resource approval needed
+- 🔒 Compliance requirements exist
+- 🤖 AI/ML with safety considerations
+- 🌐 Cross-team dependencies
+
+### Downgrade Enterprise → Individual when:
+- 👤 Personal/solo project
+- ⏱️ Need spec in <20 minutes
+- 📝 Simple feature (CRUD, UI polish)
+- 🔄 Prototype/spike phase
 
 ---
 
@@ -87,72 +148,26 @@ prd-writing/
 
 ### With Kimi Code CLI
 
-Reference the specific skill by path:
-
 ```bash
-# For individual/small projects
+# Quick spec for personal project
 @/Users/susan/Documents/GitHub/vesper-team-skills/prd-writing/individual/SKILL.md
 
-# For enterprise/strategic projects  
+# Strategic spec for team alignment
 @/Users/susan/Documents/GitHub/vesper-team-skills/prd-writing/enterprise/SKILL.md
 ```
 
-### Natural Language Triggers
+### Natural Language
 
 **Individual:**
 - "Create a quick PRD for..."
-- "Write a simple spec for..."
-- "I need an MVP plan for..."
+- "Simple spec for my side project..."
+- "MVP plan for..."
 
 **Enterprise:**
-- "Create an enterprise PRD for..."
-- "Write a strategic product doc for..."
-- "I need a comprehensive spec for..."
+- "Create a team PRD for..."
+- "Strategic spec for stakeholder review..."
+- "Enterprise feature requirements for..."
 
 ---
 
-## Comparison at a Glance
-
-| Dimension | Individual | Enterprise |
-|-----------|------------|------------|
-| **Time investment** | 15-30 min | 1-2 hours |
-| **Document sections** | 5-6 | 10 |
-| **Discovery questions** | 3 | 7 |
-| **User story format** | Simple checklist | Structured table |
-| **Risk assessment** | Out of scope list | Risk register with scoring |
-| **Metrics** | Success check | KPI framework |
-| **Post-launch** | Watch & decide | Measure & iterate |
-| **Review checklist** | 6 items | 20+ items |
-| **Examples included** | 2 detailed examples | Frameworks & templates |
-| **Special sections** | None | AI/ML, Compliance, Ops readiness |
-
----
-
-## When to Switch
-
-### Upgrade from Individual → Enterprise when:
-- Project grows beyond 1 person
-- Need budget or resource approval
-- External stakeholders get involved
-- Compliance becomes relevant
-- Going to production with customers
-
-### Downgrade from Enterprise → Individual when:
-- Spike/prototype phase
-- Personal learning project
-- Time pressure for quick iteration
-- Scope is truly trivial
-
----
-
-## Contributing
-
-Both skills are living documents. As you use them:
-
-1. **Note what works** and what doesn't
-2. **Adapt templates** to your context
-3. **Share improvements** back to the team
-
----
-
-*Choose the right tool for the job. The best PRD is the one that helps you ship value—not the one that checks the most boxes.*
+*"The best PRD is the one that gets used. Optimize for clarity, not completeness."*
