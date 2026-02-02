@@ -51,6 +51,57 @@ Use this skill when:
 
 ---
 
+## Installation
+
+### Option 1: Vesper Team Skills (Recommended)
+
+If your team uses [Vesper](https://vesper.ai):
+
+1. Open **Settings** → **Workspace** → **Team Skills**
+2. Enter repo: `AskTinNguyen/vesper-team-skills`
+3. Click **Save & Sync**
+4. The skill appears automatically with a "Team" badge
+
+### Option 2: Claude Code CLI (Manual)
+
+Install directly to your Claude Code:
+
+```bash
+# Clone the team skills repo
+git clone https://github.com/AskTinNguyen/vesper-team-skills ~/.claude/team-skills
+
+# Copy the skill to your skills directory
+cp -r ~/.claude/team-skills/sales-materials-creator ~/.claude/skills/
+
+# Restart Claude Code to load the skill
+```
+
+### Option 3: Selective Install (Just This Skill)
+
+```bash
+# Create skills directory if needed
+mkdir -p ~/.claude/skills
+
+# Download just this skill
+curl -L https://github.com/AskTinNguyen/vesper-team-skills/archive/main.tar.gz | \
+  tar -xz --strip-components=1 -C ~/.claude/skills vesper-team-skills-main/sales-materials-creator
+
+# Or use svn for single folder checkout
+svn export https://github.com/AskTinNguyen/vesper-team-skills/trunk/sales-materials-creator \
+  ~/.claude/skills/sales-materials-creator
+```
+
+### Verify Installation
+
+In Claude Code, type:
+```
+"what skills do you have available?"
+```
+
+You should see `sales-materials-creator` in the list.
+
+---
+
 ## How to Use This Skill
 
 ### Quick Start: Install Once, Use Anywhere
