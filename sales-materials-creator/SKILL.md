@@ -51,6 +51,31 @@ Use this skill when:
 
 ---
 
+## Bundled Resources
+
+This skill includes reference materials and templates:
+
+### Assets (`assets/`)
+Ready-to-use templates for immediate customization:
+- `sales-deck-template.md` — 11-slide feelings-first sales deck
+- `pitch-deck-template.md` — Investor/partner pitch deck
+- `one-pager-template.md` — Single-page summary
+
+### Examples (`assets/examples/`)
+Real-world examples for reference:
+- `tender-management-deck.md` — AI tender management platform example
+- `tenderflow-gamma-ready.md` — Gamma-optimized version
+
+### References (`references/`)
+Detailed guides and methodology:
+- `INDEX.md` — Master navigation for all materials
+- `sales-strategy.md` — Complete methodology and playbook
+- `cold-outreach-messages.md` — LinkedIn, email sequences, templates
+- `gamma-guide.md` — Guide for creating presentations with Gamma
+- `quick-reference.md` — Daily use one-pager
+
+---
+
 ## Sales Deck Structure
 
 ### 11-Slide Sales Deck Template
@@ -294,6 +319,8 @@ Export as clean markdown for importing into [Gamma.app](https://gamma.app):
 - Paste into "Create New AI" → "Paste in text"
 - Choose Professional/Minimal theme
 - Generate slides automatically
+
+📚 **See `references/gamma-guide.md` for detailed Gamma integration instructions.**
 
 ### 2. Speaker Notes
 Include notes for each slide:
