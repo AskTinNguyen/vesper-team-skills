@@ -1,0 +1,29 @@
+[
+  {
+    "id": "TT1",
+    "keyword": "AI art generation",
+    "platform": "tiktok_creative",
+    "trend_score": 85,
+    "related_topics": ["midjourney", "stable diffusion", "AI filter", "digital art"],
+    "date": null,
+    "url": "https://ads.tiktok.com/business/creativecenter/inspiration/popular/hashtag/pc/en"
+  },
+  {
+    "id": "TT2",
+    "keyword": "AI coding tools",
+    "platform": "tiktok_creative",
+    "trend_score": 72,
+    "related_topics": ["cursor", "claude code", "copilot", "vibe coding"],
+    "date": null,
+    "url": null
+  },
+  {
+    "id": "TT3",
+    "keyword": "AI assistant",
+    "platform": "tiktok_creative",
+    "trend_score": 90,
+    "related_topics": ["chatgpt", "claude", "productivity", "workflow"],
+    "date": null,
+    "url": null
+  }
+]

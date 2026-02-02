@@ -1,0 +1,57 @@
+[
+  {
+    "id": "GN1",
+    "title": "AI Coding Tools Transform Developer Workflows in 2026",
+    "url": "https://www.reuters.com/technology/ai-coding-tools-2026-01-20/",
+    "source_name": "Reuters",
+    "published_at": "Mon, 20 Jan 2026 14:30:00 GMT",
+    "date": "2026-01-20",
+    "snippet": "Major tech companies are racing to deploy AI-powered coding assistants, with adoption rates surging among professional developers.",
+    "relevance": 0.8,
+    "why_relevant": "Direct coverage of AI coding tools market"
+  },
+  {
+    "id": "GN2",
+    "title": "GitHub Copilot Usage Doubles as AI Coding Goes Mainstream",
+    "url": "https://www.bbc.com/news/technology-ai-copilot-2026",
+    "source_name": "BBC News",
+    "published_at": "Tue, 21 Jan 2026 09:00:00 GMT",
+    "date": "2026-01-21",
+    "snippet": "GitHub reports Copilot subscriptions have doubled year-over-year, with enterprise adoption leading the charge.",
+    "relevance": 0.7,
+    "why_relevant": "Tracks adoption metrics for AI coding tools"
+  },
+  {
+    "id": "GN3",
+    "title": "Claude Code and Cursor Lead New Wave of AI Development Tools",
+    "url": "https://techcrunch.com/2026/01/22/claude-code-cursor-ai-tools/",
+    "source_name": "TechCrunch",
+    "published_at": "Wed, 22 Jan 2026 11:15:00 GMT",
+    "date": "2026-01-22",
+    "snippet": "A new generation of AI coding assistants is moving beyond autocomplete to full autonomous development workflows.",
+    "relevance": 0.9,
+    "why_relevant": "Specific coverage of AI coding tool landscape"
+  },
+  {
+    "id": "GN4",
+    "title": "Developers Report 40% Productivity Gains with AI Coding Assistants",
+    "url": "https://www.theverge.com/2026/1/18/ai-coding-productivity",
+    "source_name": "The Verge",
+    "published_at": "Sat, 18 Jan 2026 16:00:00 GMT",
+    "date": "2026-01-18",
+    "snippet": "A Stanford study finds significant productivity improvements but raises concerns about code quality and security.",
+    "relevance": 0.75,
+    "why_relevant": "Research data on AI coding tool effectiveness"
+  },
+  {
+    "id": "GN5",
+    "title": "Open Source AI Coding Models Challenge Proprietary Solutions",
+    "url": "https://arstechnica.com/ai/2026/01/open-source-coding-models/",
+    "source_name": "Ars Technica",
+    "published_at": "Thu, 23 Jan 2026 08:30:00 GMT",
+    "date": "2026-01-23",
+    "snippet": "DeepSeek, Qwen, and other open-source models are narrowing the gap with proprietary AI coding tools.",
+    "relevance": 0.7,
+    "why_relevant": "Competitive landscape for AI coding tools"
+  }
+]

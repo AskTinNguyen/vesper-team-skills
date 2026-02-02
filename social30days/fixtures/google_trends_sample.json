@@ -1,0 +1,29 @@
+[
+  {
+    "id": "GT1",
+    "keyword": "AI coding tools",
+    "platform": "google_trends",
+    "trend_score": 78,
+    "related_topics": ["Claude Code", "GitHub Copilot", "Cursor AI", "AI pair programming"],
+    "date": null,
+    "url": "https://trends.google.com/trends/explore?q=AI+coding+tools"
+  },
+  {
+    "id": "GT2",
+    "keyword": "vibe coding",
+    "platform": "google_trends",
+    "trend_score": 92,
+    "related_topics": ["AI development", "autonomous coding", "cursor", "claude"],
+    "date": null,
+    "url": "https://trends.google.com/trends/explore?q=vibe+coding"
+  },
+  {
+    "id": "GT3",
+    "keyword": "AI code review",
+    "platform": "google_trends",
+    "trend_score": 65,
+    "related_topics": ["code quality", "automated review", "PR review"],
+    "date": null,
+    "url": "https://trends.google.com/trends/explore?q=AI+code+review"
+  }
+]

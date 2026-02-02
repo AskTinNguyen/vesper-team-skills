@@ -1,0 +1,26 @@
+[
+  {
+    "id": "NA1",
+    "title": "The Rise of AI Pair Programming: How Coding Tools Are Evolving",
+    "url": "https://www.wired.com/story/ai-pair-programming-2026/",
+    "source_name": "Wired",
+    "author": "Jane Smith",
+    "published_at": "2026-01-19T10:00:00Z",
+    "date": "2026-01-19",
+    "snippet": "AI coding assistants are becoming sophisticated enough to serve as genuine pair programmers, understanding context and suggesting architectural changes.",
+    "relevance": 0.8,
+    "why_relevant": "In-depth analysis of AI coding tool capabilities"
+  },
+  {
+    "id": "NA2",
+    "title": "Enterprise AI Coding Adoption Hits 60% Among Fortune 500",
+    "url": "https://www.forbes.com/sites/ai/2026/01/21/enterprise-ai-coding/",
+    "source_name": "Forbes",
+    "author": "John Doe",
+    "published_at": "2026-01-21T14:30:00Z",
+    "date": "2026-01-21",
+    "snippet": "A new survey shows 60% of Fortune 500 companies have deployed AI coding tools, up from 35% a year ago.",
+    "relevance": 0.7,
+    "why_relevant": "Enterprise adoption metrics"
+  }
+]

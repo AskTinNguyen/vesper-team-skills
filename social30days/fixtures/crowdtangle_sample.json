@@ -1,0 +1,36 @@
+[
+  {
+    "id": "CT1",
+    "title": "AI coding tools are transforming how developers work. Here's what you need to know about the latest wave of AI assistants.",
+    "url": "https://www.facebook.com/TechCrunch/posts/ai-coding-tools",
+    "platform": "facebook",
+    "author_handle": "TechCrunch",
+    "date": "2026-01-20",
+    "engagement": {
+      "views": 125000,
+      "likes": 3400,
+      "shares": 890,
+      "comments": 245,
+      "platform": "facebook"
+    },
+    "relevance": 0.8,
+    "why_relevant": "TechCrunch coverage of AI coding tools"
+  },
+  {
+    "id": "CT2",
+    "title": "Just tried Claude Code for the first time and it literally built my entire app in 20 minutes. The future is here.",
+    "url": "https://www.instagram.com/p/ai-coding-viral",
+    "platform": "instagram",
+    "author_handle": "devinfluencer",
+    "date": "2026-01-22",
+    "engagement": {
+      "views": 450000,
+      "likes": 12500,
+      "shares": 3200,
+      "comments": 890,
+      "platform": "instagram"
+    },
+    "relevance": 0.9,
+    "why_relevant": "Viral Instagram post about AI coding experience"
+  }
+]
