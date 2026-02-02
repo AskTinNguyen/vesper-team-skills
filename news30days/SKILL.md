@@ -1,11 +1,6 @@
 ---
 name: news30days
-description: Research a topic from the last 30 days in news outlets (Google News, NewsAPI, Bing News, WebSearch), become an expert on the news coverage, and write copy-paste-ready prompts.
-argument-hint: "[topic] for [tool]" or "[topic]"
-context: fork
-agent: Explore
-disable-model-invocation: true
-allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
+description: Research a topic from the last 30 days in news outlets (Google News, NewsAPI, Bing News, WebSearch), become an expert on the news coverage, and write copy-paste-ready prompts. Triggers include "news research", "what's in the news about", "news30days", "research news on".
 ---
 
 # news30days: Research Any Topic from the Last 30 Days in News

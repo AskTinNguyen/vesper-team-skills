@@ -1,11 +1,6 @@
 ---
 name: social30days
-description: Research a topic from the last 30 days on social media (TikTok, Instagram, Facebook, Google Trends), become an expert on what's viral, and write copy-paste-ready prompts.
-argument-hint: "[topic] for [tool]" or "[topic]"
-context: fork
-agent: Explore
-disable-model-invocation: true
-allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
+description: Research a topic from the last 30 days on social media (TikTok, Instagram, Facebook, Google Trends), become an expert on what's viral, and write copy-paste-ready prompts. Triggers include "social media research", "what's trending on", "social30days", "viral trends".
 ---
 
 # social30days: Research Any Topic from the Last 30 Days on Social Media
