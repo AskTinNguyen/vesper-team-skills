@@ -1,0 +1,42 @@
+# Example Configuration for QA Release Guardian
+
+# Required: Target URL to test
+base_url: http://localhost:3000
+
+# Authentication (optional)
+auth:
+  type: cookie  # Options: cookie, oauth, none
+  file: ./auth-state.json  # Path to saved browser state after login
+
+# GitHub Integration (optional but recommended)
+github:
+  repo: your-org/your-repo  # Format: owner/repo-name
+  since: last_7_days  # Options: last_deploy, last_7_days, last_14_days, YYYY-MM-DD
+
+# Test Scope Configuration
+scope:
+  mode: full  # Options: smoke, full, regression_only
+  max_depth: 3  # How deep to crawl UI (1-5)
+  exclude_routes:  # Routes to skip
+    - /admin/**
+    - /internal/**
+    - /api/**
+    - /_next/**
+
+# Safety Settings (IMPORTANT)
+safety:
+  allow_write_actions: false  # If false, forms won't be submitted
+  skip_danger_keywords:  # Button text patterns to avoid clicking
+    - delete
+    - remove
+    - disable
+    - archive
+    - purge
+    - deactivate
+    - unsubscribe
+
+# Reporting Configuration
+reporting:
+  output_dir: ./qa-reports
+  screenshot_on_error: true
+  video_record: false
