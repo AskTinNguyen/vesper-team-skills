@@ -12,7 +12,7 @@ Configure an advanced statusline for Claude Code that provides rich contextual i
 This skill sets up a comprehensive statusline that displays:
 - **Directory context**: Current directory name and git branch
 - **Worktree awareness**: Detection and display of git worktree usage
-- **Task list environment**: Shows the active TASKLIST_ENV variable
+- **Task list environment**: Shows the active task list from `~/.claude/tasks/.current-list-id` (falls back to `TASKLIST_ENV` env var)
 - **Operation metrics**: Real-time counts of file reads, writes, and edits
 - **Directory heatmap**: Visual representation of the top 3 most-touched directories
 
@@ -78,7 +78,7 @@ Update or add the `statusLine` configuration in `~/.claude/settings.json`:
 {
   "statusLine": {
     "type": "command",
-    "command": "input=$(cat); dir=$(echo \"$input\" | jq -r '.workspace.current_dir'); model=$(echo \"$input\" | jq -r '.model.display_name'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); sid=$(echo \"$input\" | jq -r '.session_id // empty'); branch=$(cd \"$dir\" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo ''); worktree=''; if [ -n \"$branch\" ] && [ -f \"$dir/.git\" ]; then worktree=$(cd \"$dir\" && git worktree list | grep \"$(pwd)\" | awk '{print $1}' | xargs basename); fi; tasklist=\"${TASKLIST_ENV:-default}\"; session_file=''; if [ -n \"$sid\" ]; then session_file=\"$HOME/.claude/session-tracking/session-${sid}.json\"; fi; ops=''; heatmap=''; if [ -n \"$session_file\" ] && [ -f \"$session_file\" ]; then r=$(jq -r '.read // 0' \"$session_file\"); w=$(jq -r '.write // 0' \"$session_file\"); e=$(jq -r '.edit // 0' \"$session_file\"); ops=\" | $(printf '\\033[34m')R:$r $(printf '\\033[32m')W:$w $(printf '\\033[35m')E:$e$(printf '\\033[0m')\"; dirs=$(jq -r '.dirs | to_entries | sort_by(-.value) | limit(3; .[]) | \"\\(.key):\\(.value)\"' \"$session_file\" 2>/dev/null); if [ -n \"$dirs\" ]; then heatmap=' |'; while IFS=: read -r d c; do intensity='░'; [ \"$c\" -ge 5 ] && intensity='▒'; [ \"$c\" -ge 10 ] && intensity='▓'; [ \"$c\" -ge 15 ] && intensity='█'; heatmap=\"$heatmap $(printf '\\033[90m')$d:$intensity$(printf '\\033[0m')\"; done <<< \"$dirs\"; fi; fi; context_info=''; [ -n \"$remaining\" ] && context_info=\" | Context: ${remaining}%\"; git_info=''; [ -n \"$branch\" ] && git_info=\" ($(printf '\\033[36m')$branch$(printf '\\033[0m'))\"; worktree_info=''; [ -n \"$worktree\" ] && worktree_info=\" [$(printf '\\033[35m')wt:$worktree$(printf '\\033[0m')]\"; tasklist_info=\" | $(printf '\\033[33m')TL:$tasklist$(printf '\\033[0m')\"; printf \"$(printf '\\033[32m')%s$(printf '\\033[0m')%s%s | %s%s%s%s%s\" \"$(basename \"$dir\")\" \"$git_info\" \"$worktree_info\" \"$model\" \"$context_info\" \"$tasklist_info\" \"$ops\" \"$heatmap\""
+    "command": "input=$(cat); dir=$(echo \"$input\" | jq -r '.workspace.current_dir'); model=$(echo \"$input\" | jq -r '.model.display_name'); remaining=$(echo \"$input\" | jq -r '.context_window.remaining_percentage // empty'); sid=$(echo \"$input\" | jq -r '.session_id // empty'); branch=$(cd \"$dir\" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo ''); worktree=''; if [ -n \"$branch\" ] && [ -f \"$dir/.git\" ]; then worktree=$(cd \"$dir\" && git worktree list | grep \"$(pwd)\" | awk '{print $1}' | xargs basename); fi; tasklist_file=\"$HOME/.claude/tasks/.current-list-id\"; if [ -f \"$tasklist_file\" ]; then tasklist=$(cat \"$tasklist_file\"); else tasklist=\"${TASKLIST_ENV:-default}\"; fi; session_file=''; if [ -n \"$sid\" ]; then session_file=\"$HOME/.claude/session-tracking/session-${sid}.json\"; fi; ops=''; heatmap=''; if [ -n \"$session_file\" ] && [ -f \"$session_file\" ]; then r=$(jq -r '.read // 0' \"$session_file\"); w=$(jq -r '.write // 0' \"$session_file\"); e=$(jq -r '.edit // 0' \"$session_file\"); ops=\" | $(printf '\\033[34m')R:$r $(printf '\\033[32m')W:$w $(printf '\\033[35m')E:$e$(printf '\\033[0m')\"; dirs=$(jq -r '.dirs | to_entries | sort_by(-.value) | limit(3; .[]) | \"\\(.key):\\(.value)\"' \"$session_file\" 2>/dev/null); if [ -n \"$dirs\" ]; then heatmap=' |'; while IFS=: read -r d c; do intensity='░'; [ \"$c\" -ge 5 ] && intensity='▒'; [ \"$c\" -ge 10 ] && intensity='▓'; [ \"$c\" -ge 15 ] && intensity='█'; heatmap=\"$heatmap $(printf '\\033[90m')$d:$intensity$(printf '\\033[0m')\"; done <<< \"$dirs\"; fi; fi; context_info=''; [ -n \"$remaining\" ] && context_info=\" | Context: ${remaining}%\"; git_info=''; [ -n \"$branch\" ] && git_info=\" ($(printf '\\033[36m')$branch$(printf '\\033[0m'))\"; worktree_info=''; [ -n \"$worktree\" ] && worktree_info=\" [$(printf '\\033[35m')wt:$worktree$(printf '\\033[0m')]\"; tasklist_info=\" | $(printf '\\033[33m')TL:$tasklist$(printf '\\033[0m')\"; printf \"$(printf '\\033[32m')%s$(printf '\\033[0m')%s%s | %s%s%s%s%s\" \"$(basename \"$dir\")\" \"$git_info\" \"$worktree_info\" \"$model\" \"$context_info\" \"$tasklist_info\" \"$ops\" \"$heatmap\""
   }
 }
 ```
@@ -121,16 +121,15 @@ vesper (feat/search) [wt:feature] | Claude 3.5 Sonnet | Context: 94% | TL:produc
 
 The heatmap shows the top 3 directories by activity level, making it easy to see which areas of the codebase are being actively worked on.
 
-## Task List Environment Variable
+## Task List Environment
 
-To use different task list environments, set the `TASKLIST_ENV` environment variable before starting Claude Code:
+The statusline reads the active task list from `~/.claude/tasks/.current-list-id` (managed by the `tasklist-env` skill). If that file doesn't exist, it falls back to the `TASKLIST_ENV` environment variable, then to `default`.
+
+To switch task list environments, use the `tasklist-env` skill or set the file manually:
 
 ```bash
-export TASKLIST_ENV=production
-claude-code
+echo "my-project" > ~/.claude/tasks/.current-list-id
 ```
-
-Or set it in your shell profile (.zshrc, .bashrc) for persistence.
 
 ## Session Tracking Data
 
