@@ -331,6 +331,7 @@ Slash commands invoked with `/command-name` in Claude Code.
 
 | Command | Description |
 |---------|-------------|
+| `/skill` | Explicitly invoke a skill by name |
 | `/agent-native-audit` | Run comprehensive agent-native architecture review |
 | `/brand` | Brand profile management |
 | `/changelog` | Generate changelogs from recent merges |
