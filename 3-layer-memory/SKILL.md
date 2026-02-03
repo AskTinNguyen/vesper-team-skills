@@ -69,8 +69,11 @@ Single-file entities with YAML frontmatter:
 - `maria.person.md` — Person entities
 - `acme-corp.company.md` — Company entities  
 - `ai-project.project.md` — Project entities
+- `launchpad.product.md` — Product entities
+- `mobile-app.idea.md` — Ideas
+- Any `name.type.md` you need
 
-Format: human-readable markdown with optional YAML frontmatter for structured facts.
+Format: human-readable markdown with optional YAML frontmatter. Entity types are flexible — use whatever makes sense for your context.
 
 Rules:
 - Save facts immediately during conversations

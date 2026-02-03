@@ -23,14 +23,17 @@
 
 Format: `{name}.{type}.md`
 
-| Type | Example |
-|------|---------|
-| person | `maria.person.md` |
-| company | `acme-corp.company.md` |
-| project | `ai-platform.project.md` |
-| idea | `mobile-app.idea.md` |
-| book | `design-patterns.book.md` |
-| product | `launchpad.product.md` |
+Entity types are **flexible and extensible** — use any type that makes sense for your context:
+
+| Type | Example | Use Case |
+|------|---------|----------|
+| person | `maria.person.md` | People you know |
+| company | `acme-corp.company.md` | Organizations |
+| project | `ai-platform.project.md` | Active projects |
+| idea | `mobile-app.idea.md` | Ideas to explore |
+| book | `design-patterns.book.md` | Books read/reading |
+| product | `launchpad.product.md` | Products you use/build |
+| *any* | `vacation-japan.plan.md` | Create your own types |
 
 ### Naming Conventions
 

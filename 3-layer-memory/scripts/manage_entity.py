@@ -236,16 +236,14 @@ def main():
     # Create command
     create_parser = subparsers.add_parser("create", help="Create a new entity")
     create_parser.add_argument("--type", "-t", required=True, 
-                               choices=["person", "company", "project", "idea", "book", "product"], 
-                               help="Entity type")
+                               help="Entity type (any string: person, company, project, idea, book, etc.)")
     create_parser.add_argument("--name", "-n", required=True, help="Entity name")
     create_parser.add_argument("--display", "-d", help="Display name (if different from sanitized name)")
     
     # List command
     list_parser = subparsers.add_parser("list", help="List entities")
     list_parser.add_argument("--type", "-t", 
-                             choices=["person", "company", "project", "idea", "book", "product"], 
-                             help="Filter by type")
+                             help="Filter by type (person, company, project, etc.)")
     
     # Show command
     show_parser = subparsers.add_parser("show", help="Show entity details")
