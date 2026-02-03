@@ -5,7 +5,7 @@ Create, list, delete, and inspect entities.
 """
 
 import os
-import json
+import re
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -18,7 +18,7 @@ def get_home_dir() -> Path:
 
 
 def sanitize_name(name: str) -> str:
-    """Convert a display name to a safe folder name."""
+    """Convert a display name to a safe filename."""
     # Lowercase, replace spaces with hyphens, remove special chars
     safe = name.lower().strip()
     safe = safe.replace(" ", "-")
@@ -27,178 +27,180 @@ def sanitize_name(name: str) -> str:
     return safe
 
 
+def parse_entity_file(file_path: Path) -> Dict[str, Any]:
+    """Parse an entity markdown file and extract metadata."""
+    content = file_path.read_text()
+    
+    # Parse YAML frontmatter if present
+    frontmatter = {}
+    body = content
+    
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            import yaml
+            try:
+                frontmatter = yaml.safe_load(parts[1]) or {}
+                body = parts[2]
+            except Exception:
+                pass
+    
+    # Extract title from first heading
+    title_match = re.search(r"^# (.+)$", body, re.MULTILINE)
+    title = title_match.group(1) if title_match else file_path.stem
+    
+    # Count facts
+    current_facts = len(re.findall(r"^\s*-\s*\[current\]", body, re.MULTILINE))
+    was_facts = len(re.findall(r"^\s*-\s*\[was\]", body, re.MULTILINE))
+    
+    return {
+        "path": file_path,
+        "filename": file_path.name,
+        "title": title,
+        "type": frontmatter.get("type", "unknown"),
+        "created_at": frontmatter.get("created_at", "unknown"),
+        "current_facts": current_facts,
+        "was_facts": was_facts,
+    }
+
+
 def create_entity(entity_type: str, entity_name: str, display_name: Optional[str] = None) -> Path:
     """Create a new entity with all necessary files."""
     home = get_home_dir()
     
-    # Sanitize name for folder
-    folder_name = sanitize_name(entity_name)
-    if not folder_name:
+    # Sanitize name for filename
+    base_name = sanitize_name(entity_name)
+    if not base_name:
         print("Error: Invalid entity name")
         return None
     
-    entity_dir = home / "life" / "areas" / entity_type / folder_name
+    # Create filename with type suffix
+    filename = f"{base_name}.{entity_type}.md"
+    entity_path = home / "life" / "entities" / filename
     
-    if entity_dir.exists():
-        print(f"Entity already exists: {entity_type}/{folder_name}")
-        return entity_dir
+    if entity_path.exists():
+        print(f"Entity already exists: {filename}")
+        return entity_path
     
-    entity_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Use provided display name or derive from folder name
-    name = display_name or folder_name.replace("-", " ").title()
+    # Use provided display name or derive from sanitized name
+    name = display_name or base_name.replace("-", " ").title()
     today = datetime.now().strftime("%Y-%m-%d")
     
-    # Create items.json
-    items = {
-        "entity": folder_name,
-        "display_name": name,
-        "type": entity_type,
-        "created": today,
-        "facts": []
-    }
-    
-    items_path = entity_dir / "items.json"
-    items_path.write_text(json.dumps(items, indent=2))
-    
-    # Create summary.md
-    summary = f"""# {name}
+    # Create entity file
+    content = f"""---
+type: {entity_type}
+created_at: {today}
+---
 
-## Current Context
-- Entity created on {today}
+# {name}
 
-## Notes
-<!-- Add notes and context here -->
+> Brief description of this {entity_type}
+
+## Key Facts
+
+- [current] Add your first fact here — {today}
+
+## Context
+
+<!-- Add context, notes, and relevant details here -->
 
 ---
 *Created: {today}*
 *Type: {entity_type}*
 """
     
-    summary_path = entity_dir / "summary.md"
-    summary_path.write_text(summary)
+    entity_path.write_text(content)
     
-    print(f"✓ Created entity: {entity_type}/{folder_name}")
-    print(f"  Location: {entity_dir}")
+    print(f"✓ Created entity: {filename}")
+    print(f"  Location: {entity_path}")
     
-    return entity_dir
+    return entity_path
 
 
 def list_entities(entity_type: Optional[str] = None) -> List[Dict[str, Any]]:
     """List all entities or entities of a specific type."""
     home = get_home_dir()
-    base_path = home / "life" / "areas"
+    entities_dir = home / "life" / "entities"
     
-    types_to_list = [entity_type] if entity_type else ["people", "companies", "projects"]
+    if not entities_dir.exists():
+        return []
+    
     entities = []
     
-    for etype in types_to_list:
-        type_path = base_path / etype
-        if not type_path.exists():
+    for file_path in entities_dir.iterdir():
+        if not file_path.is_file() or not file_path.suffix == ".md":
             continue
         
-        for entity_dir in type_path.iterdir():
-            if not entity_dir.is_dir() or entity_dir.name.startswith("."):
-                continue
-            
-            items_path = entity_dir / "items.json"
-            if items_path.exists():
-                data = json.loads(items_path.read_text())
-                fact_count = len(data.get("facts", []))
-                display_name = data.get("display_name", entity_dir.name)
-                created = data.get("created", "unknown")
-                
-                entities.append({
-                    "type": etype,
-                    "name": entity_dir.name,
-                    "display_name": display_name,
-                    "path": entity_dir,
-                    "fact_count": fact_count,
-                    "created": created
-                })
+        # Parse filename: name.type.md
+        parts = file_path.stem.split(".")
+        if len(parts) < 2:
+            continue
+        
+        file_type = parts[-1]
+        
+        if entity_type and file_type != entity_type:
+            continue
+        
+        entity_data = parse_entity_file(file_path)
+        entity_data["file_type"] = file_type
+        entities.append(entity_data)
     
     return entities
 
 
-def delete_entity(entity_type: str, entity_name: str, force: bool = False) -> bool:
-    """Delete an entity and all its data."""
+def delete_entity(filename: str, force: bool = False) -> bool:
+    """Delete an entity."""
     home = get_home_dir()
-    entity_dir = home / "life" / "areas" / entity_type / entity_name
+    entity_path = home / "life" / "entities" / filename
     
-    if not entity_dir.exists():
-        print(f"Entity not found: {entity_type}/{entity_name}")
+    if not entity_path.exists():
+        print(f"Entity not found: {filename}")
         return False
     
-    # Load fact count for confirmation
-    items_path = entity_dir / "items.json"
-    fact_count = 0
-    if items_path.exists():
-        data = json.loads(items_path.read_text())
-        fact_count = len(data.get("facts", []))
-    
     if not force:
-        print(f"Warning: This will delete {entity_type}/{entity_name}")
-        print(f"  Facts: {fact_count}")
-        print(f"  Location: {entity_dir}")
+        entity_data = parse_entity_file(entity_path)
+        print(f"Warning: This will delete {filename}")
+        print(f"  Title: {entity_data['title']}")
+        print(f"  Facts: {entity_data['current_facts']} current, {entity_data['was_facts']} historical")
+        print(f"  Location: {entity_path}")
         print()
         print("Use --force to confirm deletion")
         return False
     
-    # Delete the directory
-    import shutil
-    shutil.rmtree(entity_dir)
+    entity_path.unlink()
     
-    print(f"✓ Deleted entity: {entity_type}/{entity_name}")
+    print(f"✓ Deleted entity: {filename}")
     return True
 
 
-def show_entity(entity_type: str, entity_name: str):
+def show_entity(filename: str):
     """Display detailed information about an entity."""
     home = get_home_dir()
-    entity_dir = home / "life" / "areas" / entity_type / entity_name
+    entity_path = home / "life" / "entities" / filename
     
-    if not entity_dir.exists():
-        print(f"Entity not found: {entity_type}/{entity_name}")
+    if not entity_path.exists():
+        print(f"Entity not found: {filename}")
         return
     
-    items_path = entity_dir / "items.json"
-    summary_path = entity_dir / "summary.md"
-    
-    if not items_path.exists():
-        print(f"Error: Entity data missing")
-        return
-    
-    data = json.loads(items_path.read_text())
+    entity_data = parse_entity_file(entity_path)
     
     print(f"\n{'='*50}")
-    print(f"Entity: {data.get('display_name', entity_name)}")
-    print(f"Type: {entity_type}")
-    print(f"Folder: {entity_name}")
-    print(f"Created: {data.get('created', 'unknown')}")
-    print(f"Facts: {len(data.get('facts', []))}")
+    print(f"Entity: {entity_data['title']}")
+    print(f"File: {filename}")
+    print(f"Type: {entity_data['type']}")
+    print(f"Created: {entity_data['created_at']}")
+    print(f"Facts: {entity_data['current_facts']} current, {entity_data['was_facts']} historical")
     print(f"{'='*50}")
     
-    # Show active facts
-    facts = data.get("facts", [])
-    active_facts = [f for f in facts if f.get("status") == "active"]
-    superseded_facts = [f for f in facts if f.get("status") == "superseded"]
+    # Show file preview
+    content = entity_path.read_text()
+    preview_lines = content.split("\n")[:15]
+    print("\nPreview:")
+    for line in preview_lines:
+        print(f"  {line}")
     
-    if active_facts:
-        print("\nActive Facts:")
-        for fact in active_facts:
-            print(f"  [{fact.get('category', 'status')}] {fact['fact']}")
-            print(f"    ID: {fact['id']} | {fact.get('timestamp', 'unknown')}")
-    
-    if superseded_facts:
-        print(f"\nSuperseded Facts: {len(superseded_facts)}")
-    
-    # Show summary preview
-    if summary_path.exists():
-        summary = summary_path.read_text()
-        print(f"\nSummary Preview:")
-        preview = summary[:300] + "..." if len(summary) > 300 else summary
-        for line in preview.split("\n")[:10]:
-            print(f"  {line}")
+    if len(content.split("\n")) > 15:
+        print("  ...")
 
 
 def search_entities(query: str) -> List[Dict[str, Any]]:
@@ -209,24 +211,20 @@ def search_entities(query: str) -> List[Dict[str, Any]]:
     query_lower = query.lower()
     
     for entity in all_entities:
-        # Check name match
-        if query_lower in entity["name"].lower():
+        # Check filename match
+        if query_lower in entity["filename"].lower():
             results.append(entity)
             continue
         
-        # Check display name match
-        if query_lower in entity["display_name"].lower():
+        # Check title match
+        if query_lower in entity["title"].lower():
             results.append(entity)
             continue
         
-        # Check facts
-        items_path = entity["path"] / "items.json"
-        if items_path.exists():
-            data = json.loads(items_path.read_text())
-            for fact in data.get("facts", []):
-                if query_lower in fact.get("fact", "").lower():
-                    results.append(entity)
-                    break
+        # Check file content
+        content = entity["path"].read_text()
+        if query_lower in content.lower():
+            results.append(entity)
     
     return results
 
@@ -237,23 +235,25 @@ def main():
     
     # Create command
     create_parser = subparsers.add_parser("create", help="Create a new entity")
-    create_parser.add_argument("--type", "-t", required=True, choices=["people", "companies", "projects"], help="Entity type")
-    create_parser.add_argument("--name", "-n", required=True, help="Entity name (will be sanitized for folder)")
+    create_parser.add_argument("--type", "-t", required=True, 
+                               choices=["person", "company", "project", "idea", "book", "product"], 
+                               help="Entity type")
+    create_parser.add_argument("--name", "-n", required=True, help="Entity name")
     create_parser.add_argument("--display", "-d", help="Display name (if different from sanitized name)")
     
     # List command
     list_parser = subparsers.add_parser("list", help="List entities")
-    list_parser.add_argument("--type", "-t", choices=["people", "companies", "projects"], help="Filter by type")
+    list_parser.add_argument("--type", "-t", 
+                             choices=["person", "company", "project", "idea", "book", "product"], 
+                             help="Filter by type")
     
     # Show command
     show_parser = subparsers.add_parser("show", help="Show entity details")
-    show_parser.add_argument("--type", "-t", required=True, choices=["people", "companies", "projects"], help="Entity type")
-    show_parser.add_argument("--name", "-n", required=True, help="Entity name")
+    show_parser.add_argument("filename", help="Entity filename (e.g., maria.person.md)")
     
     # Delete command
     delete_parser = subparsers.add_parser("delete", help="Delete an entity")
-    delete_parser.add_argument("--type", "-t", required=True, choices=["people", "companies", "projects"], help="Entity type")
-    delete_parser.add_argument("--name", "-n", required=True, help="Entity name")
+    delete_parser.add_argument("filename", help="Entity filename (e.g., maria.person.md)")
     delete_parser.add_argument("--force", "-f", action="store_true", help="Confirm deletion")
     
     # Search command
@@ -272,17 +272,19 @@ def main():
             print("No entities found.")
             return
         
-        print(f"\n{'Type':<12} {'Name':<25} {'Facts':<8} {'Created'}")
-        print("-" * 60)
+        print(f"\n{'Filename':<35} {'Type':<12} {'Facts':<10} {'Title'}")
+        print("-" * 80)
         
-        for e in sorted(entities, key=lambda x: (x["type"], x["name"])):
-            print(f"{e['type']:<12} {e['name']:<25} {e['fact_count']:<8} {e['created']}")
+        for e in sorted(entities, key=lambda x: x["filename"]):
+            total_facts = e['current_facts'] + e['was_facts']
+            title = e['title'][:30] + "..." if len(e['title']) > 30 else e['title']
+            print(f"{e['filename']:<35} {e['type']:<12} {total_facts:<10} {title}")
     
     elif args.command == "show":
-        show_entity(args.type, args.name)
+        show_entity(args.filename)
     
     elif args.command == "delete":
-        delete_entity(args.type, args.name, args.force)
+        delete_entity(args.filename, args.force)
     
     elif args.command == "search":
         results = search_entities(args.query)
@@ -295,7 +297,8 @@ def main():
         print()
         
         for e in results:
-            print(f"  {e['type']}/{e['name']} ({e['fact_count']} facts)")
+            total_facts = e['current_facts'] + e['was_facts']
+            print(f"  {e['filename']} ({total_facts} facts) - {e['title']}")
     
     else:
         parser.print_help()

@@ -5,71 +5,73 @@
 ```
 ~/
 ├── life/
-│   └── areas/
-│       ├── people/              # Person entities
-│       │   ├── maria/
-│       │   │   ├── summary.md   # Living summary (rewritten weekly)
-│       │   │   └── items.json   # Atomic facts
-│       │   ├── james-smith/
-│       │   │   ├── summary.md
-│       │   │   └── items.json
-│       │   └── example-person/  # Template/example (can delete)
-│       │       ├── summary.md
-│       │       └── items.json
-│       ├── companies/           # Company entities
-│       │   ├── acme-corp/
-│       │   │   ├── summary.md
-│       │   │   └── items.json
-│       │   └── newco/
-│       │       ├── summary.md
-│       │       └── items.json
-│       └── projects/            # Project entities
-│           ├── ai-platform/
-│           │   ├── summary.md
-│           │   └── items.json
-│           └── website-redesign/
-│               ├── summary.md
-│               └── items.json
-├── memory/                      # Daily notes (Layer 2)
-│   ├── 2026-01-27.md
-│   ├── 2026-01-28.md
-│   └── 2026-01-29.md
-├── MEMORY.md                    # Tacit knowledge (Layer 3)
-└── .memory_system               # System configuration (hidden)
+│   ├── entities/                # Knowledge graph (Layer 1)
+│   │   ├── maria.person.md
+│   │   ├── acme-corp.company.md
+│   │   ├── ai-platform.project.md
+│   │   └── example-person.person.md  # Template/example (can delete)
+│   └── days/                    # Daily notes (Layer 2)
+│       ├── 2026-01-27.md
+│       ├── 2026-01-28.md
+│       └── 2026-01-29.md
+└── MEMORY.md                    # Tacit knowledge (Layer 3)
 ```
 
-## Layer 1: Knowledge Graph (`~/life/areas/`)
+## Layer 1: Knowledge Graph (`~/life/entities/`)
 
-### Entity Types
+### Entity File Naming
 
-| Type | Path | Example |
-|------|------|---------|
-| People | `~/life/areas/people/` | `~/life/areas/people/maria/` |
-| Companies | `~/life/areas/companies/` | `~/life/areas/companies/acme-corp/` |
-| Projects | `~/life/areas/projects/` | `~/life/areas/projects/ai-platform/` |
+Format: `{name}.{type}.md`
 
-### Entity Folder Naming
+| Type | Example |
+|------|---------|
+| person | `maria.person.md` |
+| company | `acme-corp.company.md` |
+| project | `ai-platform.project.md` |
+| idea | `mobile-app.idea.md` |
+| book | `design-patterns.book.md` |
+| product | `launchpad.product.md` |
+
+### Naming Conventions
 
 - Use lowercase
 - Replace spaces with hyphens
 - Keep it concise but readable
-- Examples: `james-smith`, `acme-corp`, `ai-platform`, `website-redesign`
+- Examples: `james-smith`, `acme-corp`, `ai-platform`
 
-### Entity Files
+### Entity File Format
 
-#### `items.json`
-- Contains all atomic facts about the entity
-- Machine-readable format
-- Append-only (never delete, only supersede)
-- Schema: See `atomic_fact_schema.json`
+Single markdown file with optional YAML frontmatter:
 
-#### `summary.md`
-- Living summary rewritten weekly
-- Human-readable overview
-- Loaded first for quick context
-- Should be concise (ideally < 500 words)
+```markdown
+---
+type: person
+created_at: 2026-01-15
+---
 
-## Layer 2: Daily Notes (`~/memory/`)
+# Maria
+
+> Business partner on AI project (since Jan 2026)
+
+## Key Facts
+
+- [current] Business partner on AI project — Jan 2026
+- [current] Company hired 2 developers — Jan 2026
+- [was] Former colleague at OldCo — 2025 to Jan 2026
+
+## Context
+
+Met through previous role at OldCo. Company is growing fast.
+```
+
+### Fact Status Prefixes
+
+| Prefix | Meaning |
+|--------|---------|
+| `[current]` | Active, current fact |
+| `[was]` | Historical, superseded fact |
+
+## Layer 2: Daily Notes (`~/life/days/`)
 
 ### File Naming
 
@@ -81,32 +83,17 @@ Examples:
 
 ### Content Structure
 
+Simple bullet list format:
+
 ```markdown
 # 2026-01-27
 
-## Events
 - 10:30am: Shopping trip
-- 2:00pm: Doctor follow-up
-
-## Decisions
-- Calendar events now use emoji categories
-
-## Facts to Extract
-- [ ] Follow-up appointment in 3 months
-- [ ] New medication prescribed
-
-## Notes
-Additional context here...
+- 2:00pm: Doctor follow-up — follow-up in 3 months
+- Decided: Calendar events now use emoji categories
 ```
 
-### Sections
-
-| Section | Purpose |
-|---------|---------|
-| Events | What happened, when |
-| Decisions | Choices made with reasoning |
-| Facts to Extract | Durable facts flagged for Layer 1 |
-| Notes | Additional context |
+No structured sections required — just capture events as they happen.
 
 ## Layer 3: Tacit Knowledge (`~/MEMORY.md`)
 
@@ -140,24 +127,6 @@ Additional context here...
 - **Long-term** — Rarely changes
 - **Behavioral** — Preferences and lessons
 
-## System Configuration (`.memory_system`)
-
-Hidden file storing system state:
-
-```json
-{
-  "version": "1.0.0",
-  "created": "2026-01-15T10:30:00",
-  "lastExtractedTimestamp": "2026-01-27T14:00:00",
-  "lastSynthesisTimestamp": "2026-01-26T09:00:00",
-  "entities": {
-    "people": ["maria", "james-smith"],
-    "companies": ["acme-corp", "newco"],
-    "projects": ["ai-platform"]
-  }
-}
-```
-
 ## Integration with AGENTS.md
 
 Add this section to your repo's AGENTS.md:
@@ -165,24 +134,23 @@ Add this section to your repo's AGENTS.md:
 ```markdown
 ## Memory — Three Layers
 
-### Layer 1: Knowledge Graph (`~/life/areas/`)
-- `people/` — Person entities
-- `companies/` — Company entities  
-- `projects/` — Project entities
+### Layer 1: Knowledge Graph (`~/life/entities/`)
+Single-file entities with YAML frontmatter:
+- `maria.person.md` — Person entities
+- `acme-corp.company.md` — Company entities  
+- `ai-platform.project.md` — Project entities
 
-Tiered retrieval:
-1. summary.md — quick context (load first)
-2. items.json — atomic facts (load when detail needed)
+Format: human-readable markdown with optional YAML frontmatter.
 
 Rules:
-- Save facts immediately to items.json
-- Weekly: rewrite summary.md from active facts
-- Never delete — supersede instead
+- Save facts immediately during conversations
+- Mark outdated facts with `[was]` prefix
+- Clean up summaries when they feel stale
 
-### Layer 2: Daily Notes (`~/memory/YYYY-MM-DD.md`)
+### Layer 2: Daily Notes (`~/life/days/YYYY-MM-DD.md`)
 - Raw timeline of events
-- Written continuously during conversations
-- Durable facts extracted to Layer 1
+- Written during or after conversations
+- Simple bullet list format
 
 ### Layer 3: Tacit Knowledge (`~/MEMORY.md`)
 - Patterns, preferences, lessons learned
@@ -200,5 +168,15 @@ The entire system is:
 Recommended backup:
 ```bash
 # Backup the entire memory system
-tar -czf memory-backup-$(date +%Y%m%d).tar.gz ~/life ~/memory ~/MEMORY.md ~/.memory_system
+tar -czf memory-backup-$(date +%Y%m%d).tar.gz ~/life ~/MEMORY.md
 ```
+
+## Philosophy
+
+This simplified structure follows the principle:
+
+> **Manual until it hurts.** Start simple, add automation only when needed.
+
+- Single-file entities eliminate sync issues
+- Flat structure reduces cognitive overhead
+- Human-readable first — if you can't `cat` it, it's too complex

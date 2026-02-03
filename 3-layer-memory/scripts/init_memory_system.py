@@ -5,7 +5,6 @@ Creates folder structure and initial files.
 """
 
 import os
-import json
 from pathlib import Path
 from datetime import datetime
 
@@ -19,18 +18,14 @@ def create_directory_structure():
     """Create the three-layer memory directory structure."""
     home = get_home_dir()
     
-    # Layer 1: Knowledge Graph
-    knowledge_base_dirs = [
-        home / "life" / "areas" / "people",
-        home / "life" / "areas" / "companies",
-        home / "life" / "areas" / "projects",
-    ]
+    # Layer 1: Knowledge Graph (flat structure)
+    entities_dir = home / "life" / "entities"
     
     # Layer 2: Daily Notes
-    daily_notes_dir = home / "memory"
+    days_dir = home / "life" / "days"
     
     # Create all directories
-    for dir_path in knowledge_base_dirs + [daily_notes_dir]:
+    for dir_path in [entities_dir, days_dir]:
         dir_path.mkdir(parents=True, exist_ok=True)
         print(f"✓ Created: {dir_path}")
     
@@ -76,99 +71,56 @@ def create_memory_md(home: Path):
     print(f"✓ Created: {memory_path}")
 
 
-def create_system_config(home: Path):
-    """Create system configuration file."""
-    config_path = home / ".memory_system"
-    
-    config = {
-        "version": "1.0.0",
-        "created": datetime.now().isoformat(),
-        "lastExtractedTimestamp": None,
-        "lastSynthesisTimestamp": None,
-        "entities": {
-            "people": [],
-            "companies": [],
-            "projects": []
-        }
-    }
-    
-    config_path.write_text(json.dumps(config, indent=2))
-    print(f"✓ Created: {config_path}")
-
-
 def create_example_entity(home: Path):
     """Create an example entity to demonstrate structure."""
-    example_dir = home / "life" / "areas" / "people" / "example-person"
-    example_dir.mkdir(parents=True, exist_ok=True)
+    example_path = home / "life" / "entities" / "example-person.person.md"
     
-    # Create items.json
-    items = {
-        "entity": "example-person",
-        "type": "person",
-        "created": datetime.now().strftime("%Y-%m-%d"),
-        "facts": [
-            {
-                "id": "example-001",
-                "fact": "Example fact - replace with real information",
-                "category": "relationship",
-                "timestamp": datetime.now().strftime("%Y-%m-%d"),
-                "source": "example",
-                "status": "active"
-            }
-        ]
-    }
+    if example_path.exists():
+        return
     
-    items_path = example_dir / "items.json"
-    items_path.write_text(json.dumps(items, indent=2))
+    today = datetime.now().strftime("%Y-%m-%d")
     
-    # Create summary.md
-    summary = f"""# Example Person
+    content = f"""---
+type: person
+created_at: {today}
+---
 
-Example person entity demonstrating the knowledge graph structure.
+# Example Person
 
-## Current Context
-- Replace this with actual context about the person
-- Add relevant details from their items.json
+> Brief one-line description of who this person is
 
-## Notes
-This is a template entity. You can safely delete this folder once you understand the structure.
+## Key Facts
+
+- [current] Example fact — {today}
+- [was] Previous status that changed — 2025 to {today}
+
+## Context
+
+Add context, notes, and relevant details here.
+This is a template entity. You can safely delete this file once you understand the structure.
 
 ---
-*Entity created: {datetime.now().strftime("%Y-%m-%d")}*
+*Entity created: {today}*
 """
     
-    summary_path = example_dir / "summary.md"
-    summary_path.write_text(summary)
-    
-    print(f"✓ Created example entity: {example_dir}")
+    example_path.write_text(content)
+    print(f"✓ Created example entity: {example_path}")
     print(f"  (You can delete this after reviewing the structure)")
 
 
 def create_today_note(home: Path):
     """Create today's daily note as an example."""
     today = datetime.now().strftime("%Y-%m-%d")
-    note_path = home / "memory" / f"{today}.md"
+    note_path = home / "life" / "days" / f"{today}.md"
     
     if note_path.exists():
         return
     
     content = f"""# {today}
 
-## Events
-<!-- Log events throughout the day -->
-- 
-
-## Decisions
-<!-- Record decisions made -->
-- 
-
-## Facts to Extract
-<!-- Flag facts that should go into the knowledge graph -->
-- [ ] 
-
-## Notes
-<!-- Additional context -->
-- 
+- Event or activity
+- Another event — with details
+- Decision made during the day
 """
     
     note_path.write_text(content)
@@ -184,7 +136,6 @@ def main():
     
     home = create_directory_structure()
     create_memory_md(home)
-    create_system_config(home)
     create_example_entity(home)
     create_today_note(home)
     
@@ -193,18 +144,17 @@ def main():
     print("Initialization Complete!")
     print("=" * 60)
     print()
-    print("Next steps:")
-    print("1. Review the example entity in ~/life/areas/people/example-person/")
-    print("2. Add to your AGENTS.md file (see skill documentation)")
-    print("3. Configure heartbeat for fact extraction")
-    print("4. Set up weekly synthesis cron job")
-    print()
     print("Directory structure created:")
-    print("  ~/life/areas/people/      - People entities")
-    print("  ~/life/areas/companies/   - Company entities")
-    print("  ~/life/areas/projects/    - Project entities")
-    print("  ~/memory/                 - Daily notes")
-    print("  ~/MEMORY.md               - Tacit knowledge")
+    print("  ~/life/entities/         - Knowledge graph entities")
+    print("  ~/life/days/             - Daily notes")
+    print("  ~/MEMORY.md              - Tacit knowledge")
+    print()
+    print("Next steps:")
+    print("1. Review the example entity in ~/life/entities/example-person.person.md")
+    print("2. Add to your AGENTS.md file (see skill documentation)")
+    print("3. Start using — create entities and daily notes as needed")
+    print()
+    print("Optional: Configure automation if manual maintenance becomes painful")
 
 
 if __name__ == "__main__":

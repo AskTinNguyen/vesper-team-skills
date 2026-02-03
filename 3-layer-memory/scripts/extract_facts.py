@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
 Extract durable facts from conversations.
-Can run automatically via heartbeat or manually on specific files.
+Optional automation — manual fact extraction is the default.
 """
 
-import os
-import json
+import re
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -17,124 +16,187 @@ def get_home_dir() -> Path:
     return Path.home()
 
 
-def load_system_config() -> Dict[str, Any]:
-    """Load system configuration."""
-    config_path = get_home_dir() / ".memory_system"
-    if config_path.exists():
-        return json.loads(config_path.read_text())
-    return {}
-
-
-def save_system_config(config: Dict[str, Any]):
-    """Save system configuration."""
-    config_path = get_home_dir() / ".memory_system"
-    config_path.write_text(json.dumps(config, indent=2))
-
-
 def find_existing_entities() -> Dict[str, List[str]]:
     """Find all existing entities in the knowledge graph."""
     home = get_home_dir()
-    entities = {"people": [], "companies": [], "projects": []}
+    entities = {}
     
-    base_path = home / "life" / "areas"
-    for entity_type in entities.keys():
-        type_path = base_path / entity_type
-        if type_path.exists():
-            entities[entity_type] = [
-                d.name for d in type_path.iterdir() if d.is_dir()
-            ]
+    entities_dir = home / "life" / "entities"
+    if not entities_dir.exists():
+        return entities
+    
+    for file_path in entities_dir.iterdir():
+        if not file_path.is_file() or not file_path.suffix == ".md":
+            continue
+        
+        # Parse filename: name.type.md
+        parts = file_path.stem.split(".")
+        if len(parts) < 2:
+            continue
+        
+        entity_type = parts[-1]
+        entity_name = ".".join(parts[:-1])
+        
+        if entity_type not in entities:
+            entities[entity_type] = []
+        entities[entity_type].append(entity_name)
     
     return entities
 
 
-def generate_fact_id(entity_name: str, existing_facts: List[Dict]) -> str:
-    """Generate a unique fact ID."""
-    prefix = entity_name.lower().replace(" ", "-")[:20]
-    existing_nums = []
+def load_entity_file(filename: str) -> str:
+    """Load an entity file."""
+    home = get_home_dir()
+    entity_path = home / "life" / "entities" / filename
     
-    for fact in existing_facts:
-        fact_id = fact.get("id", "")
-        if fact_id.startswith(prefix):
+    if entity_path.exists():
+        return entity_path.read_text()
+    return ""
+
+
+def save_entity_file(filename: str, content: str):
+    """Save an entity file."""
+    home = get_home_dir()
+    entity_path = home / "life" / "entities" / filename
+    entity_path.write_text(content)
+
+
+def parse_entity_content(content: str) -> tuple:
+    """Parse entity file into frontmatter and body."""
+    frontmatter = {}
+    body = content
+    
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            import yaml
             try:
-                num = int(fact_id.split("-")[-1])
-                existing_nums.append(num)
-            except ValueError:
+                frontmatter = yaml.safe_load(parts[1]) or {}
+                body = parts[2]
+            except Exception:
                 pass
     
-    next_num = max(existing_nums, default=0) + 1
-    return f"{prefix}-{next_num:03d}"
+    return frontmatter, body
 
 
-def load_entity_facts(entity_type: str, entity_name: str) -> Dict[str, Any]:
-    """Load facts for an entity."""
-    home = get_home_dir()
-    items_path = home / "life" / "areas" / entity_type / entity_name / "items.json"
+def add_fact_to_entity(filename: str, fact_text: str) -> bool:
+    """Add a fact to an entity file."""
+    content = load_entity_file(filename)
+    today = datetime.now().strftime("%Y-%m-%d")
     
-    if items_path.exists():
-        return json.loads(items_path.read_text())
-    
-    return {
-        "entity": entity_name,
-        "type": entity_type,
-        "created": datetime.now().strftime("%Y-%m-%d"),
-        "facts": []
-    }
+    if not content:
+        # Create new entity file
+        parts = filename.rsplit(".", 2)
+        if len(parts) >= 2:
+            entity_type = parts[-2]
+            entity_name = parts[0].replace("-", " ").title()
+        else:
+            entity_type = "unknown"
+            entity_name = filename
+        
+        content = f"""---
+type: {entity_type}
+created_at: {today}
+---
 
+# {entity_name}
 
-def save_entity_facts(entity_type: str, entity_name: str, data: Dict[str, Any]):
-    """Save facts for an entity."""
-    home = get_home_dir()
-    entity_dir = home / "life" / "areas" / entity_type / entity_name
-    entity_dir.mkdir(parents=True, exist_ok=True)
-    
-    items_path = entity_dir / "items.json"
-    items_path.write_text(json.dumps(data, indent=2))
+## Key Facts
 
+- [current] {fact_text} — {today}
 
-def create_entity(entity_type: str, entity_name: str) -> Path:
-    """Create a new entity folder structure."""
-    home = get_home_dir()
-    entity_dir = home / "life" / "areas" / entity_type / entity_name
-    entity_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Create items.json
-    items = {
-        "entity": entity_name,
-        "type": entity_type,
-        "created": datetime.now().strftime("%Y-%m-%d"),
-        "facts": []
-    }
-    
-    items_path = entity_dir / "items.json"
-    items_path.write_text(json.dumps(items, indent=2))
-    
-    # Create initial summary.md
-    summary = f"""# {entity_name.replace("-", " ").title()}
+## Context
 
-## Current Context
-<!-- Living summary - rewritten weekly -->
-- 
-
-## Relationship Timeline
-<!-- Key dates and changes -->
-- Created: {datetime.now().strftime("%Y-%m-%d")}
 """
+    else:
+        # Add fact to existing file
+        frontmatter, body = parse_entity_content(content)
+        
+        # Find the Key Facts section
+        lines = body.split("\n")
+        new_lines = []
+        facts_added = False
+        
+        for i, line in enumerate(lines):
+            new_lines.append(line)
+            
+            # Add fact after ## Key Facts heading
+            if line.strip() == "## Key Facts" and not facts_added:
+                new_lines.append(f"")
+                new_lines.append(f"- [current] {fact_text} — {today}")
+                facts_added = True
+            # Or after any existing fact line
+            elif line.strip().startswith("- [current]") and not facts_added:
+                new_lines.append(f"- [current] {fact_text} — {today}")
+                facts_added = True
+        
+        if not facts_added:
+            # No Key Facts section found, add one
+            new_lines.append(f"")
+            new_lines.append(f"## Key Facts")
+            new_lines.append(f"")
+            new_lines.append(f"- [current] {fact_text} — {today}")
+        
+        body = "\n".join(new_lines)
+        
+        # Reconstruct file
+        if frontmatter:
+            import yaml
+            fm_text = yaml.dump(frontmatter, default_flow_style=False).strip()
+            content = f"---\n{fm_text}\n---\n{body}"
+        else:
+            content = body
     
-    summary_path = entity_dir / "summary.md"
-    summary_path.write_text(summary)
+    save_entity_file(filename, content)
+    return True
+
+
+def supersede_fact_in_entity(filename: str, old_fact_pattern: str, new_fact_text: str) -> bool:
+    """Mark a fact as superseded and add a new one."""
+    content = load_entity_file(filename)
+    today = datetime.now().strftime("%Y-%m-%d")
     
-    return entity_dir
+    if not content:
+        print(f"Entity not found: {filename}")
+        return False
+    
+    # Find and replace the old fact
+    lines = content.split("\n")
+    new_lines = []
+    superseded = False
+    
+    for line in lines:
+        if old_fact_pattern.lower() in line.lower() and "[current]" in line:
+            # Mark old fact as superseded
+            new_lines.append(line.replace("[current]", "[was]"))
+            superseded = True
+        else:
+            new_lines.append(line)
+    
+    if not superseded:
+        print(f"⚠ Could not find matching current fact: {old_fact_pattern}")
+        return False
+    
+    # Add new fact after the superseded one
+    for i, line in enumerate(new_lines):
+        if "[was]" in line and old_fact_pattern.lower() in line.lower():
+            new_lines.insert(i + 1, f"- [current] {new_fact_text} — {today}")
+            break
+    
+    content = "\n".join(new_lines)
+    save_entity_file(filename, content)
+    
+    print(f"✓ Superseded fact and added new one in {filename}")
+    return True
 
 
 def extract_facts_manual(conversation_text: str, entities: Dict[str, List[str]]) -> List[Dict[str, Any]]:
     """
-    Manual fact extraction - in practice, this would use a sub-agent.
-    Returns list of extracted facts with entity mapping.
+    Manual fact extraction guidance.
+    In practice, this would use a sub-agent for automated extraction.
     """
-    # This is a placeholder - actual implementation would use a cheap LLM
-    # to parse conversation and extract structured facts
-    print("Note: This script is designed to spawn a sub-agent for fact extraction.")
-    print("For automated extraction, configure via heartbeat (see SKILL.md).")
+    print("Note: Manual fact extraction is the default.")
+    print("For automated extraction, this script can spawn a sub-agent.")
     print()
     print("Found entities in knowledge graph:")
     for entity_type, names in entities.items():
@@ -144,111 +206,31 @@ def extract_facts_manual(conversation_text: str, entities: Dict[str, List[str]])
     return []
 
 
-def add_fact(entity_type: str, entity_name: str, fact_text: str, category: str = "status") -> bool:
-    """Add a fact to an entity."""
-    # Ensure entity exists
-    home = get_home_dir()
-    entity_dir = home / "life" / "areas" / entity_type / entity_name
-    
-    if not entity_dir.exists():
-        print(f"Creating new entity: {entity_type}/{entity_name}")
-        create_entity(entity_type, entity_name)
-    
-    # Load existing facts
-    data = load_entity_facts(entity_type, entity_name)
-    
-    # Generate fact ID
-    fact_id = generate_fact_id(entity_name, data["facts"])
-    
-    # Create fact
-    fact = {
-        "id": fact_id,
-        "fact": fact_text,
-        "category": category,
-        "timestamp": datetime.now().strftime("%Y-%m-%d"),
-        "source": "manual",
-        "status": "active"
-    }
-    
-    data["facts"].append(fact)
-    save_entity_facts(entity_type, entity_name, data)
-    
-    print(f"✓ Added fact to {entity_type}/{entity_name}: {fact_id}")
-    print(f"  {fact_text}")
-    
-    return True
-
-
-def supersede_fact(entity_type: str, entity_name: str, old_fact_id: str, new_fact_text: str, category: str = "status"):
-    """Mark an old fact as superseded and add a new one."""
-    data = load_entity_facts(entity_type, entity_name)
-    
-    # Find and mark old fact
-    old_fact = None
-    for fact in data["facts"]:
-        if fact["id"] == old_fact_id:
-            old_fact = fact
-            break
-    
-    if not old_fact:
-        print(f"⚠ Fact not found: {old_fact_id}")
-        return False
-    
-    # Generate new fact ID
-    new_fact_id = generate_fact_id(entity_name, data["facts"])
-    
-    # Mark old fact as superseded
-    old_fact["status"] = "superseded"
-    old_fact["supersededBy"] = new_fact_id
-    old_fact["supersededDate"] = datetime.now().strftime("%Y-%m-%d")
-    
-    # Add new fact
-    new_fact = {
-        "id": new_fact_id,
-        "fact": new_fact_text,
-        "category": category,
-        "timestamp": datetime.now().strftime("%Y-%m-%d"),
-        "source": "manual",
-        "status": "active"
-    }
-    
-    data["facts"].append(new_fact)
-    save_entity_facts(entity_type, entity_name, data)
-    
-    print(f"✓ Superseded {old_fact_id} with {new_fact_id}")
-    print(f"  Old: {old_fact['fact']}")
-    print(f"  New: {new_fact_text}")
-    
-    return True
-
-
 def main():
     parser = argparse.ArgumentParser(description="Extract and manage facts for the memory system")
     parser.add_argument("--file", "-f", help="Conversation file to extract facts from")
     parser.add_argument("--since", "-s", help="Extract facts since timestamp (ISO format)")
     parser.add_argument("--add", "-a", action="store_true", help="Add a fact manually")
-    parser.add_argument("--entity-type", "-t", choices=["people", "companies", "projects"], help="Entity type")
-    parser.add_argument("--entity-name", "-n", help="Entity name/slug")
+    parser.add_argument("--entity", "-e", help="Entity filename (e.g., maria.person.md)")
     parser.add_argument("--fact", help="Fact text to add")
-    parser.add_argument("--category", "-c", default="status", choices=["relationship", "milestone", "status", "preference"], help="Fact category")
-    parser.add_argument("--supersede", help="ID of fact to supersede")
+    parser.add_argument("--supersede", help="Pattern of fact to supersede")
     
     args = parser.parse_args()
     
-    # Load system state
-    config = load_system_config()
     entities = find_existing_entities()
     
     if args.add:
         # Manual fact addition
-        if not args.entity_type or not args.entity_name or not args.fact:
-            print("Error: --add requires --entity-type, --entity-name, and --fact")
+        if not args.entity or not args.fact:
+            print("Error: --add requires --entity and --fact")
+            print("  Example: extract_facts.py --add -e maria.person.md --fact 'Business partner'")
             return
         
         if args.supersede:
-            supersede_fact(args.entity_type, args.entity_name, args.supersede, args.fact, args.category)
+            supersede_fact_in_entity(args.entity, args.supersede, args.fact)
         else:
-            add_fact(args.entity_type, args.entity_name, args.fact, args.category)
+            add_fact_to_entity(args.entity, args.fact)
+            print(f"✓ Added fact to {args.entity}")
     
     elif args.file:
         # Extract from file
@@ -263,27 +245,29 @@ def main():
     elif args.since:
         # Extract since timestamp (would integrate with conversation history)
         print(f"Would extract facts since: {args.since}")
-        print("Note: Automated extraction requires heartbeat integration")
+        print("Note: Automated extraction requires additional configuration")
     
     else:
-        # List entities and recent activity
-        print("Three-Layer Memory System — Fact Extraction")
+        # List entities and show usage
+        print("Three-Layer Memory System — Fact Extraction (Optional)")
         print("=" * 50)
         print()
         print("Usage:")
-        print("  extract_facts.py --add -t people -n maria --fact 'Business partner'")
-        print("  extract_facts.py --add -t people -n sarah --fact 'No longer works together' --supersede sarah-001")
+        print("  Manual (recommended):")
+        print("    Edit entity files directly during conversations")
         print()
-        print("Existing entities:")
-        for entity_type, names in entities.items():
-            if names:
-                print(f"\n  {entity_type}:")
-                for name in names:
-                    fact_count = len(load_entity_facts(entity_type, name)["facts"])
-                    print(f"    - {name} ({fact_count} facts)")
+        print("  Using this script:")
+        print("    extract_facts.py --add -e maria.person.md --fact 'Business partner'")
+        print("    extract_facts.py --add -e maria.person.md --fact 'New status' --supersede 'Old status'")
+        print()
         
-        if config.get("lastExtractedTimestamp"):
-            print(f"\nLast extraction: {config['lastExtractedTimestamp']}")
+        if entities:
+            print("Existing entities:")
+            for entity_type, names in entities.items():
+                if names:
+                    print(f"\n  {entity_type}:")
+                    for name in names:
+                        print(f"    - {name}.{entity_type}.md")
 
 
 if __name__ == "__main__":

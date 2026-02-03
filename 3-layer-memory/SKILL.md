@@ -6,47 +6,44 @@ license: Complete terms in LICENSE.txt
 
 # 3-Layer Memory System
 
-Transform static memory into a self-maintaining, compounding knowledge graph that evolves automatically as life changes.
+A simple, compounding knowledge graph that evolves as your understanding changes.
 
 ## What This System Provides
 
-- **Automatic fact extraction** — Cheap sub-agents scan conversations every ~30 minutes and save durable facts
 - **Entity-based storage** — Facts organized by person, company, project — not dumped into a single blob
-- **Weekly synthesis** — Sunday cron rewrites summaries from raw facts and prunes stale context automatically
+- **Single-file entities** — One markdown file per entity with YAML frontmatter for structured data
 - **Superseding, not deleting** — When facts change, old ones are marked historical; full history preserved
+- **Optional automation** — Start manual, add automation only when it hurts
 
-**Result**: Understanding updates itself. Context stays current without manual edits.
+**Result**: Understanding that updates itself. Context stays current without manual edits.
 
 ## The Three-Layer Architecture
 
 ```
-Layer 1: Knowledge Graph   (/life/areas/)
-   └── Entities with atomic facts + living summaries
+Layer 1: Knowledge Graph   (~/life/entities/)
+   └── Single-file entities: maria.person.md, acme-corp.company.md
 
-Layer 2: Daily Notes       (memory/YYYY-MM-DD.md)
+Layer 2: Daily Notes       (~/life/days/YYYY-MM-DD.md)
    └── Raw event logs — what happened, when
 
-Layer 3: Tacit Knowledge   (MEMORY.md)
+Layer 3: Tacit Knowledge   (~/MEMORY.md)
    └── Patterns, preferences, lessons learned
 ```
-
-Every conversation adds signal. Every week, that signal is distilled.
 
 ## When to Use This Skill
 
 Use this skill when:
 - Setting up the three-layer memory system for the first time
 - Creating new entities (people, companies, projects) in the knowledge graph
-- Running fact extraction from recent conversations
+- Extracting facts from conversations
 - Performing weekly synthesis and summary updates
 - Querying the knowledge graph for context
-- Migrating or maintaining the memory system
 
 ## Quick Start
 
 ### 1. Initialize the System
 
-Run the initialization script to create the folder structure:
+Run the initialization script:
 
 ```bash
 python3 ~/.claude/skills/3-layer-memory/scripts/init_memory_system.py
@@ -54,12 +51,10 @@ python3 ~/.claude/skills/3-layer-memory/scripts/init_memory_system.py
 
 This creates:
 ```
-~/life/areas/
-├── people/
-├── companies/
-└── projects/
-~/memory/
-~/MEMORY.md (if not exists)
+~/life/
+├── entities/              # Knowledge graph (Layer 1)
+└── days/                  # Daily notes (Layer 2)
+~/MEMORY.md                # Tacit knowledge (Layer 3)
 ```
 
 ### 2. Add to AGENTS.md
@@ -69,144 +64,97 @@ Include this section in the repo's AGENTS.md:
 ```markdown
 ## Memory — Three Layers
 
-### Layer 1: Knowledge Graph (`/life/areas/`)
-- `people/` — Person entities
-- `companies/` — Company entities  
-- `projects/` — Project entities
+### Layer 1: Knowledge Graph (`~/life/entities/`)
+Single-file entities with YAML frontmatter:
+- `maria.person.md` — Person entities
+- `acme-corp.company.md` — Company entities  
+- `ai-project.project.md` — Project entities
 
-Tiered retrieval:
-1. summary.md — quick context (load first)
-2. items.json — atomic facts (load when detail needed)
+Format: human-readable markdown with optional YAML frontmatter for structured facts.
 
 Rules:
-- Save facts immediately to items.json
-- Weekly: rewrite summary.md from active facts
-- Never delete — supersede instead
+- Save facts immediately during conversations
+- Mark outdated facts with `[was]` prefix
+- Clean up summaries when they feel stale
 
-### Layer 2: Daily Notes (`memory/YYYY-MM-DD.md`)
+### Layer 2: Daily Notes (`~/life/days/YYYY-MM-DD.md`)
 - Raw timeline of events
-- Written continuously during conversations
-- Durable facts extracted to Layer 1
+- Written during or after conversations
+- Simple bullet list format
 
-### Layer 3: Tacit Knowledge (`MEMORY.md`)
+### Layer 3: Tacit Knowledge (`~/MEMORY.md`)
 - Patterns, preferences, lessons learned
 - Long-term behavioral knowledge
-```
-
-### 3. Configure Heartbeat for Fact Extraction
-
-Add to HEARTBEAT.md or cron configuration:
-
-```markdown
-## Fact Extraction
-
-On each heartbeat:
-1. Check for new conversations since lastExtractedTimestamp
-2. Spawn cheap sub-agent to extract durable facts
-3. Write to relevant entity items.json
-4. Update lastExtractedTimestamp
-
-Focus: relationships, status changes, milestones
-Skip: casual chat, temporary info
-```
-
-### 4. Configure Weekly Synthesis
-
-Add Sunday cron job:
-
-```markdown
-## Weekly Memory Review (Sunday)
-
-For each entity with new facts:
-1. Load summary.md
-2. Load active items.json
-3. Rewrite summary.md for current state
-4. Mark contradicted facts as superseded
-```
-
-Or run manually:
-```bash
-python3 ~/.claude/skills/3-layer-memory/scripts/weekly_synthesis.py
 ```
 
 ## Layer 1: Knowledge Graph
 
 ### Entity Structure
 
-Each entity lives in its own folder:
+Each entity is a single markdown file:
 
 ```
-/life/areas/people/maria/
-├── summary.md      # Living summary (rewritten weekly)
-└── items.json      # Atomic facts
-
-/life/areas/companies/acme-corp/
-├── summary.md
-└── items.json
+~/life/entities/
+├── maria.person.md
+├── acme-corp.company.md
+└── ai-project.project.md
 ```
 
-### Atomic Facts (items.json)
-
-```json
-{
-  "entity": "maria",
-  "type": "person",
-  "created": "2026-01-15",
-  "facts": [
-    {
-      "id": "maria-001",
-      "fact": "Business partner on AI project",
-      "category": "relationship",
-      "timestamp": "2026-01-15",
-      "source": "conversation",
-      "status": "active"
-    },
-    {
-      "id": "maria-002", 
-      "fact": "Company hired two developers",
-      "category": "milestone",
-      "timestamp": "2026-01-20",
-      "source": "conversation",
-      "status": "active"
-    },
-    {
-      "id": "maria-003",
-      "fact": "Former colleague at OldCo",
-      "category": "relationship",
-      "timestamp": "2025-06-01",
-      "status": "superseded",
-      "supersededBy": "maria-001",
-      "supersededDate": "2026-01-15"
-    }
-  ]
-}
-```
-
-### Living Summary (summary.md)
+### Entity File Format
 
 ```markdown
+---
+type: person
+created_at: 2026-01-15
+---
+
 # Maria
 
-Business partner on AI project (since Jan 2026).
+> Business partner on AI project (since Jan 2026)
 
-## Current Context
-- Company growing: hired 2 developers recently
-- Met through previous role at OldCo
+## Key Facts
 
-## Relationship Timeline
-- 2025: Colleague at OldCo
-- 2026: Became business partner on AI project
+- [current] Business partner on AI project — Jan 2026
+- [current] Company hired 2 developers — Jan 2026
+- [was] Former colleague at OldCo — 2025 to Jan 2026
+
+## Context
+
+Met through previous role at OldCo. Company is growing fast.
 ```
+
+**Frontmatter (optional):** Use YAML frontmatter for structured data when needed.
+
+**Body:** Human-readable markdown. Use `[current]` and `[was]` prefixes to track fact status.
 
 ### Creating New Entities
 
 Use the entity management script:
 
 ```bash
-python3 ~/.claude/skills/3-layer-memory/scripts/manage_entity.py create --type person --name "james-smith"
+python3 ~/.claude/skills/3-layer-memory/scripts/manage_entity.py create --type person --name "maria"
 ```
 
-Or manually create the folder and files using templates from `assets/templates/`.
+Or create manually:
+
+```bash
+cat > ~/life/entities/maria.person.md << 'EOF'
+---
+type: person
+created_at: 2026-01-15
+---
+
+# Maria
+
+## Key Facts
+
+- [current] Business partner on AI project — Jan 2026
+
+## Context
+
+Met through previous role at OldCo.
+EOF
+```
 
 ## Layer 2: Daily Notes
 
@@ -215,19 +163,14 @@ Daily notes capture the raw timeline. Create them during or after conversations:
 ```markdown
 # 2026-01-27
 
-## Events
 - 10:30am: Shopping trip
-- 2:00pm: Doctor follow-up
-
-## Decisions
-- Calendar events now use emoji categories
-
-## Facts to Extract
-- [ ] Follow-up appointment in 3 months
-- [ ] New medication prescribed
+- 2:00pm: Doctor follow-up — follow-up in 3 months
+- Decided: Calendar events now use emoji categories
 ```
 
-Durable facts are later extracted into Layer 1 entities.
+Simple bullet list. No structured sections required.
+
+Durable facts can be extracted into Layer 1 entities during or after the conversation.
 
 ## Layer 3: Tacit Knowledge
 
@@ -250,100 +193,96 @@ MEMORY.md captures how the user operates:
 - Communication: Async first, urgent = call
 ```
 
-## Fact Extraction Process
+## Fact Extraction
 
-### Automated (via Heartbeat)
+### Manual (Recommended Default)
 
-The extraction script runs on each heartbeat:
+Extract facts during the conversation when they come up:
 
-```bash
-python3 ~/.claude/skills/3-layer-memory/scripts/extract_facts.py --since <timestamp>
-```
+1. Notice a durable fact in conversation
+2. Add it to the relevant entity file immediately
+3. Use `[current]` prefix for new facts
+4. Mark old facts with `[was]` if superseded
 
-Process:
-1. Load conversation history since last extraction
-2. Spawn cheap sub-agent (e.g., Haiku, ~$0.001) to identify durable facts
-3. Map facts to existing entities or flag for new entity creation
-4. Append to relevant items.json
-5. Update lastExtractedTimestamp
+### Automated (Optional)
 
-### Manual
-
-Extract facts from a specific conversation:
+If manual extraction becomes painful, add automation:
 
 ```bash
+# Extract from recent conversations
+python3 ~/.claude/skills/3-layer-memory/scripts/extract_facts.py --since 2026-01-20
+
+# Extract from specific file
 python3 ~/.claude/skills/3-layer-memory/scripts/extract_facts.py --file conversation.md
 ```
 
-## Weekly Synthesis Process
+## Weekly Synthesis
 
-The synthesis script runs every Sunday (or on demand):
+### Manual (Recommended Default)
+
+When reading an entity file, if the summary feels stale:
+
+1. Read the current facts
+2. Rewrite the summary section
+3. Mark superseded facts with `[was]`
+
+### Automated (Optional)
+
+If manual synthesis becomes painful:
 
 ```bash
+# Run synthesis manually
 python3 ~/.claude/skills/3-layer-memory/scripts/weekly_synthesis.py
+
+# Or configure a weekly cron job (advanced)
 ```
-
-Process:
-1. Find all entities with new facts since last synthesis
-2. For each entity:
-   - Load current summary.md
-   - Load all active facts from items.json
-   - Identify contradictions (facts that override previous ones)
-   - Mark superseded facts
-   - Rewrite summary.md with current state
-3. Log synthesis completion
-
-## Schema Reference
-
-See `references/atomic_fact_schema.json` for complete JSON schema.
-
-See `references/folder_structure.md` for full directory layout.
 
 ## Templates
 
 Use templates in `assets/templates/` for creating new entities:
 
-- `entity_summary.md` — Template for summary.md
+- `entity.md` — Template for single-file entities
 - `daily_notes.md` — Template for daily notes
 - `memory_tacit.md` — Template for MEMORY.md
 
 ## Best Practices
 
-1. **Always supersede, never delete** — Preserves history and allows tracing how understanding evolved
+1. **Start simple** — One layer, manual maintenance. Add complexity only when needed.
 
-2. **Load tiered context** — Always start with summary.md; load items.json only when detail needed
+2. **Always supersede, never delete** — Use `[was]` prefix to preserve history.
 
-3. **Write daily notes continuously** — Capture events while fresh; extract facts later
+3. **Write daily notes continuously** — Capture events while fresh; extract facts later.
 
-4. **Run extraction frequently** — Small, frequent extractions are more accurate than large batches
+4. **Single source of truth** — One file per entity. No sync issues.
 
-5. **Review weekly synthesis output** — Ensure summaries accurately reflect current state
+5. **Human-readable first** — If you can't read it in `cat`, it's too complex.
 
-6. **Keep MEMORY.md focused** — Patterns and preferences only; specific facts belong in knowledge graph
+6. **Manual until it hurts** — Don't automate until manual process becomes painful.
 
-## Migration from Static Memory
+7. **Keep MEMORY.md focused** — Patterns and preferences only; specific facts belong in knowledge graph.
 
-If migrating from a static MEMORY.md:
+## Migration from Complex Systems
+
+If migrating from a more complex memory system:
 
 1. Run initialization script
-2. Read existing MEMORY.md
-3. Extract entity-specific facts into Layer 1 entities
+2. Move entity data to single-file format
+3. Convert JSON facts to markdown lists
 4. Keep patterns/preferences in MEMORY.md (Layer 3)
-5. Set up heartbeat and cron jobs
 
 ## Troubleshooting
 
-**Issue: Facts not being extracted**
-- Check lastExtractedTimestamp is being updated
-- Verify extraction script has access to conversation history
-- Review extraction logs
+**Issue: Facts getting disorganized**
+- Simplify entity structure
+- Use consistent `[current]`/`[was]` prefixes
+- Rewrite summaries when they feel stale
 
-**Issue: Summaries going stale**
-- Ensure weekly synthesis is running
-- Check that superseded facts are properly marked
-- Verify summary.md is being rewritten
+**Issue: Too much maintenance overhead**
+- Reduce automation
+- Simplify daily notes format
+- Fewer structured sections
 
 **Issue: Context window overflow**
-- Load only summary.md initially
-- Load items.json only when specific facts needed
-- Archive old entities if no longer relevant
+- Load only relevant entities
+- Keep entity files concise
+- Use summaries in daily notes
