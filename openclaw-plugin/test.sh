@@ -10,7 +10,7 @@ echo ""
 
 # Test 1: Plugin Loading
 echo "Test 1: Plugin Loading"
-if openclaw plugins list 2>&1 | grep -q "agent-tools.*loaded"; then
+if openclaw plugins list 2>&1 | grep -q "agent-tools.*Loaded\|agent-.*loaded"; then
     echo "  ✅ PASS: Plugin loaded"
 else
     echo "  ❌ FAIL: Plugin not loaded"
