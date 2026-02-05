@@ -1,0 +1,7 @@
+{"id":"BLOCKER-001","status":"blocked","title":"Major blocker","deps":[]}
+{"id":"TASK-001","status":"open","title":"Depends on blocker 1","deps":["BLOCKER-001"]}
+{"id":"TASK-002","status":"open","title":"Also depends on blocker 1","deps":["BLOCKER-001"]}
+{"id":"TASK-003","status":"open","title":"Also depends on blocker 1","deps":["BLOCKER-001"]}
+{"id":"BLOCKER-002","status":"blocked","title":"Minor blocker","deps":[]}
+{"id":"TASK-004","status":"open","title":"Depends on blocker 2","deps":["BLOCKER-002"]}
+{"id":"TASK-005","status":"closed","title":"Completed task","deps":[]}
