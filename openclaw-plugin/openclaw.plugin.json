@@ -1,0 +1,32 @@
+{
+  "id": "agent-tools",
+  "name": "Atherlab Agent Tools",
+  "version": "1.0.0",
+  "description": "Slash commands and task list tools for OpenClaw agents",
+  "entry": "./index.ts",
+  "skills": ["./skills/slash-commands"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "commandsDir": {
+        "type": "string",
+        "description": "Path to slash commands directory (default: ~/.openclaw/commands)"
+      },
+      "tasksDir": {
+        "type": "string",
+        "description": "Path to tasks storage directory (default: ~/.openclaw/tasks)"
+      }
+    }
+  },
+  "uiHints": {
+    "commandsDir": {
+      "label": "Commands Directory",
+      "placeholder": "~/.openclaw/commands"
+    },
+    "tasksDir": {
+      "label": "Tasks Directory", 
+      "placeholder": "~/.openclaw/tasks"
+    }
+  }
+}

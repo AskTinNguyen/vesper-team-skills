@@ -1,0 +1,20 @@
+{
+  "name": "agent-tools",
+  "version": "1.0.0",
+  "description": "Slash commands and task list tools for OpenClaw agents",
+  "type": "module",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AtherlabsOrg/openclaw-agent-tools.git"
+  },
+  "author": "Atherlab",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.0"
+  },
+  "openclaw": {
+    "extensions": ["./index.ts"]
+  }
+}
