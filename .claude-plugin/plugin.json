@@ -1,0 +1,28 @@
+{
+  "name": "vesper-team-skills",
+  "version": "1.0.0",
+  "description": "58 skills, 44 commands, and 6 workflows for AI-powered development. Multi-agent orchestration, code review, video production, browser automation, and more.",
+  "author": {
+    "name": "Tin Nguyen",
+    "url": "https://github.com/AskTinNguyen"
+  },
+  "homepage": "https://github.com/AskTinNguyen/vesper-team-skills",
+  "repository": "https://github.com/AskTinNguyen/vesper-team-skills",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "multi-agent",
+    "orchestration",
+    "dispatch",
+    "code-review",
+    "video-production",
+    "remotion",
+    "browser-automation",
+    "playwright",
+    "ffmpeg",
+    "elevenlabs",
+    "skills",
+    "workflows",
+    "claude-code"
+  ]
+}
