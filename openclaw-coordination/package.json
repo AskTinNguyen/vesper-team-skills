@@ -1,0 +1,19 @@
+{
+  "name": "openclaw-coordination",
+  "version": "0.1.0",
+  "description": "Multi-agent coordination for OpenClaw (ported from pi-messenger)",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "coord": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node dist/test.js",
+    "test:unit": "npm run build && node --test dist/tests/"
+  },
+  "dependencies": {
+    "@types/node": "^25.2.1",
+    "typescript": "^5.9.3"
+  }
+}
