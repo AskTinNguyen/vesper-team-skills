@@ -1,145 +1,227 @@
 # OpenClaw Agent Templates
 
-Shareable agent templates for OpenClaw instances. Each agent includes:
-- Workspace files (AGENTS.md, IDENTITY.md, SOUL.md, TOOLS.md, HEARTBEAT.md)
-- Config snippet for `openclaw.json`
-- Knowledge files where applicable
+Ready-to-use agents you can install on any OpenClaw instance.
 
-## Available Agents
+---
 
-| Agent | Purpose | Model |
-|-------|---------|-------|
-| **jeff** | Agentic coding coach (Jeffrey Emanuel methodology) | Opus |
-| **research-crawler** | Overnight autonomous research | Sonnet |
-| **sidekick-main** | Coordinator template (reference) | Opus |
+## Quick Start (5 minutes)
 
-## Installation
-
-### Quick Install (Recommended)
+### Step 1: Clone the repo
 
 ```bash
-# Clone the repo
 git clone https://github.com/AskTinNguyen/vesper-team-skills.git
 cd vesper-team-skills
-
-# Install an agent
-./agents/install.sh jeff
-./agents/install.sh research-crawler
 ```
 
-### Manual Install
+### Step 2: Install an agent
 
-1. **Copy workspace files:**
 ```bash
-cp -r agents/jeff ~/.openclaw/workspace-jeff
+./agents/install.sh jeff              # Agentic coding coach
+./agents/install.sh research-crawler  # Overnight research agent
 ```
 
-2. **Add to OpenClaw config** (`~/.openclaw/openclaw.json`):
+### Step 3: Add to OpenClaw config
+
+Edit `~/.openclaw/openclaw.json` and add the agent to `agents.list`:
+
 ```json
 {
   "agents": {
     "list": [
-      // ... existing agents ...
+      // ... your existing agents ...
+      
+      // Add Jeff (coding coach)
       {
         "id": "jeff",
         "name": "Jeff",
-        "workspace": "/Users/YOUR_USER/.openclaw/workspace-jeff",
-        "model": {
-          "primary": "anthropic/claude-opus-4-5"
-        }
+        "workspace": "/Users/YOUR_USERNAME/.openclaw/workspace-jeff",
+        "model": { "primary": "anthropic/claude-opus-4-5" }
+      },
+      
+      // Add ResearchCrawler (overnight research)
+      {
+        "id": "research",
+        "name": "ResearchCrawler", 
+        "workspace": "/Users/YOUR_USERNAME/.openclaw/workspace-research",
+        "model": { "primary": "anthropic/claude-sonnet-4-5" }
       }
     ]
   }
 }
 ```
 
-3. **Add to subagents allowlist** (if using coordinator):
+**Important:** Replace `YOUR_USERNAME` with your actual username.
+
+### Step 4: Allow spawning (if using a coordinator)
+
+If your main agent spawns sub-agents, add to its `subagents.allowAgents`:
+
 ```json
 {
-  "agents": {
-    "list": [
-      {
-        "id": "main",
-        "subagents": {
-          "allowAgents": ["jeff", "research"]
-        }
-      }
-    ]
+  "id": "main",
+  "subagents": {
+    "allowAgents": ["jeff", "research"]
   }
 }
 ```
 
-4. **Restart gateway:**
+### Step 5: Restart gateway
+
 ```bash
 openclaw gateway restart
 ```
 
-## Agent Details
+### Step 6: Test it!
 
-### Jeff (Agentic Coding Coach)
-Based on Jeffrey Emanuel's Agent Flywheel methodology.
-
-**Best for:**
-- Project planning and task decomposition
-- Converting plans to beads (atomic tasks)
-- Multi-agent workflow guidance
-
-**Spawn command:**
-```
-sessions_spawn(agentId="jeff", task="Help me plan [FEATURE]")
+```bash
+# In your OpenClaw chat:
+sessions_spawn(agentId="jeff", task="Hello! Introduce yourself.")
 ```
 
-### ResearchCrawler (Overnight Autonomy)
-Inspired by Karel Doosterlnck's $10K/month Codex methodology.
+---
 
-**Best for:**
-- Deep Slack/GitHub/web crawling
-- Hypothesis extraction from discussions
-- Expertise mapping
-- Self-improving via agent-notes
+## Available Agents
 
-**Schedule:** Runs at 11 PM, processes research queue
+### 🔧 Jeff — Agentic Coding Coach
 
-**Cron setup:**
+Based on Jeffrey Emanuel's (@doodlestein) Agent Flywheel methodology.
+
+| Field | Value |
+|-------|-------|
+| **Model** | Opus (for critical thinking) |
+| **Best for** | Project planning, task decomposition, multi-agent workflows |
+| **Workspace** | `~/.openclaw/workspace-jeff` |
+
+**How to use:**
+```
+sessions_spawn(agentId="jeff", task="Help me plan a new feature: [DESCRIPTION]")
+```
+
+**What Jeff does:**
+- Creates structured project plans
+- Breaks work into atomic tasks (beads)
+- Guides multi-agent coordination
+- Uses beads/bv workflow for task management
+
+---
+
+### 🔬 ResearchCrawler — Overnight Autonomous Research
+
+Inspired by Karel Doosterlnck's $10K/month Codex methodology at OpenAI.
+
+| Field | Value |
+|-------|-------|
+| **Model** | Sonnet (cost-efficient for volume) |
+| **Best for** | Deep research, Slack/GitHub mining, hypothesis extraction |
+| **Workspace** | `~/.openclaw/workspace-research` |
+| **Schedule** | 11 PM nightly (or on-demand) |
+
+**How to use:**
+```
+sessions_spawn(agentId="research", task="Research [TOPIC]. Crawl Slack, GitHub, and web sources.")
+```
+
+**What ResearchCrawler does:**
+- Crawls Slack channels for discussions and decisions
+- Mines GitHub issues/PRs for context
+- Searches web for recent articles and papers
+- Writes structured research docs
+- Maintains self-improving agent-notes
+
+**Optional: Set up overnight cron:**
 ```json
 {
-  "schedule": {"kind": "cron", "expr": "0 23 * * *", "tz": "Asia/Saigon"},
+  "name": "ResearchCrawler Overnight",
+  "schedule": { "kind": "cron", "expr": "0 23 * * *", "tz": "YOUR_TIMEZONE" },
   "sessionTarget": "isolated",
   "payload": {
     "kind": "agentTurn",
-    "message": "Spawn research agent: sessions_spawn(agentId='research', task='Start overnight crawl...')"
+    "message": "Spawn research: sessions_spawn(agentId='research', task='Process research queue')",
+    "timeoutSeconds": 7200
   }
 }
 ```
 
-### Sidekick-Main (Coordinator Template)
-Reference template for a coordinator agent.
+---
 
-**Best for:**
-- Primary assistant duties
-- Agent orchestration
-- WhatsApp/Slack responses
+### ⚡ Sidekick-Main — Coordinator Template
 
-## Customization
+Reference template for a primary coordinator agent.
 
-Each agent's files are designed to be customized:
+| Field | Value |
+|-------|-------|
+| **Model** | Opus |
+| **Best for** | Primary assistant, agent orchestration |
+| **Workspace** | `~/.openclaw/workspace` |
 
-1. **AGENTS.md** — Main instructions, modify for your use case
-2. **IDENTITY.md** — Personality and role
-3. **SOUL.md** — Core principles
-4. **TOOLS.md** — Tool-specific notes and shortcuts
-5. **HEARTBEAT.md** — Scheduled check-in behavior
+Use this as a starting point for your own coordinator agent.
 
-## Contributing
+---
 
-To add a new agent template:
+## Customizing Agents
+
+Each agent workspace contains these files you can edit:
+
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | Main instructions and protocols |
+| `IDENTITY.md` | Name, role, personality |
+| `SOUL.md` | Core principles and values |
+| `TOOLS.md` | Tool-specific notes and shortcuts |
+| `HEARTBEAT.md` | Scheduled check-in behavior |
+
+Feel free to customize these for your use case!
+
+---
+
+## Updating Agents
+
+```bash
+cd vesper-team-skills
+git pull
+
+# Re-install to get updates (will prompt before overwriting)
+./agents/install.sh jeff
+```
+
+---
+
+## Troubleshooting
+
+### Agent not found when spawning
+
+1. Check `openclaw.json` has the agent in `agents.list`
+2. Check the workspace path is correct
+3. Restart gateway: `openclaw gateway restart`
+
+### Permission denied on install.sh
+
+```bash
+chmod +x ./agents/install.sh
+```
+
+### Agent spawns but fails immediately
+
+Check the agent's transcript for errors:
+```bash
+ls ~/.openclaw/agents/<agent-name>/sessions/
+cat ~/.openclaw/agents/<agent-name>/sessions/<latest>.jsonl | tail -20
+```
+
+---
+
+## Contributing New Agents
 
 1. Create folder: `agents/your-agent/`
-2. Add workspace files
+2. Add workspace files (AGENTS.md, IDENTITY.md, etc.)
 3. Add `config.json` with OpenClaw config snippet
 4. Update this README
 5. Submit PR
 
-## License
+---
 
-MIT
+## Questions?
+
+- OpenClaw docs: https://docs.openclaw.ai
+- Community: https://discord.com/invite/clawd
+- This repo: https://github.com/AskTinNguyen/vesper-team-skills
