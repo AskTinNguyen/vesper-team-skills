@@ -46,11 +46,11 @@ mcporter call 'slack-threads.slack_get_thread_replies(channel_id:"<ID>", thread_
 ### GitHub (via gh CLI)
 ```bash
 # Search issues and PRs
-gh search issues "query" --repo sipherxyz/* --json title,body,url
-gh search prs "query" --state all --repo sipherxyz/*
+gh search issues "query" --repo YOUR_ORG/* --json title,body,url
+gh search prs "query" --state all --repo YOUR_ORG/*
 
 # Get issue discussions
-gh issue view <number> --repo sipherxyz/<repo> --comments
+gh issue view <number> --repo YOUR_ORG/<repo> --comments
 ```
 
 **Priority repos:** vesper, tender-pilot, lancaster-asset-tracker
@@ -182,7 +182,7 @@ Maintain: `Areas/RESEARCH-QUEUE.md`
 - [x] Past topic — link to output
 ```
 
-TinSidekick adds topics during the day. You process them overnight.
+The coordinator adds topics during the day. You process them overnight.
 
 ---
 
@@ -194,7 +194,7 @@ TinSidekick adds topics during the day. You process them overnight.
 | **tin-knowledgebase** | Always | All research outputs |
 | **agent-notes** | Every session | Self-improvement notes |
 
-**DO NOT message Tin directly overnight** unless critical blocker.
+**DO NOT message user directly overnight** unless critical blocker.
 
 ---
 
@@ -211,7 +211,7 @@ TinSidekick adds topics during the day. You process them overnight.
 
 | Agent | How We Work Together |
 |-------|---------------------|
-| **TinSidekick** | Receives my research, adds to queue |
+| **Coordinator** | Receives my research, adds to queue |
 | **Coder** | I find context, they implement |
 | **GamingScout** | I do general research, they do gaming-specific |
 | **MarketWatch** | I do general research, they do markets-specific |

@@ -6,7 +6,7 @@
 
 ```bash
 # Read channel history
-mcporter call 'slack-threads.slack_get_channel_history(channel_id:"C034P04K6EA", limit:100)'
+mcporter call 'slack-threads.slack_get_channel_history(channel_id:"YOUR_CHANNEL_ID", limit:100)'
 
 # Read thread replies (the key capability)
 mcporter call 'slack-threads.slack_get_thread_replies(channel_id:"<ID>", thread_ts:"<TS>")'
@@ -15,10 +15,9 @@ mcporter call 'slack-threads.slack_get_thread_replies(channel_id:"<ID>", thread_
 mcporter call 'slack-threads.slack_list_channels(limit:100)'
 ```
 
-**Key channel IDs:**
-- `C034P04K6EA` — #ai-builders
-- `C04QKEKPD3M` — #learning-ai
-- `C07L2GUNV6Y` — #s2-game
+**Add your channel IDs:**
+- `CXXXXXXXXXX` — #your-channel-1
+- `CXXXXXXXXXX` — #your-channel-2
 
 ---
 
@@ -26,16 +25,16 @@ mcporter call 'slack-threads.slack_list_channels(limit:100)'
 
 ```bash
 # Search issues
-gh search issues "query" --repo sipherxyz/* --json title,body,url,comments
+gh search issues "query" --repo YOUR_ORG/* --json title,body,url,comments
 
 # Search PRs
-gh search prs "query" --state all --repo sipherxyz/*
+gh search prs "query" --state all --repo YOUR_ORG/*
 
 # View issue with comments
-gh issue view <number> --repo sipherxyz/<repo> --comments
+gh issue view <number> --repo YOUR_ORG/<repo> --comments
 
 # Search code
-gh api search/code -f q="query org:sipherxyz"
+gh api search/code -f q="query org:YOUR_ORG"
 ```
 
 ---
@@ -56,9 +55,9 @@ web_fetch "url" --extractMode markdown --maxChars 50000
 
 | Type | Path |
 |------|------|
-| Research docs | `~/tin-knowledgebase/research/` |
-| Agent notes | `~/tin-knowledgebase/agent-notes/research-crawler/` |
-| Queue | `~/tin-knowledgebase/Areas/RESEARCH-QUEUE.md` |
+| Research docs | `~/knowledge-base/research/` |
+| Agent notes | `~/knowledge-base/agent-notes/research-crawler/` |
+| Queue | `~/knowledge-base/Areas/RESEARCH-QUEUE.md` |
 
 ---
 
@@ -68,3 +67,7 @@ For long research sessions, checkpoint every 30-60 minutes:
 1. Save current progress to research doc
 2. Commit agent-notes
 3. Continue or request re-spawn if needed
+
+---
+
+*Customize the channel IDs, org names, and paths for your setup.*

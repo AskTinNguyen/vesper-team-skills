@@ -1,7 +1,6 @@
 # Research Automation Process
 
 **Adapted from:** Karel Doosterlnck's Codex methodology  
-**Created:** 2026-02-06
 
 ---
 
@@ -10,7 +9,7 @@
 Start research automation when:
 - Exploring unfamiliar codebase/domain before implementation
 - Evaluating new tool, framework, or market opportunity
-- Weekly knowledge sync (Sundays)
+- Weekly knowledge sync
 - Before any project >2 days of work
 
 ---
@@ -29,9 +28,9 @@ message search --query "topic" --channels general,dev,research
 ### 2. GitHub (via gh CLI)
 ```bash
 # Search issues, PRs, discussions
-gh search issues "topic" --repo ather-labs/*
+gh search issues "topic" --repo YOUR_ORG/*
 gh search prs "topic" --state all
-gh api search/code -f q="topic org:ather-labs"
+gh api search/code -f q="topic org:YOUR_ORG"
 ```
 - Find prior art and abandoned approaches
 - Check discussion threads for context
@@ -51,7 +50,7 @@ web_fetch "url" --extractMode markdown
 
 ## Output Structure
 
-All research outputs go to: `~/tin-knowledgebase/research/`
+All research outputs go to: `~/knowledge-base/research/`
 
 ### Per-Topic Template
 `# Research: [Topic]` → TL;DR → Sources (with links) → Hypotheses → Actions → Open Questions
@@ -61,7 +60,7 @@ All research outputs go to: `~/tin-knowledgebase/research/`
 ## Compounding Knowledge
 
 ### Agent Notes Folder
-Each agent maintains: `~/tin-knowledgebase/agent-notes/[agent-name]/`
+Each agent maintains: `~/knowledge-base/agent-notes/[agent-name]/`
 
 After each research session, commit:
 ```markdown
@@ -85,21 +84,19 @@ After each research session, commit:
 
 ---
 
-## Agent Roles
+## Agent Roles (Example)
 
 | Agent | Research Focus |
 |-------|---------------|
-| **TinSidekick** | Orchestrates, consolidates, routes |
+| **Coordinator** | Orchestrates, consolidates, routes |
 | **Coder** | Technical implementations, code search |
-| **GamingScout** | Gaming industry, Steam, player behavior |
-| **MarketWatch** | Market data, competitors, trends |
+| **ResearchCrawler** | Deep research, overnight crawls |
 
 ### Orchestration Pattern
 ```
-User request → TinSidekick
+User request → Coordinator
   ├── Spawns Coder (if code research needed)
-  ├── Spawns GamingScout (if gaming domain)
-  ├── Spawns MarketWatch (if market analysis)
+  ├── Spawns ResearchCrawler (if deep research needed)
   └── Aggregates results, writes to knowledge base
 ```
 
@@ -108,10 +105,14 @@ User request → TinSidekick
 ## Quick Start Checklist
 
 - [ ] Define research question clearly
-- [ ] Check existing research in `tin-knowledgebase/`
+- [ ] Check existing research in knowledge base
 - [ ] Read agent-notes for prior shortcuts
 - [ ] Crawl: Slack → GitHub → Web
 - [ ] Generate 5+ testable hypotheses
 - [ ] Write structured output
 - [ ] Commit agent notes
 - [ ] Link from relevant project docs
+
+---
+
+*Customize org names and paths for your setup.*

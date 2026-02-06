@@ -5,7 +5,7 @@
 ResearchCrawler runs on-demand via spawning, not heartbeat polling.
 
 **Active hours:** 11 PM – 6 AM (overnight crawls)
-**Triggered by:** Cron job or TinSidekick spawn
+**Triggered by:** Cron job or Coordinator spawn
 
 ---
 
