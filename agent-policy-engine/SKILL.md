@@ -19,7 +19,33 @@ and checks every tool call before permission mode logic runs.
 
 ## Architecture Overview
 
-### Three-Layer Security Model
+### Five-Level Config Hierarchy
+
+The policy engine operates as the innermost enforcement layer of a cascading configuration
+hierarchy. See `references/hierarchical-scoping.md` for the full scoping model.
+
+```
+Level 1: Global Defaults        (app config.json)
+Level 2: Workspace Config       (project config.json + allow-list permissions.json)
+Level 3: Persona Defaults       (role personas.json + deny-list permissions.json)
+Level 4: Session Snapshot        (frozen at creation — permissionMode, providerId, personaId)
+Level 5: Runtime Enforcement     (PreToolUse: deny-first → mode → allow-list)
+```
+
+Settings resolve using first-wins logic (explicit options beat persona, which beats workspace,
+which beats global). Sessions snapshot their resolved config at creation time for isolation.
+
+### Dual Permission System
+
+Two distinct `permissions.json` files serve complementary purposes:
+
+- **Workspace permissions** (allow-list, additive) — customizes what's auto-approved in Explore mode
+- **Persona policy** (deny-list, subtractive) — blocks tools regardless of any mode or setting
+
+These never conflict because they answer different questions. Allow-lists extend defaults;
+deny-lists override everything. See `references/hierarchical-scoping.md` for details.
+
+### Three-Layer Enforcement Model
 
 ```
 Layer 1: Hard-Deny Policy   (immutable, checked first — this skill)
@@ -31,6 +57,12 @@ Layer 3: Tool Execution
 
 The hard-deny layer runs **before** permission modes in the agent's `PreToolUse` hook. A denied
 tool never reaches permission logic, making policies immutable at runtime.
+
+### Permission Escalation Guard
+
+When a persona requests `defaultPermissionMode: 'allow-all'`, it requires explicit opt-in via
+`allowPermissionModeEscalation: true`. Without the flag, the persona cannot escalate permissions
+and the safer workspace/global default applies instead.
 
 ### File Organization Pattern
 
@@ -182,6 +214,23 @@ Test every deny category independently. See `references/testing.md` for the test
 - Preset enforcement
 - Edge cases: empty policy, invalid regex in config, paths with `~`
 
+### Step 10: Implement Hierarchical Scoping
+
+Place the policy engine within a cascading config hierarchy. See `references/hierarchical-scoping.md`
+for the complete pattern including:
+
+- Five-level resolution: Global → Workspace → Persona → Session → Runtime
+- First-wins resolution with null-coalescing chains
+- Session snapshotting (freeze config at creation time for isolation)
+- Dual permission system (additive allow-list + subtractive deny-list)
+- Permission escalation guards for auto-approve mode
+
+Key implementation points:
+- Resolve all settings at session creation, store as snapshot in session record
+- Never reference live config during session execution — only the snapshot
+- Guard `allow-all` permission mode with explicit `allowPermissionModeEscalation` flag
+- Make workspace permissions additive-only (can extend defaults, never restrict them)
+
 ## Design Principles
 
 1. **Deny-list, not allow-list** — policies block specific operations; everything else passes to permission modes
@@ -191,6 +240,9 @@ Test every deny category independently. See `references/testing.md` for the test
 5. **Browser/Node split** — types and presets browser-safe, Node APIs only in loader/compiler
 6. **Compile-once, check-many** — O(n) compilation at start, efficient checks per tool call
 7. **Two-tier bash matching** — fast Set lookup for base commands, then regex for full command patterns
+8. **Session-level snapshotting** — freeze resolved config at session creation for isolation across restarts
+9. **Dual permission files** — allow-lists (workspace) and deny-lists (persona) are complementary, never conflicting
+10. **Escalation guards** — auto-approve mode requires explicit opt-in flag to prevent misconfigured persona bypasses
 
 ## Common Pitfalls
 
