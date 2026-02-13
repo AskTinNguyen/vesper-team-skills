@@ -9,6 +9,7 @@ Analyze game or system design documents from a **Senior Game QA / Product QA** p
 
 ```yaml
 name: qa:design-analysis
+invoke: /qa:design-analysis
 description: Analyze game/system design documents from a Senior QA perspective to identify risks, unclear rules, edge cases, and exploit scenarios.
 argument-hint: [design link or design content]
 ```
