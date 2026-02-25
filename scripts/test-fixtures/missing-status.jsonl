@@ -1,0 +1,3 @@
+{"id":"TASK-001","title":"Task with no status (defaults to open)","deps":[]}
+{"id":"TASK-002","status":"closed","title":"Closed task","deps":[]}
+{"id":"TASK-003","title":"Another task with no status","deps":[]}

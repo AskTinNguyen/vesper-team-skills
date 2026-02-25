@@ -1,517 +1,265 @@
 # Vesper Team Skills
 
-Shared skills and commands for distribution via Vesper's Team Skills feature or direct installation with Claude Code CLI.
+58 skills, 44 commands, and 6 workflows for Claude Code.
 
-## 🔌 Recommended: Anthropic's Official Knowledge Work Plugins
-
-Anthropic open-sourced **11 enterprise plugins** for Claude Cowork & Claude Code — covering sales, finance, legal, data, marketing, support, product management, and more. These are high-quality, officially maintained plugins with connectors to popular tools (Slack, Notion, Jira, HubSpot, Snowflake, etc.).
-
-**GitHub:** https://github.com/anthropics/knowledge-work-plugins
-**Blog:** https://claude.com/blog/cowork-plugins
-
-```bash
-# Add the marketplace
-claude plugin marketplace add anthropics/knowledge-work-plugins
-
-# Install all 11 plugins
-for p in productivity sales finance data legal marketing customer-support product-management enterprise-search bio-research cowork-plugin-management; do
-  claude plugin install "$p@knowledge-work-plugins"
-done
-```
-
-These complement our team skills — use Anthropic's plugins for general business workflows and our skills below for Ather-specific development workflows.
-
----
-
-## Quick Start
-
-### For Claude Code CLI Users (No Vesper Required)
-
-Install skills and commands directly to your Claude Code directories:
-
-```bash
-# Clone the repository
-git clone https://github.com/AskTinNguyen/vesper-team-skills ~/.claude/team-skills
-
-# Symlink skills to Claude Code skills directory
-ln -sf ~/.claude/team-skills/*/ ~/.claude/skills/ 2>/dev/null
-
-# Copy commands to Claude Code commands directory
-mkdir -p ~/.claude/commands
-cp -r ~/.claude/team-skills/commands/* ~/.claude/commands/
-
-# Run setup scripts for skills that require them (optional)
-~/.claude/team-skills/dispatch/setup.sh      # cc and ccd commands
-~/.claude/team-skills/github-intel/install.sh # GitHub discovery tools
-~/.claude/team-skills/ralph-loop/install.sh   # ralph command
-```
-
-**To update later:**
-```bash
-cd ~/.claude/team-skills && git pull
-cp -r commands/* ~/.claude/commands/
-```
-
-### For Vesper Users
-
-See [Vesper Team Skills Setup](#for-vesper-users-auto-sync) below.
-
----
-
-## Claude Code CLI Installation (Detailed)
-
-This section provides detailed instructions for Claude Code CLI users who want to use these skills without the Vesper desktop app.
-
-### Prerequisites
-
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed
-- Git installed
-- GitHub account with repository access (for private repos, a PAT with `repo` scope)
-
-### Installation Methods
-
-#### Method 1: Clone and Symlink (Recommended)
-
-This method keeps skills updated via git pull and maintains the repository structure:
-
-```bash
-# 1. Clone to a dedicated directory
-git clone https://github.com/AskTinNguyen/vesper-team-skills ~/.claude/team-skills
-
-# 2. Create skills directory if it doesn't exist
-mkdir -p ~/.claude/skills
-
-# 3. Symlink each skill directory (excludes README and commands)
-for skill in ~/.claude/team-skills/*/; do
-  skill_name=$(basename "$skill")
-  if [[ "$skill_name" != "commands" && -f "$skill/SKILL.md" ]]; then
-    ln -sf "$skill" ~/.claude/skills/
-    echo "Linked: $skill_name"
-  fi
-done
-
-# 4. Copy commands (these need to be actual files, not symlinks)
-mkdir -p ~/.claude/commands
-cp -r ~/.claude/team-skills/commands/* ~/.claude/commands/
-```
-
-**Updating:**
-```bash
-cd ~/.claude/team-skills && git pull
-# Skills auto-update via symlinks
-# Commands need to be re-copied
-cp -r commands/* ~/.claude/commands/
-```
-
-#### Method 2: Direct Copy
-
-If you prefer not to use symlinks:
-
-```bash
-# Clone temporarily
-git clone https://github.com/AskTinNguyen/vesper-team-skills /tmp/vesper-team-skills
-
-# Copy skills (excluding non-skill directories)
-mkdir -p ~/.claude/skills
-for skill in /tmp/vesper-team-skills/*/; do
-  skill_name=$(basename "$skill")
-  if [[ "$skill_name" != "commands" && -f "$skill/SKILL.md" ]]; then
-    cp -r "$skill" ~/.claude/skills/
-    echo "Copied: $skill_name"
-  fi
-done
-
-# Copy commands
-mkdir -p ~/.claude/commands
-cp -r /tmp/vesper-team-skills/commands/* ~/.claude/commands/
-
-# Clean up
-rm -rf /tmp/vesper-team-skills
-```
-
-#### Method 3: Selective Installation
-
-Install only specific skills you need:
-
-```bash
-# Clone the repo
-git clone https://github.com/AskTinNguyen/vesper-team-skills /tmp/vesper-team-skills
-
-# Copy specific skills
-mkdir -p ~/.claude/skills
-cp -r /tmp/vesper-team-skills/remotion ~/.claude/skills/
-cp -r /tmp/vesper-team-skills/ffmpeg ~/.claude/skills/
-cp -r /tmp/vesper-team-skills/frontend-design ~/.claude/skills/
-
-# Copy specific commands
-mkdir -p ~/.claude/commands
-cp /tmp/vesper-team-skills/commands/lfg.md ~/.claude/commands/
-cp -r /tmp/vesper-team-skills/commands/workflows ~/.claude/commands/
-```
-
-### Post-Installation Setup
-
-Some skills require additional setup after installation:
-
-#### dispatch (Task Coordination)
-```bash
-# Installs 'cc' and 'ccd' commands for multi-agent task coordination
-~/.claude/skills/dispatch/setup.sh
-# Or if using symlink method:
-~/.claude/team-skills/dispatch/setup.sh
-```
-
-#### github-intel (Repository Discovery)
-```bash
-# Installs discovery and extraction scripts
-~/.claude/skills/github-intel/install.sh
-# Or if using symlink method:
-~/.claude/team-skills/github-intel/install.sh
-```
-
-#### ralph-loop (Autonomous Workflows)
-```bash
-# Installs the 'ralph' command for autonomous coding workflows
-~/.claude/skills/ralph-loop/install.sh
-# Or if using symlink method:
-~/.claude/team-skills/ralph-loop/install.sh
-```
-
-### Verifying Installation
-
-```bash
-# List installed skills
-ls -la ~/.claude/skills/
-
-# List installed commands
-ls -la ~/.claude/commands/
-
-# In Claude Code, check available skills
-# Type: "what skills do you have available?"
-```
-
-### Directory Structure After Installation
+## Installation
 
 ```
-~/.claude/
-├── skills/                    # Skills directory
-│   ├── agent-browser/         # Symlink or copy
-│   ├── dispatch/
-│   ├── frontend-design/
-│   ├── remotion/
-│   └── ...
-├── commands/                  # Commands directory
-│   ├── lfg.md
-│   ├── changelog.md
-│   ├── workflows/
-│   │   ├── work.md
-│   │   ├── plan.md
-│   │   ├── review.md
-│   │   ├── bulk-review.md
-│   │   └── compound.md
-│   └── ...
-└── team-skills/               # Source repo (if using Method 1)
-    ├── README.md
-    ├── commands/
-    └── <skill-directories>/
+/plugin marketplace add https://github.com/AskTinNguyen/vesper-team-skills
+/plugin install vesper-team-skills
 ```
 
-### Updating Skills
+That's it. All skills and commands are now available in your Claude Code sessions.
 
-**Method 1 (Symlink):**
-```bash
-cd ~/.claude/team-skills
-git pull
-# Skills update automatically via symlinks
-# Re-copy commands
-cp -r commands/* ~/.claude/commands/
-```
+## Skills
 
-**Method 2/3 (Direct Copy):**
-```bash
-git clone https://github.com/AskTinNguyen/vesper-team-skills /tmp/vesper-team-skills
-# Re-copy desired skills and commands
-cp -r /tmp/vesper-team-skills/<skill-name> ~/.claude/skills/
-cp -r /tmp/vesper-team-skills/commands/* ~/.claude/commands/
-rm -rf /tmp/vesper-team-skills
-```
+### Multi-Agent Orchestration
 
-### Uninstalling
+| Skill | Description |
+|-------|-------------|
+| [dispatch](dispatch/) | Coordinate complex features with parallel subagent execution |
+| [agent-supervisor](agent-supervisor/) | Monitor task lists, detect gaps, and track agent status without doing implementation |
+| [github-sync](github-sync/) | Synchronize GitHub PRs and issues into the Claude Code task list |
+| [tasklist-env](tasklist-env/) | Check, verify, or switch the current task list environment |
+| [ralph-loop](ralph-loop/) | Trigger and manage Ralph Loop autonomous coding workflows |
 
-```bash
-# Remove all team skills
-rm -rf ~/.claude/skills/*
-rm -rf ~/.claude/commands/*
-rm -rf ~/.claude/team-skills
+### Code Quality & Review
 
-# Or remove specific skills
-rm -rf ~/.claude/skills/dispatch
-rm ~/.claude/commands/lfg.md
-```
+| Skill | Description |
+|-------|-------------|
+| [code-review-expert](code-review-expert/) | Expert code review with a senior engineer lens — SOLID violations, security risks |
+| [code-simplifier](code-simplifier/) | Simplify and refine code for clarity and maintainability |
+| [code-quality-hook](code-quality-hook/) | PostToolUse hook that checks code quality after Edit/Write operations |
+| [reducing-entropy](reducing-entropy/) | Minimize total codebase size — biases toward deletion |
+| [verify-and-ship](verify-and-ship/) | Verify agent work output, commit, push, and create PRs |
+| [scheduled-codebase-review](scheduled-codebase-review/) | Periodic deep reviews of the entire codebase using multi-agent analysis |
 
----
+### Project Management & Planning
 
-## For Vesper Users (Auto-Sync)
+| Skill | Description |
+|-------|-------------|
+| [ship-notes](ship-notes/) | Generate release notes from recent git activity |
+| [last7days](last7days/) | Review the last 7 days of activity in a git repository |
+| [agent-changelog](agent-changelog/) | Compile an agent-optimized changelog from git history |
+| [file-todos](file-todos/) | Manage file-based todo tracking in the todos/ directory |
+| [compound-docs](compound-docs/) | Capture solved problems as categorized documentation |
+| [feature-specification](feature-specification/) | Write comprehensive feature specifications for product and engineering |
 
-Vesper provides automatic syncing of team skills from this repository.
+### CLAUDE.md & Skills Authoring
 
-### Setup in Vesper
+| Skill | Description |
+|-------|-------------|
+| [claude-md-improver](claude-md-improver/) | Audit and improve CLAUDE.md files in repositories |
+| [claudemd-reviewer](claudemd-reviewer/) | Review and analyze CLAUDE.md hierarchy in repositories |
+| [create-agent-skills](create-agent-skills/) | Expert guidance for creating and refining Claude Code skills |
+| [skill-creator](skill-creator/) | Guide for creating effective skills |
+| [skill-enricher](skill-enricher/) | Cross-reference a skill with its source repo to fill gaps |
+| [skill-qa-release-guardian](skill-qa-release-guardian/) | Automated release QA with UI testing, regression verification, and bug reporting |
+| [claude-code-hooks](claude-code-hooks/) | Implement pre-hooks and post-hooks for Claude Code |
 
-1. Open Vesper Settings (CMD+,)
-2. Navigate to **Workspace** → **Team Skills**
-3. Enter repo URL: `AskTinNguyen/vesper-team-skills`
-4. Enter GitHub PAT (with `repo` scope for private repos)
-5. Click **Save & Sync**
+### Video & Media Production
 
-Skills will appear in your skills list with a "Team" badge.
+| Skill | Description |
+|-------|-------------|
+| [remotion](remotion/) | Create programmatic videos using React with Remotion |
+| [launchpad-remotion](launchpad-remotion/) | Reusable components and brand assets for the trycua/launchpad Remotion monorepo |
+| [ffmpeg](ffmpeg/) | Video and audio processing — format conversion, resizing, compression |
+| [elevenlabs](elevenlabs/) | Generate AI voiceovers, sound effects, and music using ElevenLabs APIs |
+| [playwright-recording](playwright-recording/) | Record browser interactions as video using Playwright |
+| [qwen-edit](qwen-edit/) | AI-powered image editing using Qwen via RunPod serverless |
+| [gemini-imagegen](gemini-imagegen/) | Generate and edit images using the Gemini API |
 
-### Manual Sync
+### Browser Automation & Testing
 
-To get the latest skills:
-1. Open Vesper Settings
-2. Go to Team Skills section
-3. Click the **Sync** button
+| Skill | Description |
+|-------|-------------|
+| [agent-browser](agent-browser/) | Browser automation using Vercel's agent-browser CLI |
+| [webapp-testing](webapp-testing/) | Test local web applications using Playwright |
+| [electron-cdp-testing](electron-cdp-testing/) | Automated E2E testing for Electron apps using Chrome DevTools Protocol |
 
-### Commands Installation (Manual)
+### Architecture & Design
 
-Commands are not auto-synced by Vesper and need manual installation:
+| Skill | Description |
+|-------|-------------|
+| [agent-native-architecture](agent-native-architecture/) | Build applications where agents are first-class citizens |
+| [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
+| [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
+| [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
+| [build-electron-features](build-electron-features/) | Build full-stack features for the Vesper Electron app |
+| [flowy-flowchart](flowy-flowchart/) | Create flowchart diagrams inline in the conversation |
+| [flowy-ui-mockup](flowy-ui-mockup/) | Create UI mockups for iPhone and iPad apps |
 
-```bash
-# Clone repo (if not already)
-git clone https://github.com/AskTinNguyen/vesper-team-skills /tmp/vesper-team-skills
+### Research & Intelligence
 
-# Copy commands to Claude Code
-cp -r /tmp/vesper-team-skills/commands/* ~/.claude/commands/
+| Skill | Description |
+|-------|-------------|
+| [github-intel](github-intel/) | Discover trending repos, research AI coding tools, extract code patterns |
+| [social30days](social30days/) | Research a topic from the last 30 days on social media |
+| [news30days](news30days/) | Research a topic from the last 30 days in news outlets |
+| [last30days](last30days/) | Research a topic from the last 30 days on Reddit + X + Web |
+| [qmd-search](qmd-search/) | On-device semantic search for markdown documents |
 
-# Verify
-ls ~/.claude/commands/
-```
+### Ruby & Rails
 
----
+| Skill | Description |
+|-------|-------------|
+| [dhh-rails-style](dhh-rails-style/) | Write Ruby and Rails code in DHH's 37signals style |
+| [andrew-kane-gem-writer](andrew-kane-gem-writer/) | Write Ruby gems following Andrew Kane's patterns |
+| [dspy-ruby](dspy-ruby/) | Build type-safe, composable LLM applications with DSPy.rb |
 
-## Available Skills
+### DevOps & Utilities
 
-| Skill | Description | Setup Required |
-|-------|-------------|----------------|
-| [agent-browser](./agent-browser/) | Browser automation using Vercel's agent-browser CLI | No |
-| [agent-native-architecture](./agent-native-architecture/) | Agent-first software design patterns and principles | No |
-| [andrew-kane-gem-writer](./andrew-kane-gem-writer/) | Ruby gem writing in Andrew Kane's proven style | No |
-| [build-electron-features](./build-electron-features/) | Vesper Electron app feature patterns | No |
-| [claude-code-hooks](./claude-code-hooks/) | Pre/post hooks for Claude Code tool executions | No |
-| [compound-docs](./compound-docs/) | Categorized documentation for solved problems | No |
-| [create-agent-skills](./create-agent-skills/) | Skill authoring guidance and templates | No |
-| [dhh-rails-style](./dhh-rails-style/) | DHH/37signals Rails coding style | No |
-| [dispatch](./dispatch/) | Multi-agent task coordination with parallel execution | **Yes** |
-| [dspy-ruby](./dspy-ruby/) | DSPy.rb LLM framework patterns | No |
-| [electron-cdp-testing](./electron-cdp-testing/) | CDP-based E2E testing for Electron apps | No |
-| [elevenlabs](./elevenlabs/) | AI voiceover and sound generation | No |
-| [every-style-editor](./every-style-editor/) | Every.com style guide compliance | No |
-| [ffmpeg](./ffmpeg/) | Video/audio processing patterns | No |
-| [file-todos](./file-todos/) | File-based todo tracking system | No |
-| [flowy-flowchart](./flowy-flowchart/) | Inline flowchart diagrams in conversations | No |
-| [flowy-ui-mockup](./flowy-ui-mockup/) | Inline iOS UI mockups in conversations | No |
-| [frontend-design](./frontend-design/) | High-quality frontend UI generation | No |
-| [gemini-imagegen](./gemini-imagegen/) | Image generation with Gemini API | No |
-| [git-worktree](./git-worktree/) | Git worktree management | No |
-| [github-intel](./github-intel/) | GitHub repository discovery and analysis | **Yes** |
-| [launchpad-remotion](./launchpad-remotion/) | Launchpad Remotion components and patterns | No |
-| [messaging-integration](./messaging-integration/) | WhatsApp/Slack/Telegram integration patterns | No |
-| [playwright-recording](./playwright-recording/) | Browser recording with Playwright | No |
-| [qmd-search](./qmd-search/) | On-device markdown search engine | No |
-| [qwen-edit](./qwen-edit/) | AI image editing with Qwen | No |
-| [ralph-loop](./ralph-loop/) | Autonomous coding workflow orchestration | **Yes** |
-| [rclone](./rclone/) | Cloud storage file management | No |
-| [remotion](./remotion/) | Programmatic video creation with React | No |
-| [scheduled-codebase-review](./scheduled-codebase-review/) | Multi-agent codebase analysis | No |
-| [skill-creator](./skill-creator/) | Skill creation guidance | No |
+| Skill | Description |
+|-------|-------------|
+| [git-worktree](git-worktree/) | Manage Git worktrees for isolated parallel development |
+| [rclone](rclone/) | Upload, sync, and manage files across cloud storage providers |
+| [messaging-integration](messaging-integration/) | Production-ready patterns for WhatsApp, Slack, and Telegram integration |
+| [setup-statusline-advanced](setup-statusline-advanced/) | Set up an advanced Claude Code statusline with real-time session metrics |
+| [3-layer-memory](3-layer-memory/) | Three-layer compounding memory system for AI assistants |
+| [heartbeat-implementation](heartbeat-implementation/) | Implement periodic heartbeat systems in AI agent applications |
 
-## Available Commands
+### Writing & Style
 
-Slash commands invoked with `/command-name` in Claude Code.
+| Skill | Description |
+|-------|-------------|
+| [every-style-editor](every-style-editor/) | Review and edit copy for Every's style guide compliance |
+| [sales-materials-creator](sales-materials-creator/) | Create sales decks and pitch decks using a feelings-first philosophy |
+
+## Commands
+
+Run these with `/command-name` in Claude Code.
+
+### Core Workflows
 
 | Command | Description |
 |---------|-------------|
-| `/agent-native-audit` | Run comprehensive agent-native architecture review |
-| `/brand` | Brand profile management |
-| `/changelog` | Generate changelogs from recent merges |
-| `/contribute` | Share improvements (issues, PRs, skills) |
-| `/create-agent-skill` | Create or edit Claude Code skills |
-| `/deepen-plan` | Enhance plans with parallel research agents |
-| `/deploy-docs` | Validate and prepare docs for deployment |
-| `/design` | Design refinement workflow |
-| `/feature-video` | Record feature walkthrough for PR |
-| `/generate_command` | Create new custom slash commands |
-| `/generate-voiceover` | Generate AI voiceover from script |
-| `/heal-skill` | Fix incorrect SKILL.md files |
+| `/workflows:plan` | Transform feature descriptions into well-structured project plans |
+| `/workflows:work` | Execute work plans efficiently while maintaining quality |
+| `/workflows:review` | Exhaustive code reviews using multi-agent analysis and worktrees |
+| `/workflows:compound` | Document a recently solved problem to compound your team's knowledge |
+| `/workflows:design` | Deep-dive visual refinement for video scenes |
+| `/workflows:bulk-review` | Review multiple PRs efficiently with batched single-agent reviews |
+
+### Development
+
+| Command | Description |
+|---------|-------------|
 | `/lfg` | Full autonomous engineering workflow |
-| `/plan_review` | Multi-agent plan review |
+| `/start-new-feature` | Understand the codebase, then decompose and orchestrate parallel development |
+| `/sprint-plan` | Create an AI-agent-optimized sprint plan |
+| `/deepen-plan` | Enhance a plan with parallel research agents |
+| `/plan_review` | Have multiple specialized agents review a plan in parallel |
+| `/simplify-code` | Dual-pass code simplification |
+| `/agent-native-audit` | Comprehensive agent-native architecture review with scored principles |
+
+### Issue & PR Management
+
+| Command | Description |
+|---------|-------------|
+| `/dispatch-issues` | Pull GitHub issues into the task list and dispatch parallel agents |
+| `/dispatch-tests` | Partition tests into zones and dispatch parallel agents |
+| `/resolve_parallel` | Resolve all TODO comments using parallel processing |
+| `/resolve_pr_parallel` | Resolve all PR comments using parallel processing |
+| `/resolve_todo_parallel` | Resolve all pending CLI todos using parallel processing |
+| `/reproduce-bug` | Reproduce and investigate a bug using logs and browser screenshots |
+| `/triage` | Triage and categorize findings for the CLI todo system |
+
+### Video & Media
+
+| Command | Description |
+|---------|-------------|
+| `/video` | Video projects — list, resume, or create new |
+| `/brand` | Brand profiles — list, edit, or create new |
+| `/design` | Deep-dive visual refinement for video scenes |
+| `/scene-review` | Review video scenes |
 | `/record-demo` | Guided Playwright browser recording |
-| `/redub` | Redub video with different voice |
-| `/release-docs` | Build and update documentation site |
-| `/report-bug` | Report a bug workflow |
-| `/reproduce-bug` | Bug investigation workflow |
-| `/resolve_parallel` | Resolve TODO comments in parallel |
-| `/resolve_pr_parallel` | Resolve PR comments in parallel |
-| `/resolve_todo_parallel` | Resolve CLI todos in parallel |
-| `/scene-review` | Scene review workflow |
-| `/setup-statusline` | Setup ccstatusline integration |
-| `/skills` | List installed skills or create new |
-| `/template` | List available templates |
-| `/test-browser` | Run browser tests for PR |
-| `/triage` | Triage and categorize findings |
-| `/versions` | Check dependency versions |
-| `/video` | Video project management |
+| `/feature-video` | Record a video walkthrough of a feature for the PR description |
+| `/generate-voiceover` | Generate AI voiceover from script |
+| `/redub` | Redub video with a different voice |
+
+### Testing & QA
+
+| Command | Description |
+|---------|-------------|
+| `/test-browser` | Run browser tests on pages affected by current PR or branch |
 | `/xcode-test` | Build and test iOS apps on simulator |
 
-### Workflows
+### Documentation & Ops
 
-Core workflows in `commands/workflows/`:
+| Command | Description |
+|---------|-------------|
+| `/changelog` | Create engaging changelogs for recent merges to main |
+| `/last7days` | 7-day review of repo activity |
+| `/deploy-docs` | Validate and prepare documentation for GitHub Pages |
+| `/release-docs` | Build and update the documentation site |
+| `/setup-statusline` | Set up ccstatusline integration |
+| `/versions` | Check dependency versions and toolkit updates |
+| `/template` | List available templates and their features |
 
-| Workflow | Command | Description |
-|----------|---------|-------------|
-| Work | `/workflows:work` | Execute work plans efficiently |
-| Plan | `/workflows:plan` | Transform features into structured project plans |
-| Review | `/workflows:review` | Exhaustive multi-agent code reviews |
-| Bulk Review | `/workflows:bulk-review` | Batched single-agent reviews for 4+ PRs |
-| Compound | `/workflows:compound` | Document solved problems to compound knowledge |
+### Skills Management
 
----
+| Command | Description |
+|---------|-------------|
+| `/skills` | List installed skills or create new ones |
+| `/skill` | Explicitly invoke a skill by name |
+| `/create-agent-skill` | Create or edit Claude Code skills |
+| `/heal-skill` | Fix incorrect SKILL.md files |
+| `/generate_command` | Create a new custom slash command |
+| `/contribute` | Share improvements — issues, PRs, skills, templates |
+| `/report-bug` | Report a bug |
 
-## For Team Admins
+## Quick Start
 
-### Adding New Skills
+After installation, skills activate automatically based on what you're doing. You can also invoke them explicitly:
 
-1. Create a directory: `my-skill/`
-2. Add `SKILL.md` with YAML frontmatter:
+```
+/skill dispatch         # Coordinate parallel agents
+/skill code-review      # Run expert code review
+/skill remotion         # Create programmatic videos
+```
+
+For multi-agent orchestration, start with:
+
+```
+/lfg                    # Full autonomous workflow
+/start-new-feature      # Break down and parallelize a feature
+/dispatch-issues        # Pull GitHub issues and dispatch agents
+```
+
+## Alternative Installation
+
+<details>
+<summary>Manual installation (without plugin system)</summary>
+
+### Clone and link
+
+```bash
+git clone https://github.com/AskTinNguyen/vesper-team-skills.git ~/vesper-team-skills
+```
+
+### For OpenClaw
+
+See [openclaw-plugin/README.md](openclaw-plugin/README.md) for full installation and usage instructions.
+
+### Adding new commands
+
+Create `commands/your-command.md` with YAML frontmatter:
 
 ```markdown
 ---
-name: My Skill
-description: What the skill does
-icon: optional-emoji
-globs:           # Optional: auto-activate for matching files
-  - "**/*.tsx"
-alwaysAllow:     # Optional: tools to always allow
-  - Read
-  - Grep
+name: your-command
+description: What it does
+argument-hint: "[optional args]"
 ---
 
-# Skill Instructions
-
-Your instructions here...
+Your command instructions here.
+Use $ARGUMENTS for user input.
 ```
 
-3. Commit and push
-4. Vesper users click "Sync", CLI users run `git pull`
+Commit and push — team members run `git pull`, no restart needed.
 
-### Adding New Commands
+</details>
 
-1. Create a markdown file: `commands/my-command.md`
-2. Add command content (no frontmatter needed)
-3. Commit and push
-4. Users copy to `~/.claude/commands/`
+## License
 
-### Skill Directory Structure
-
-```
-my-skill/
-├── SKILL.md       # Required: YAML frontmatter + instructions
-├── setup.sh       # Optional: Post-install setup script
-├── install.sh     # Optional: Alternative setup script name
-├── scripts/       # Optional: Helper scripts
-├── references/    # Optional: Reference documentation
-└── templates/     # Optional: File templates
-```
-
----
-
-## Skill Precedence (Vesper)
-
-When using Vesper, skills are loaded with **first-wins** precedence:
-
-| Priority | Source | Location |
-|----------|--------|----------|
-| 1 (highest) | Workspace | `~/.vesper/workspaces/{id}/skills/` |
-| 2 | Team | `~/.vesper/team-skills/` |
-| 3 (lowest) | Claude Code | `~/.claude/skills/` |
-
-Skills are deduplicated by **slug** (directory name). If a skill exists in multiple locations, only the highest-priority version loads.
-
-### For Claude Code CLI Users
-
-Claude Code loads skills from `~/.claude/skills/` only. If you have multiple skills with the same name from different sources, resolve conflicts manually by keeping only the version you want.
-
----
-
-## Troubleshooting
-
-### Skills Not Appearing in Claude Code
-
-1. Verify the skill directory exists: `ls ~/.claude/skills/`
-2. Check that `SKILL.md` exists in each skill directory
-3. Ensure the SKILL.md has valid YAML frontmatter
-4. Restart Claude Code CLI
-
-### Git Clone Fails (Private Repository)
-
-For private repositories, authenticate with GitHub:
-
-```bash
-# Option 1: HTTPS with PAT
-git clone https://<PAT>@github.com/AskTinNguyen/vesper-team-skills ~/.claude/team-skills
-
-# Option 2: SSH (if configured)
-git clone git@github.com:AskTinNguyen/vesper-team-skills.git ~/.claude/team-skills
-
-# Option 3: GitHub CLI
-gh repo clone AskTinNguyen/vesper-team-skills ~/.claude/team-skills
-```
-
-### Symlinks Not Working
-
-If symlinks don't work on your system:
-
-```bash
-# Remove symlinks and copy instead
-rm ~/.claude/skills/*
-for skill in ~/.claude/team-skills/*/; do
-  skill_name=$(basename "$skill")
-  if [[ "$skill_name" != "commands" && -f "$skill/SKILL.md" ]]; then
-    cp -r "$skill" ~/.claude/skills/
-  fi
-done
-```
-
-### Commands Not Found
-
-Ensure commands are in the correct directory:
-
-```bash
-ls ~/.claude/commands/
-# Should show .md files like lfg.md, changelog.md, etc.
-```
-
-Commands must be `.md` files directly in `~/.claude/commands/` (workflows go in `~/.claude/commands/workflows/`).
-
----
-
-## Repository Structure
-
-```
-vesper-team-skills/
-├── README.md
-├── commands/           # Slash commands (manual install required)
-│   ├── *.md           # Individual commands
-│   └── workflows/     # Core workflow commands
-│       ├── work.md
-│       ├── plan.md
-│       ├── review.md
-│       ├── bulk-review.md
-│       └── compound.md
-└── <skill-name>/      # Skills (auto-sync via Vesper or manual install)
-    ├── SKILL.md       # Required: YAML frontmatter + instructions
-    ├── setup.sh       # Optional: Post-sync setup script
-    ├── scripts/       # Optional: Helper scripts
-    ├── references/    # Optional: Reference documentation
-    └── templates/     # Optional: File templates
-```
+MIT

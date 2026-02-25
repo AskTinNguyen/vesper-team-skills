@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QA Guardian Configuration",
+  "description": "Configuration schema for qa-release-guardian skill",
+  "type": "object",
+  "required": ["base_url"],
+  "properties": {
+    "base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Target URL to test (e.g., http://localhost:3000 or https://staging.app.com)"
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["cookie", "oauth", "none"],
+          "default": "none",
+          "description": "Authentication method"
+        },
+        "file": {
+          "type": "string",
+          "description": "Path to saved auth state file (for cookie auth)"
+        },
+        "credentials": {
+          "type": "object",
+          "properties": {
+            "username": { "type": "string" },
+            "password": { "type": "string" }
+          }
+        }
+      }
+    },
+    "github": {
+      "type": "object",
+      "properties": {
+        "repo": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$",
+          "description": "GitHub repo in format owner/name"
+        },
+        "since": {
+          "type": "string",
+          "description": "Lookback period: last_deploy, last_7_days, last_14_days, or YYYY-MM-DD"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["smoke", "full", "regression_only"],
+          "default": "full",
+          "description": "Test scope level"
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "default": 3,
+          "description": "UI crawl depth limit"
+        },
+        "exclude_routes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Route patterns to exclude (glob syntax)"
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "properties": {
+        "allow_write_actions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow form submissions and state-changing actions"
+        },
+        "skip_danger_keywords": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["delete", "remove", "disable", "archive", "purge"],
+          "description": "Button text patterns to skip"
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "properties": {
+        "output_dir": {
+          "type": "string",
+          "default": "./qa-reports",
+          "description": "Directory for test reports and artifacts"
+        },
+        "screenshot_on_error": {
+          "type": "boolean",
+          "default": true,
+          "description": "Capture screenshots when errors occur"
+        },
+        "video_record": {
+          "type": "boolean",
+          "default": false,
+          "description": "Record video of test session"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "coordination",
+  "name": "coordination",
+  "version": "0.1.0",
+  "description": "Multi-agent coordination for OpenClaw (file reservations, task claiming)",
+  "entry": "./index.ts",
+  "configSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "tools": []
+}

@@ -1,0 +1,6 @@
+{"id":"TASK-001","status":"open","title":"Open task","deps":[]}
+{"id":"TASK-002","status":"closed","title":"Closed task","deps":[]}
+{"id":"TASK-003","status":"blocked","title":"Blocked task","deps":[]}
+{"id":"TASK-004","status":"in_progress","title":"In progress task","deps":[]}
+{"id":"TASK-005","status":"open","title":"Another open task","deps":[]}
+{"id":"TASK-006","status":"closed","title":"Another closed task","deps":[]}

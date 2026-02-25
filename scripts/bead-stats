@@ -1,0 +1,326 @@
+#!/usr/bin/env bash
+# bead-stats - Generate statistics and analytics for beads workflow
+# Part of the Jeff/Beads system
+#
+# USAGE:
+#   bead-stats [OPTIONS]
+#
+# DESCRIPTION:
+#   Analyzes beads.jsonl files to provide insights into project status,
+#   progress tracking, and blocker identification.
+#
+#   Features:
+#   - Status distribution (open, closed, blocked, in_progress)
+#   - Visual progress bar showing completion percentage
+#   - Blocker analysis with impact ranking
+#   - Handles edge cases (empty files, missing status fields)
+#
+# EXAMPLES:
+#   # Basic usage (from project root)
+#   bead-stats
+#
+#   # Use custom beads file
+#   bead-stats -f custom/beads.jsonl
+#
+#   # Use custom beads directory
+#   bead-stats -d ~/projects/myapp/.beads
+#
+#   # Integrate with workflow automation
+#   if bead-stats | grep -q "Blocked:.*0"; then
+#     echo "No blockers - ready to proceed!"
+#   fi
+#
+#   # Track completion over time
+#   bead-stats >> stats-log.txt
+#
+# OUTPUT FORMAT:
+#   The script generates:
+#   - Progress bar visualization (green fill, gray remainder)
+#   - Status breakdown with counts and percentages
+#   - Top 3 blocking tasks ranked by impact
+#   - Total task count
+#
+# DEPENDENCIES:
+#   - jq (for JSON parsing)
+#   - Standard POSIX utilities (awk, sort, grep)
+
+set -euo pipefail
+
+# Configuration
+BEADS_DIR="${BEADS_DIR:-.beads}"
+BEADS_FILE="${BEADS_DIR}/beads.jsonl"
+
+# TTY and color detection
+if [[ -t 1 ]]; then
+    USE_COLOR=true
+    GREEN='\033[0;32m'
+    GRAY='\033[0;90m'
+    RESET='\033[0m'
+else
+    USE_COLOR=false
+    GREEN=''
+    GRAY=''
+    RESET=''
+fi
+
+# Help text
+show_help() {
+    cat << EOF
+Usage: bead-stats [OPTIONS]
+
+Generate statistics and analytics for beads workflow.
+
+OPTIONS:
+    -h, --help          Show this help message
+    -f, --file FILE     Path to beads.jsonl (default: .beads/beads.jsonl)
+    -d, --dir DIR       Beads directory (default: .beads)
+
+EXAMPLES:
+    bead-stats                          # Generate stats for current project
+    bead-stats -f custom/beads.jsonl    # Use custom beads file
+    bead-stats -d ~/project/.beads      # Use custom beads directory
+
+EOF
+}
+
+# Parse arguments
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                show_help
+                exit 0
+                ;;
+            -f|--file)
+                BEADS_FILE="$2"
+                shift 2
+                ;;
+            -d|--dir)
+                BEADS_DIR="$2"
+                BEADS_FILE="${BEADS_DIR}/beads.jsonl"
+                shift 2
+                ;;
+            *)
+                echo "Error: Unknown option: $1" >&2
+                show_help
+                exit 1
+                ;;
+        esac
+    done
+}
+
+# Validate beads file
+validate_beads_file() {
+    local file="$1"
+    
+    # Check if file exists
+    if [[ ! -f "$file" ]]; then
+        echo "Error: Beads file not found: $file" >&2
+        echo "Run this command from a project with beads, or specify a custom path." >&2
+        return 1
+    fi
+    
+    # Check if file is empty
+    if [[ ! -s "$file" ]]; then
+        echo "No beads found in: $file" >&2
+        echo "The beads file exists but is empty." >&2
+        return 0  # Not an error, just empty
+    fi
+    
+    # Validate JSON format of each line
+    local line_num=0
+    local invalid_lines=()
+    
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        ((line_num++))
+        
+        # Skip empty lines
+        [[ -z "$line" ]] && continue
+        
+        # Validate JSON with jq
+        if ! echo "$line" | jq empty 2>/dev/null; then
+            invalid_lines+=("Line $line_num: Invalid JSON")
+        fi
+    done < "$file"
+    
+    # Report validation errors
+    if [[ ${#invalid_lines[@]} -gt 0 ]]; then
+        echo "Error: Invalid JSON format detected in $file" >&2
+        for err in "${invalid_lines[@]}"; do
+            echo "  $err" >&2
+        done
+        return 1
+    fi
+    
+    return 0
+}
+
+# Generate ASCII progress bar
+# Args: percentage (0-100)
+generate_progress_bar() {
+    local percentage="$1"
+    local bar_width=20
+    local filled_width=$((percentage * bar_width / 100))
+    local empty_width=$((bar_width - filled_width))
+    
+    # Build progress bar
+    local bar=""
+    
+    # Filled portion
+    if [[ $USE_COLOR == true ]]; then
+        bar="${GREEN}"
+    fi
+    for ((i=0; i<filled_width; i++)); do
+        bar="${bar}█"
+    done
+    
+    # Empty portion
+    if [[ $USE_COLOR == true ]]; then
+        bar="${bar}${RESET}${GRAY}"
+    fi
+    for ((i=0; i<empty_width; i++)); do
+        bar="${bar}░"
+    done
+    
+    if [[ $USE_COLOR == true ]]; then
+        bar="${bar}${RESET}"
+    fi
+    
+    echo -e "$bar"
+}
+
+# Generate status statistics
+generate_status_stats() {
+    local file="$1"
+    
+    # Count beads by status (default missing to 'open')
+    local counts
+    counts=$(jq -r '.status // "open"' "$file" | sort | uniq -c | awk '{print $2, $1}')
+    
+    # Initialize counters
+    local open=0 closed=0 blocked=0 in_progress=0 total=0
+    
+    # Parse counts
+    while IFS=' ' read -r status count; do
+        case "$status" in
+            open) open=$count ;;
+            closed) closed=$count ;;
+            blocked) blocked=$count ;;
+            in_progress) in_progress=$count ;;
+        esac
+        total=$((total + count))
+    done <<< "$counts"
+    
+    # Handle case where no beads found (shouldn't happen due to earlier validation)
+    if [[ $total -eq 0 ]]; then
+        echo "No beads found"
+        return 0
+    fi
+    
+    # Calculate percentages
+    local open_pct=$((open * 100 / total))
+    local closed_pct=$((closed * 100 / total))
+    local blocked_pct=$((blocked * 100 / total))
+    local in_progress_pct=$((in_progress * 100 / total))
+    
+    # Generate progress bar based on completion
+    local progress_bar
+    progress_bar=$(generate_progress_bar "$closed_pct")
+    
+    # Output formatted stats
+    echo ""
+    echo "📊 BEAD STATS"
+    echo ""
+    echo "Progress: $progress_bar $closed_pct%"
+    echo ""
+    echo "Status:"
+    printf "  Open:        %3d (%3d%%)\n" "$open" "$open_pct"
+    printf "  Closed:      %3d (%3d%%)\n" "$closed" "$closed_pct"
+    printf "  Blocked:     %3d (%3d%%)\n" "$blocked" "$blocked_pct"
+    printf "  In Progress: %3d (%3d%%)\n" "$in_progress" "$in_progress_pct"
+    echo "  ───────────────────────"
+    printf "  Total:       %3d\n" "$total"
+    echo ""
+}
+
+# Generate blocker analysis
+generate_blocker_analysis() {
+    local file="$1"
+    
+    # Find all blocked tasks
+    local blocked_tasks
+    blocked_tasks=$(jq -r 'select(.status == "blocked") | .id' "$file")
+    
+    # Check if there are any blocked tasks
+    if [[ -z "$blocked_tasks" ]]; then
+        echo "Top Blockers:"
+        echo "  No blockers 🎉"
+        echo ""
+        return 0
+    fi
+    
+    # For each blocked task, count how many other tasks depend on it
+    # Store results in format "impact task_id" for sorting
+    local blocker_data=""
+    
+    while IFS= read -r blocked_id; do
+        [[ -z "$blocked_id" ]] && continue
+        
+        # Count tasks that have this blocked task in their deps array
+        local impact
+        impact=$(jq --arg bid "$blocked_id" '
+            select(.deps != null) | 
+            select(.deps | index($bid) != null)
+        ' "$file" | jq -s 'length')
+        
+        blocker_data="${blocker_data}${impact} ${blocked_id}"$'\n'
+    done <<< "$blocked_tasks"
+    
+    # Sort by impact descending, filter out 0-impact blockers, and get top 3
+    local sorted_blockers
+    sorted_blockers=$(echo "$blocker_data" | grep -v '^$' | { grep -v '^0 ' || true; } | sort -rn | head -3)
+    
+    # Output formatted results
+    echo "Top Blockers:"
+    
+    if [[ -z "$sorted_blockers" ]]; then
+        echo "  No blockers 🎉"
+        echo ""
+        return 0
+    fi
+    
+    local rank=1
+    while IFS=' ' read -r impact task_id; do
+        if [[ -n "$task_id" ]]; then
+            printf "  %d. %s → blocks %d task%s\n" \
+                "$rank" "$task_id" "$impact" \
+                "$([[ $impact -eq 1 ]] && echo "" || echo "s")"
+            ((rank++))
+        fi
+    done <<< "$sorted_blockers"
+    
+    echo ""
+}
+
+# Main execution
+main() {
+    parse_args "$@"
+    
+    # Validate beads file
+    if ! validate_beads_file "$BEADS_FILE"; then
+        exit 1
+    fi
+    
+    # Check if file was empty (successful validation but no content)
+    if [[ ! -s "$BEADS_FILE" ]]; then
+        exit 0
+    fi
+    
+    # Generate statistics
+    generate_status_stats "$BEADS_FILE"
+    
+    # Generate blocker analysis
+    generate_blocker_analysis "$BEADS_FILE"
+}
+
+main "$@"

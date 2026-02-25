@@ -1,0 +1,9 @@
+{
+  "_comment": "Add this to agents.list in ~/.openclaw/openclaw.json",
+  "id": "research",
+  "name": "ResearchCrawler",
+  "workspace": "~/.openclaw/workspace-research",
+  "model": {
+    "primary": "anthropic/claude-sonnet-4-5"
+  }
+}

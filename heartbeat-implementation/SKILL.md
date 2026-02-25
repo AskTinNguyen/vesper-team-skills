@@ -1,3 +1,8 @@
+---
+name: heartbeat-implementation
+description: "Guide implementation of heartbeat periodic awareness systems in applications, following proven architectural patterns from production systems."
+---
+
 # heartbeat-implementation Skill
 
 **Purpose:** Guide implementation of heartbeat periodic awareness systems in applications and repositories, following proven architectural patterns from production systems.
