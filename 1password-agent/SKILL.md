@@ -38,10 +38,10 @@ Already configured. Do NOT reconfigure — just use.
 
 | Component | Value |
 |-----------|-------|
-| Service Account | "Vesper Agent" |
+| Service Account | `<SERVICE_ACCOUNT_NAME>` |
 | Access | **Read-only** to Vesper vault |
 | Token expiry | 90 days (rotate when expired) |
-| Token location | `OP_SERVICE_ACCOUNT_TOKEN` in `~/.zshrc` |
+| Token location | `OP_SERVICE_ACCOUNT_TOKEN` in local shell environment (do not commit) |
 | Vault | **Vesper** |
 | Account | my.1password.com |
 
@@ -56,25 +56,27 @@ op read "op://Vesper/<Item Name>/<Field Name>"
 **Examples:**
 
 ```bash
-# Gmail credentials
-op read "op://Vesper/Gmail - Personal/username"        # → email address
-op read "op://Vesper/Gmail - Personal/App Password"    # → Google App Password
+# Generic credentials
+op read "op://Vesper/<SERVICE_ITEM>/username"
+op read "op://Vesper/<SERVICE_ITEM>/password"
 
-# Seesaw credentials
-op read "op://Vesper/Seesaw - Kids Updates/username"   # → email
-op read "op://Vesper/Seesaw - Kids Updates/password"   # → password
+# Or set env vars and keep docs generic
+op read "op://${SEESAW_OP_VAULT}/${SEESAW_OP_ITEM}/username"
+op read "op://${SEESAW_OP_VAULT}/${SEESAW_OP_ITEM}/password"
 ```
 
 **No flags needed.** Unlike `op item get`, `op read` does not need `--reveal`, `--vault`, or `--fields` flags. The URI contains everything.
 
 ## Current Vault Contents
 
+Avoid publishing real item names in shared/public docs. Keep a private local inventory instead.
+
 | Item | Category | Fields |
 |------|----------|--------|
-| **Gmail - Personal** | Login | `username` (STRING), `password` (CONCEALED), `App Password` (CONCEALED) |
-| **Seesaw - Kids Updates** | Login | `username` (STRING), `password` (CONCEALED) |
+| **<SERVICE_ITEM_A>** | Login | `username` (STRING), `password` (CONCEALED) |
+| **<SERVICE_ITEM_B>** | Login | `username` (STRING), `password` (CONCEALED) |
 
-**Keep this table updated when adding new items.**
+**Keep sensitive item naming in local-only notes, not in git-tracked docs.**
 
 ## Adding New Credentials
 
@@ -152,10 +154,10 @@ Then update the **Current Vault Contents** table in this skill file.
 
 The service account token expires every 90 days. If `op read` starts failing with auth errors:
 
-1. Go to: https://my.1password.com → Developer → Service Accounts → "Vesper Agent"
-2. Generate a new token
-3. Update `OP_SERVICE_ACCOUNT_TOKEN` in `~/.zshrc`
-4. Run `source ~/.zshrc` or restart terminal
+1. Go to: https://my.1password.com → Developer → Service Accounts
+2. Generate a new token for the relevant service account
+3. Update `OP_SERVICE_ACCOUNT_TOKEN` in your local shell environment
+4. Reload your shell or restart terminal
 
 ### Relationship to global 1Password skill
 
