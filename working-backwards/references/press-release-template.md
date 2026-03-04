@@ -2,6 +2,11 @@
 
 For calibration, see `references/example-press-release.md`.
 
+## Mode Guidance
+- `Lite`: keep this to a short announcement with only the essential sections.
+- `Standard`: keep this concise. Prefer one short paragraph plus supporting bullets, and avoid repeating details that belong in the FAQ.
+- `Deep`: complete the full template depth.
+
 ## Headline
 One line with the customer outcome, not the feature mechanics.
 
@@ -47,3 +52,4 @@ Who this helps and what becomes newly possible.
 - Includes at least one measurable improvement or target.
 - Includes an explicit trust, control, or safety statement.
 - Includes availability or scope limits.
+- In `Lite`/`Standard`, the draft stays concise enough to read quickly without feeling like a launch blog post.

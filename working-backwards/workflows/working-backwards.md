@@ -23,15 +23,28 @@ Collect these artifacts before writing strategy output:
 
 | Mode | Default For | Target Duration | Required Bar |
 |------|-------------|-----------------|--------------|
-| Lite | Low stakes | 20-30 min | Brief but complete artifacts |
-| Standard | Medium stakes | 45-90 min | Full workflow |
-| Deep | High stakes | 2h+ | Full workflow + `workflow-review` |
+| Lite | Low stakes | 20-30 min | Tight decision memo with only core artifacts |
+| Standard | Medium stakes | 45-90 min | Decision-ready brief with core artifacts and lean supporting evidence |
+| Deep | High stakes | 2h+ | Full workflow with expanded evidence and `workflow-review` |
 
 **Gate: pass all**
 - Decision owner is named.
 - Stakes are recorded.
 - Mode is recorded.
 - Output destination is recorded.
+
+### Mode Output Budgets
+
+| Mode | Main Body Sections | Optional Appendix | Word Budget |
+|------|--------------------|-------------------|-------------|
+| Lite | Bet, concise press release, focused FAQ, lean scorecard, reverse roadmap, recommendation | Inputs, assumptions, extra risks | ~600-1,000 words |
+| Standard | Bet, stakes/mode, concise press release, focused FAQ, lean scorecard, reverse roadmap, recommendation, execution handoff | Preflight summary, assumptions, future snapshot, compact UX notes, review plan | ~1,200-2,000 words |
+| Deep | Full section set | Optional supporting evidence only when it improves readability | Use full depth as needed |
+
+Rules:
+- Treat `Standard` as the default decision brief, not a full RFC.
+- If a section adds context but does not change the decision, compress it or move it to `Appendix`.
+- Do not restate the same condition, guardrail, or kill criterion in multiple sections unless the wording materially changes the decision.
 
 ## Recovery Protocol (Blocked Inputs)
 
@@ -109,6 +122,11 @@ Include:
 - At least one measurable improvement is stated.
 - At least one preserved guardrail is stated.
 
+Mode guidance:
+- `Lite`: 2-4 bullets.
+- `Standard`: 3-5 bullets or a short paragraph. Move detailed evidence to the appendix.
+- `Deep`: expand as needed.
+
 <required_reading>
 Before Phase 4, read `references/press-release-template.md`.
 </required_reading>
@@ -117,16 +135,23 @@ Before Phase 4, read `references/press-release-template.md`.
 
 Complete `references/press-release-template.md` and pass its checklist before advancing.
 
+Mode guidance:
+- `Lite` and `Standard`: keep this concise. Use short paragraphs plus bullets, and avoid repeating details the FAQ will already cover.
+- `Deep`: complete the full template depth.
+
 <required_reading>
-Before Phase 5, read `references/ultimate-ux-template.md`.
+Before Phase 5, read `references/ultimate-ux-template.md` only if a standalone UX artifact is needed.
 </required_reading>
 
 ## Phase 5: Design the Ultimate UX Narrative
 
-Complete `references/ultimate-ux-template.md` and pass its checklist before advancing.
+Use `references/ultimate-ux-template.md` only when UX trust, clarity, or control meaningfully changes the decision.
 
 Rules:
-- Set a **time-to-value target**.
+- `Lite`: skip a standalone UX section unless UX risk is the core bet.
+- `Standard`: prefer a compact UX note (4-6 bullets max) in an appendix. Fold key UX constraints into the FAQ when possible.
+- `Deep`: complete the full template.
+- If you include this artifact, set a **time-to-value target**.
 - Default target is `P50 <= 5 minutes`.
 - If that is unrealistic, write a justified replacement target.
 
@@ -139,8 +164,10 @@ Before Phase 6, read `references/faq-template.md`.
 Complete `references/faq-template.md` and pass its checklist before advancing.
 
 Rules:
-- Answer at least 12 serious questions.
-- Include at least 3 kill/stop questions.
+- `Lite`: answer 6-8 serious questions and include at least 2 kill/stop questions.
+- `Standard`: answer 8-10 serious questions, cover each category at least once, and include 2-3 kill/stop questions.
+- `Deep`: answer at least 12 serious questions and include at least 3 kill/stop questions.
+- Prefer short answers. Only add context-specific questions when they change the decision.
 - Record what changed in scope, sequencing, or policy after the FAQ.
 
 <required_reading>
@@ -152,9 +179,12 @@ Before Phase 7, read `references/success-scorecard-template.md`.
 Complete `references/success-scorecard-template.md` and pass its checklist before advancing.
 
 Rules:
-- Every metric needs an owner.
-- Every metric needs a baseline plan and cadence.
-- Trust, quality, and cost guardrails are required.
+- `Lite`: use 1 north-star, 2 supporting metrics, and 2 guardrails.
+- `Standard`: use 1 north-star, 3-5 total supporting metrics, and 2-3 guardrails.
+- `Deep`: fill the full scorecard.
+- Every included metric needs an owner.
+- Every included metric needs a baseline plan and cadence.
+- Do not pad the scorecard with low-value metrics just to fill the template.
 
 <required_reading>
 Before Phase 8, read `references/reverse-roadmap-template.md`.
@@ -167,7 +197,9 @@ Complete `references/reverse-roadmap-template.md` and pass its checklist before 
 Rules:
 - Start at launch readiness, then step backward.
 - Delay irreversible commitments until evidence exists.
-- Add at least one fast experiment for each major unproven assumption.
+- `Lite` and `Standard`: keep this to 3 stages max unless an extra gate changes the decision.
+- `Deep`: expand to 4+ stages only when the extra gating matters.
+- Add at least one fast experiment for each major unproven assumption that remains in scope.
 
 <required_reading>
 Before Phase 9, read `references/execution-handoff-template.md` and `references/decision-log-template.md`.
@@ -177,13 +209,13 @@ Before Phase 9, read `references/execution-handoff-template.md` and `references/
 
 ### Verification Checklist
 
-For **Standard/Deep** mode, pass all before final recommendation:
+For **Lite/Standard/Deep** mode, pass all before final recommendation:
 - Every major assumption is tied to evidence or an experiment.
 - Every scorecard metric has an owner and cadence.
 - The FAQ produced at least one real change or explicit confirmation of scope.
-- The execution handoff contains 3-7 concrete next actions.
+- The execution handoff contains 3-5 concrete next actions in `Lite`/`Standard`, or 3-7 in `Deep`.
 - Go / adjust / stop thresholds are explicit.
-- Recommended reviewers are named.
+- Reviewers are named only when a review gate materially changes the path.
 
 ### Recommendation
 
@@ -200,9 +232,32 @@ Choose one outcome:
 ### Execution Bridge
 
 Complete `references/execution-handoff-template.md`.
-Complete `references/decision-log-template.md`.
+Use `references/decision-log-template.md` as the synthesis tool for your recommendation. In `Lite` and `Standard`, fold that content into the `Recommendation` section instead of emitting a separate standalone decision log.
 
-## Output Format
+## Lite / Standard Output Format
+
+```markdown
+# Working Backwards Plan: [Feature Name]
+
+## Bet Statement
+## Stakes and Mode
+## Future Press Release
+## FAQ (Backward Stress Test)
+## Success Scorecard
+## Reverse Roadmap
+## Recommendation
+## Execution Handoff
+## Open Questions
+
+### Optional Appendix
+- Preflight Summary
+- Assumptions and Evidence
+- Future Success Snapshot ([Date])
+- Compact UX Notes
+- Review Plan
+```
+
+## Deep Output Format
 
 ```markdown
 # Working Backwards Plan: [Feature Name]

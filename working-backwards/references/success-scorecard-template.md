@@ -2,6 +2,13 @@
 
 For calibration, see `references/example-scorecard.md`.
 
+## Mode Guidance
+- `Lite`: 1 north-star, 2 supporting metrics, and 2 guardrails.
+- `Standard`: 1 north-star, 3-5 total supporting metrics, and 2-3 guardrails.
+- `Deep`: fill the full scorecard.
+
+In `Lite`/`Standard`, use only the rows you need. Do not pad the tables with low-value metrics.
+
 ## Feature
 - Name:
 - Owner:
@@ -56,7 +63,9 @@ For calibration, see `references/example-scorecard.md`.
 ## Checklist (Pass All)
 
 - North-star metric has an owner and rationale.
-- Every metric has a baseline plan, target, owner, and cadence.
-- Trust, quality, and cost guardrails are all present.
+- `Lite`: at least 2 supporting metrics and 2 guardrails are present.
+- `Standard`: 3-5 supporting metrics and 2-3 guardrails are present.
+- `Deep`: leading, lagging, and trust/quality/cost guardrails are all present.
+- Every included metric has a baseline plan, target, owner, and cadence.
 - Key assumptions behind metrics are explicit.
 - Go / adjust / stop thresholds are explicit.

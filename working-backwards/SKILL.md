@@ -2,7 +2,7 @@
 name: working-backwards
 description: "Plan PR/FAQ-style product bets from future customer success. Use when a feature needs future-state artifacts before build. Triggers on 'working backwards', 'PR/FAQ', or 'future press release'."
 alwaysAllow: ["WebSearch", "WebFetch", "Task", "Read", "Glob", "Grep"]
-lastReviewed: 2026-03-01
+lastReviewed: 2026-03-02
 reviewCadence: quarterly
 ---
 
@@ -49,8 +49,21 @@ Do NOT use this skill when:
 
 1. Open `workflows/working-backwards.md` and choose stakes + mode.
 2. Complete preflight setup and `references/intake-template.md`.
-3. Produce each artifact in order and pass that template's checklist before advancing.
+3. Produce only the artifacts required by the chosen mode, in order. Put supporting detail in appendices, not the main body.
 4. Finish with `references/execution-handoff-template.md` or an explicit no-go decision.
+
+## Mode Discipline
+
+| Mode | Default Shape | Output Budget | Main Body Requirement | Keep Out of the Main Body |
+|------|---------------|---------------|-----------------------|---------------------------|
+| Lite | Fast decision memo | ~600-1,000 words | Bet, concise press release, focused FAQ, lean scorecard, 3-stage roadmap, recommendation | Detailed assumption logs, full UX narratives, reviewer matrices |
+| Standard | Decision-ready brief | ~1,200-2,000 words | Bet, concise press release, focused FAQ, lean scorecard, 3-stage roadmap, execution handoff, recommendation | Long tables, duplicated guardrails, exhaustive reviewer lists |
+| Deep | Full decision dossier | 2,500+ words when needed | Full workflow artifacts with supporting detail inline | Only omit sections that are truly inapplicable |
+
+Rules:
+- Treat `Standard` as the default decision brief, not a full RFC.
+- If a section does not change the decision, compress it to 1-3 bullets or move it to an appendix.
+- Avoid repeating the same risk, condition, or kill criteria across multiple sections.
 
 ## Artifact Map
 
@@ -68,10 +81,12 @@ Do NOT use this skill when:
 
 ## Operating Rules
 
+- Default to the shortest artifact that preserves decision quality.
 - Start with customer outcomes, not architecture.
 - Record evidence sources and confidence levels for major assumptions.
-- Complete the active template and pass its checklist before moving forward.
+- Complete the active template at the mode-appropriate depth and pass its checklist before moving forward.
 - If blocked by missing input, use the recovery protocol in `workflows/working-backwards.md`.
+- In `Standard`, only surface supporting tables when they materially change the decision.
 - End with either an executable handoff or an explicit stop/conditions decision.
 
 ## Anti-Patterns to Avoid

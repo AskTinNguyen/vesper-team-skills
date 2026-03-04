@@ -2,13 +2,13 @@
 
 Use this to convert strategy into work that `workflow-work` can execute.
 
-## Next Actions (3-7 Required)
+## Next Actions (3-5 for Lite/Standard, 3-7 for Deep)
 
 | Next Action | Owner | Prerequisites | Deliverable | Due Window |
 |-------------|-------|---------------|-------------|-----------|
 | | | | | |
 
-## Recommended Reviewers
+## Recommended Reviewers (Optional in Lite/Standard unless a review gate matters)
 
 | Reviewer | Why They Matter | Review Trigger |
 |----------|-----------------|----------------|
@@ -22,8 +22,8 @@ Use this to convert strategy into work that `workflow-work` can execute.
 
 ## Checklist (Pass All)
 
-- There are 3-7 concrete next actions.
+- There are 3-5 concrete next actions in `Lite`/`Standard`, or 3-7 in `Deep`.
 - Every action has an owner.
 - Every action has a clear deliverable.
-- Reviewers are named.
+- Reviewers are named only if a review gate materially affects the path.
 - The first experiment has explicit success and stop signals.

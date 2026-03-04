@@ -1,5 +1,12 @@
 # Ultimate UX Narrative Template
 
+Use this only when UX trust, clarity, or control materially affects the decision.
+
+## Mode Guidance
+- `Lite`: skip this unless UX risk is the core bet.
+- `Standard`: compress to 4-6 bullets max and prefer placing it in an appendix.
+- `Deep`: complete the full template.
+
 ## User and Context
 - Persona:
 - Job-to-be-done:
@@ -34,6 +41,7 @@ What the user has achieved by the end and why it feels better.
 
 ## Checklist (Pass All)
 
+- This checklist only applies if you include a standalone UX artifact.
 - User and trigger are explicit.
 - There is one clear decision or approval moment.
 - There is one concrete recovery path.
