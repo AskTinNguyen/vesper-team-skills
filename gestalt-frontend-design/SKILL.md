@@ -14,39 +14,6 @@ Apply Gestalt perceptual psychology to produce frontend interfaces that are visu
 - Designing chat interfaces, agent dashboards, or AI-native UIs
 - Generating forms, data tables, navigation, modals, settings pages, or card layouts
 - Auditing spacing, contrast, grouping, or visual hierarchy
-- **Called as a dependency** by `/ui-design-pipeline-superdesigner` during variant generation (Step 3), accessibility gating (Step 4.5), and implementation (Step 5)
-
-## Scope Detection — Page-Level vs. Component-Level
-
-Before starting work, determine the scope:
-
-### Component-Level Work (use this skill directly)
-- Building a single component: form, modal, card, nav, table, etc.
-- Reviewing or auditing existing UI
-- Polishing spacing, contrast, accessibility on existing code
-- Implementing a variant selected by SuperDesigner
-
-**Proceed directly to the principles and decision trees below.**
-
-### Page-Level Work (invoke SuperDesigner first)
-
-If the request involves designing a **new full page or screen from scratch** where the visual direction is unclear or multiple approaches are viable:
-
-**Required:** Invoke `/ui-design-pipeline-superdesigner` before implementing. The SuperDesigner pipeline will:
-1. Frame the objective (audience, primary action, mandatory sections)
-2. Generate a baseline
-3. Produce 3 directional variants (each using this skill's principles)
-4. Select one direction with scored rationale
-5. Hand off to this skill for implementation
-
-Do NOT skip exploration by jumping straight to implementation on page-level work. The exploration phase prevents premature commitment to a suboptimal direction.
-
-**Indicators that SuperDesigner is required:**
-- "Design a new page for..."
-- "Create the UI for this feature..."
-- "Build the [X] screen from scratch..."
-- Multiple stakeholders need to agree on direction
-- The request is ambiguous about layout approach (dense vs. spacious, single-column vs. multi-column, etc.)
 
 ## The Seven Principles (Quick Reference)
 
@@ -185,25 +152,6 @@ Every visual Gestalt cue must have a semantic equivalent:
 5. **Closure starvation** -- carousel with <15% next-item visibility, skeleton that does not match content shape
 6. **Similarity drift** -- same component type with inconsistent border-radius, padding, or font weight
 7. **Excessive minimalism** -- stripping affordances (borders, underlines) until clickable items are invisible
-
-## Decision Logging
-
-After completing implementation, optionally capture the design rationale. This is **required** when invoked via `/ui-design-pipeline-superdesigner` (use their `references/decision-log-template.md`). For standalone invocations, record at minimum:
-
-- Which Gestalt principles drove the key layout decisions
-- Which quality gate checks required fixes (and what was fixed)
-- Any accessibility cross-check failures that were resolved
-
-This creates a traceable design trail for future iterations and team alignment.
-
-## Skill Dependencies
-
-| Scenario | Required Skill | Direction |
-|----------|---------------|-----------|
-| New full page/screen with unclear direction | `/ui-design-pipeline-superdesigner` | Invoke SuperDesigner FIRST for exploration, then return here for implementation |
-| Building a single component | None | Use this skill directly |
-| Reviewing/auditing existing UI | None | Use this skill directly |
-| Called from SuperDesigner Step 3/4.5/5 | None | Already invoked; apply principles directly |
 
 ## Reference
 
