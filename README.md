@@ -1,6 +1,6 @@
 # Vesper Team Skills
 
-58 skills, 44 commands, and 6 workflows for Claude Code.
+59 skills, 44 commands, and 6 workflows for Claude Code.
 
 ## Installation
 
@@ -86,6 +86,7 @@ That's it. All skills and commands are now available in your Claude Code session
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
 | [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
 | [build-electron-features](build-electron-features/) | Build full-stack features for the Vesper Electron app |
+| [electron-ui-inspector](electron-ui-inspector/) | Build live Electron UI inspectors with runtime toggles, structured context capture, and agent parity tooling |
 | [flowy-flowchart](flowy-flowchart/) | Create flowchart diagrams inline in the conversation |
 | [flowy-ui-mockup](flowy-ui-mockup/) | Create UI mockups for iPhone and iPad apps |
 

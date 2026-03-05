@@ -1,5 +1,5 @@
 ---
-name: 1Password Agent Access
+name: 1password-agent
 description: Read and write secrets from the 1Password Vesper vault using a Service Account. No TouchID, no biometrics, no tmux — just op read/write with OP_SERVICE_ACCOUNT_TOKEN.
 ---
 

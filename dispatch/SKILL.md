@@ -1,5 +1,5 @@
 ---
-name: Dispatch
+name: dispatch
 description: This skill should be used when coordinating complex features that span multiple tasks requiring parallel subagent execution. It applies when users request large implementations, multi-step refactors, or projects requiring work distribution across agents. Triggers on "coordinate tasks", "spawn agents", "parallelize this work", "break this into tasks", or requests for features requiring 5+ distinct implementation steps.
 icon: 🚀
 alwaysAllow:
