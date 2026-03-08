@@ -1,6 +1,6 @@
 # Vesper Team Skills
 
-59 skills, 44 commands, and 6 workflows for Claude Code.
+60 skills, 44 commands, and 6 workflows for Claude Code.
 
 ## Installation
 
@@ -82,6 +82,7 @@ That's it. All skills and commands are now available in your Claude Code session
 | Skill | Description |
 |-------|-------------|
 | [agent-native-architecture](agent-native-architecture/) | Build applications where agents are first-class citizens |
+| [model-shaped-harness](model-shaped-harness/) | Design low-token, high-capability model-facing tool harnesses with code mode and profile-driven mounting |
 | [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
 | [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
