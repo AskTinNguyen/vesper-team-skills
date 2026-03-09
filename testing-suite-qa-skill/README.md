@@ -304,10 +304,8 @@ ls ~/.claude/commands/
 | [dispatch](./dispatch/) | Multi-agent task coordination with parallel execution | **Yes** |
 | [dspy-ruby](./dspy-ruby/) | DSPy.rb LLM framework patterns | No |
 | [electron-cdp-testing](./electron-cdp-testing/) | CDP-based E2E testing for Electron apps | No |
-| [elevenlabs](./elevenlabs/) | AI voiceover and sound generation | No |
 | [every-style-editor](./every-style-editor/) | Every.com style guide compliance | No |
 | [ffmpeg](./ffmpeg/) | Video/audio processing patterns | No |
-| [file-todos](./file-todos/) | File-based todo tracking system | No |
 | [flowy-flowchart](./flowy-flowchart/) | Inline flowchart diagrams in conversations | No |
 | [flowy-ui-mockup](./flowy-ui-mockup/) | Inline iOS UI mockups in conversations | No |
 | [frontend-design](./frontend-design/) | High-quality frontend UI generation | No |
@@ -318,7 +316,6 @@ ls ~/.claude/commands/
 | [messaging-integration](./messaging-integration/) | WhatsApp/Slack/Telegram integration patterns | No |
 | [playwright-recording](./playwright-recording/) | Browser recording with Playwright | No |
 | [qmd-search](./qmd-search/) | On-device markdown search engine | No |
-| [qwen-edit](./qwen-edit/) | AI image editing with Qwen | No |
 | [ralph-loop](./ralph-loop/) | Autonomous coding workflow orchestration | **Yes** |
 | [rclone](./rclone/) | Cloud storage file management | No |
 | [remotion](./remotion/) | Programmatic video creation with React | No |

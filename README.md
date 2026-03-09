@@ -1,6 +1,6 @@
 # Vesper Team Skills
 
-60 skills, 44 commands, and 6 workflows for Claude Code.
+A curated collection of skills, commands, and workflows for Claude Code.
 
 ## Installation
 
@@ -20,7 +20,6 @@ That's it. All skills and commands are now available in your Claude Code session
 | [dispatch](dispatch/) | Coordinate complex features with parallel subagent execution |
 | [agent-supervisor](agent-supervisor/) | Monitor task lists, detect gaps, and track agent status without doing implementation |
 | [github-sync](github-sync/) | Synchronize GitHub PRs and issues into the Claude Code task list |
-| [tasklist-env](tasklist-env/) | Check, verify, or switch the current task list environment |
 | [ralph-loop](ralph-loop/) | Trigger and manage Ralph Loop autonomous coding workflows |
 
 ### Code Quality & Review
@@ -41,7 +40,6 @@ That's it. All skills and commands are now available in your Claude Code session
 | [ship-notes](ship-notes/) | Generate release notes from recent git activity |
 | [last7days](last7days/) | Review the last 7 days of activity in a git repository |
 | [agent-changelog](agent-changelog/) | Compile an agent-optimized changelog from git history |
-| [file-todos](file-todos/) | Manage file-based todo tracking in the todos/ directory |
 | [compound-docs](compound-docs/) | Capture solved problems as categorized documentation |
 | [feature-specification](feature-specification/) | Write comprehensive feature specifications for product and engineering |
 
@@ -64,9 +62,7 @@ That's it. All skills and commands are now available in your Claude Code session
 | [remotion](remotion/) | Create programmatic videos using React with Remotion |
 | [launchpad-remotion](launchpad-remotion/) | Reusable components and brand assets for the trycua/launchpad Remotion monorepo |
 | [ffmpeg](ffmpeg/) | Video and audio processing — format conversion, resizing, compression |
-| [elevenlabs](elevenlabs/) | Generate AI voiceovers, sound effects, and music using ElevenLabs APIs |
 | [playwright-recording](playwright-recording/) | Record browser interactions as video using Playwright |
-| [qwen-edit](qwen-edit/) | AI-powered image editing using Qwen via RunPod serverless |
 | [gemini-imagegen](gemini-imagegen/) | Generate and edit images using the Gemini API |
 
 ### Browser Automation & Testing

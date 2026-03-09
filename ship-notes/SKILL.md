@@ -190,4 +190,4 @@ Given a repo with 8 commits over the last 7 days (2 features, 1 fix, 5 chores), 
 
 - Review the last 7 days of activity first: `skill: last7days`
 - Compile agent-optimized changelog: `skill: agent-changelog`
-- Persist findings as todos: `skill: file-todos`
+- Persist follow-up work in your preferred issue or todo tracker

@@ -32,15 +32,12 @@ Installed skills:
   1. **remotion** - Video compositions with React
      Triggers: Remotion, video composition, animations, interpolate, spring
 
-  2. **elevenlabs** - AI voiceover and audio generation
-     Triggers: voiceover, TTS, voice cloning, sound effects, music
-
   Beta:
   ─────
-  3. **ffmpeg** - Video/audio conversion and processing
+  2. **ffmpeg** - Video/audio conversion and processing
      Triggers: convert video, resize, compress, extract audio
 
-  4. **playwright-recording** - Browser demo capture
+  3. **playwright-recording** - Browser demo capture
      Triggers: record demo, browser recording, screenshot
 
 Actions:
@@ -89,7 +86,6 @@ Media:
 
 ## Related
 
-- elevenlabs (audio generation)
 - ffmpeg (asset conversion)
 ```
 

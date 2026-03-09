@@ -132,7 +132,7 @@ Period: [start_date] → [end_date]
 
 ## 5. Todo Creation (Optional)
 
-If Red items exist, **ask the user** whether to create todo files via `skill: file-todos`.
+If Red items exist, **ask the user** whether to create todo files in the repo's `todos/` directory.
 
 If user confirms, create todos:
 - Naming: `{id}-pending-{priority}-{description}.md`

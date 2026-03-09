@@ -193,9 +193,9 @@ Complete system context map with component interactions
 
 Run the Task code-simplicity-reviewer() to see if we can simplify the code.
 
-### 5. Findings Synthesis and Todo Creation Using file-todos Skill
+### 5. Findings Synthesis and Todo Creation
 
-<critical_requirement> ALL findings MUST be stored in the todos/ directory using the file-todos skill. Create todo files immediately after synthesis - do NOT present findings for user approval first. Use the skill for structured todo management. </critical_requirement>
+<critical_requirement> ALL findings MUST be stored in the `todos/` directory immediately after synthesis. Create todo files directly - do NOT present findings for user approval first. </critical_requirement>
 
 #### Step 1: Synthesize All Findings
 
@@ -214,9 +214,9 @@ Remove duplicates, prioritize by severity and impact.
 
 </synthesis_tasks>
 
-#### Step 2: Create Todo Files Using file-todos Skill
+#### Step 2: Create Todo Files Directly
 
-<critical_instruction> Use the file-todos skill to create todo files for ALL findings immediately. Do NOT present findings one-by-one asking for user approval. Create all todo files in parallel using the skill, then summarize results to user. </critical_instruction>
+<critical_instruction> Create todo files for ALL findings immediately. Do NOT present findings one-by-one asking for user approval. Create all todo files in parallel, then summarize results to user. </critical_instruction>
 
 **Implementation Options:**
 
@@ -224,7 +224,6 @@ Remove duplicates, prioritize by severity and impact.
 
 - Create todo files directly using Write tool
 - All findings in parallel for speed
-- Use standard template from `.claude/skills/file-todos/assets/todo-template.md`
 - Follow naming convention: `{issue_id}-pending-{priority}-{description}.md`
 
 **Option B: Sub-Agents in Parallel (Recommended for Scale)** For large PRs with 15+ findings, use sub-agents to create finding files in parallel:
@@ -251,10 +250,10 @@ Sub-agents can:
 1. Synthesize all findings into categories (P1/P2/P3)
 2. Group findings by severity
 3. Launch 3 parallel sub-agents (one per severity level)
-4. Each sub-agent creates its batch of todos using the file-todos skill
+4. Each sub-agent creates its batch of todo files directly
 5. Consolidate results and present summary
 
-**Process (Using file-todos Skill):**
+**Process (Direct Todo Creation):**
 
 1. For each finding:
 
@@ -264,18 +263,11 @@ Sub-agents can:
    - Estimate effort (Small/Medium/Large)
    - Add acceptance criteria and work log
 
-2. Use file-todos skill for structured todo management:
+2. Use a consistent local template for structured todo management:
 
-   ```bash
-   skill: file-todos
-   ```
-
-   The skill provides:
-
-   - Template location: `.claude/skills/file-todos/assets/todo-template.md`
    - Naming convention: `{issue_id}-{status}-{priority}-{description}.md`
    - YAML frontmatter structure: status, priority, issue_id, tags, dependencies
-   - All required sections: Problem Statement, Findings, Solutions, etc.
+   - Required sections: Problem Statement, Findings, Solutions, Recommended Action, Technical Details, Acceptance Criteria, Work Log, Resources
 
 3. Create todo files in parallel:
 
@@ -292,7 +284,7 @@ Sub-agents can:
    004-pending-p3-unused-parameter.md
    ```
 
-5. Follow template structure from file-todos skill: `.claude/skills/file-todos/assets/todo-template.md`
+5. Follow a consistent template structure across all todo files
 
 **Todo File Structure (from template):**
 

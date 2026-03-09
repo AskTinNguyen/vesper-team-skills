@@ -17,7 +17,7 @@ Explicitly invoke a skill by name, loading its knowledge and context regardless 
 
 | Argument | Required | Description |
 |----------|----------|-------------|
-| `skill-name` | Yes | Name of the skill to invoke (e.g., `remotion`, `elevenlabs`, `frontend-design`) |
+| `skill-name` | Yes | Name of the skill to invoke (e.g., `remotion`, `ffmpeg`, `frontend-design`) |
 | `task description` | No | Optional task to perform with the skill |
 
 ## Examples
@@ -25,9 +25,6 @@ Explicitly invoke a skill by name, loading its knowledge and context regardless 
 ```
 /skill remotion
 → Loads Remotion skill context, ready for video creation tasks
-
-/skill elevenlabs "Generate a voiceover for product demo"
-→ Activates ElevenLabs skill with specific task context
 
 /skill frontend-design
 → Loads frontend-design skill, ready to build UI components

@@ -238,7 +238,7 @@ Write `reviews/SUMMARY.md` with this structure:
 <task_list>
 
 - [ ] Ask user: "Create todo files for P1/P2 findings? (yes/no)"
-- [ ] If yes: use file-todos skill to create `todos/` entries for all P1 and P2 findings
+- [ ] If yes: create `todos/` entries for all P1 and P2 findings
   - [ ] P1 findings: `{id}-pending-p1-{description}.md`
   - [ ] P2 findings: `{id}-pending-p2-{description}.md`
   - [ ] Tag all with `bulk-review` and `code-review`

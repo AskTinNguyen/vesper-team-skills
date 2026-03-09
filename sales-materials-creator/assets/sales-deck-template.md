@@ -80,12 +80,12 @@
 
 | Category | Skills | Feeling |
 |----------|--------|---------|
-| **Video & Media** | remotion, ffmpeg, elevenlabs, playwright-recording | *"Our content looks like it came from a studio"* |
+| **Video & Media** | remotion, ffmpeg, gemini-imagegen, playwright-recording | *"Our content looks like it came from a studio"* |
 | **Development** | dhh-rails-style, andrew-kane-gem-writer, dspy-ruby | *"I write code like the pros"* |
 | **Testing** | electron-cdp-testing, webapp-testing | *"I sleep well before releases"* |
 | **AI Workflows** | dispatch, ralph-loop, agent-native-architecture | *"My team runs itself"* |
 | **Design** | frontend-design, flowy-ui-mockup, gemini-imagegen | *"I can actually visualize ideas"* |
-| **Operations** | github-intel, file-todos, compound-docs | *"Nothing falls through cracks"* |
+| **Operations** | github-intel, github-sync, compound-docs | *"Nothing falls through cracks"* |
 
 ---
 

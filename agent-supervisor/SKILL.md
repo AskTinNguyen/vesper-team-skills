@@ -32,8 +32,8 @@ echo "Task list: $CLAUDE_CODE_TASK_LIST_ID"
 # 2. Check current task state
 TaskList
 
-# 3. Verify /tasklist-env if needed
-bash ~/.claude/skills/tasklist-env/scripts/tasklist_env.sh status
+# 3. Verify task list context if needed
+cat ~/.claude/tasks/.current-list-id 2>/dev/null || echo "default"
 ```
 
 If `CLAUDE_CODE_TASK_LIST_ID` is empty, restart Claude with `cc <list-name>`.
@@ -227,7 +227,7 @@ Each polling cycle should produce a report:
 | Skill | How Supervisor Uses It |
 |-------|----------------------|
 | `/dispatch` | Inherits task conventions, uses `cc` for session management |
-| `/tasklist-env` | Pre-flight environment check |
+| `~/.claude/tasks/.current-list-id` | Pre-flight environment check |
 | `github-sync` | PR tracker mode calls sync scripts each cycle |
 | `verify-and-ship` | Supervisor may create verification tasks for completed work |
 | `/workflows:review` | Review follower mode tracks dispatched review agents |

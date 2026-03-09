@@ -10,7 +10,7 @@ Videos are functions of frames. First frame is 0, last is `durationInFrames - 1`
 **Related skills:**
 - `@launchpad-remotion` - Reusable components for trycua/launchpad projects
 - `@ffmpeg` - Video processing, format conversion, speed adjustment
-- `@elevenlabs` - AI voiceovers and sound effects
+- External TTS/audio tools for voiceovers and sound effects
 
 **Global knowledge base:** `~/docs/solutions/video-production/remotion/`
 - `prompts.md` - 10 ready-to-use animation prompts

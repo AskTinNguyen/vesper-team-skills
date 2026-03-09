@@ -200,7 +200,7 @@ in the login flow (a1b2c3d, e4f5g6h). One PR (#42) remains open for 5 days with 
 
 If Red items exist, **ask the user** whether to create todo files.
 
-If user confirms and the `file-todos` skill is available, create todos using that skill. If `file-todos` is unavailable, create files manually:
+If user confirms, create todo files manually:
 - Naming: `{NNN}-pending-{priority}-{description}.md` where `{NNN}` is a sequential integer (001, 002, ...) for this review session
 - Priority: `p1` for Red items, `p2` for Yellow items
 - Tags: `weekly-review` plus relevant tags (e.g., `security`, `instability`, `stale-pr`)
@@ -240,4 +240,4 @@ Do not auto-create todos without user confirmation.
 
 - Generate release notes from this period: `skill: ship-notes`
 - Compile agent-optimized changelog: `skill: agent-changelog`
-- Persist Red findings as todos: `skill: file-todos`
+- Persist Red findings in your preferred issue or todo tracker

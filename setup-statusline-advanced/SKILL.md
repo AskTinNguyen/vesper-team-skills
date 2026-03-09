@@ -123,9 +123,9 @@ The heatmap shows the top 3 directories by activity level, making it easy to see
 
 ## Task List Environment
 
-The statusline reads the active task list from `~/.claude/tasks/.current-list-id` (managed by the `tasklist-env` skill). If that file doesn't exist, it falls back to the `TASKLIST_ENV` environment variable, then to `default`.
+The statusline reads the active task list from `~/.claude/tasks/.current-list-id`. If that file doesn't exist, it falls back to the `TASKLIST_ENV` environment variable, then to `default`.
 
-To switch task list environments, use the `tasklist-env` skill or set the file manually:
+To switch task list environments, set the file manually:
 
 ```bash
 echo "my-project" > ~/.claude/tasks/.current-list-id
