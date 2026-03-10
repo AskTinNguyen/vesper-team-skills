@@ -1,37 +1,38 @@
 {
-  "name": "Sample Auto Claude UI Test",
-  "description": "Example test suite demonstrating CDP testing capabilities",
+  "name": "Sample Vesper CDP Smoke",
+  "description": "Grounded smoke test for the live Vesper Electron renderer",
   "steps": [
     {
-      "action": "screenshot",
-      "output": "test-01-initial.png",
-      "description": "Capture initial state"
-    },
-    {
-      "action": "eval",
-      "expression": "typeof window.electronAPI",
-      "description": "Verify electronAPI is available"
+      "action": "assert",
+      "expression": "typeof window.electronAPI === 'object'",
+      "expected": true,
+      "description": "Confirm the preload bridge is available"
     },
     {
       "action": "eval",
       "expression": "document.title",
-      "description": "Get page title"
+      "description": "Read the current window title"
+    },
+    {
+      "action": "eval",
+      "expression": "(() => { window.location.hash = '#/settings'; return window.location.hash; })()",
+      "description": "Navigate to the settings hash"
     },
     {
       "action": "wait",
-      "ms": 500,
-      "description": "Wait for any animations"
+      "ms": 600,
+      "description": "Wait for the route transition"
     },
     {
       "action": "click",
-      "text": "Create",
-      "description": "Click create button (if visible)",
+      "text": "Settings",
+      "description": "Click a visible Settings control if present",
       "required": false
     },
     {
       "action": "screenshot",
-      "output": "test-02-after-click.png",
-      "description": "Capture state after interaction"
+      "output": "vesper-cdp-smoke-settings.png",
+      "description": "Capture evidence after navigation"
     }
   ]
 }
