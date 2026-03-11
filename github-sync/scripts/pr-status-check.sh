@@ -12,6 +12,8 @@ set -euo pipefail
 # Requires: gh CLI (authenticated), CLAUDE_CODE_TASK_LIST_ID set
 
 TASKS_ROOT="${HOME}/.claude/tasks"
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+JSON_HELPER="$(cd "$(dirname "$0")" && pwd)/json.ts"
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
@@ -27,6 +29,11 @@ done
 
 if ! command -v gh &>/dev/null; then
   echo "Error: gh CLI not found." >&2
+  exit 1
+fi
+
+if ! command -v "$BUN_BIN" &>/dev/null; then
+  echo "Error: Bun runtime not found. Expected VESPER_BUN_BIN or bun on PATH." >&2
   exit 1
 fi
 
@@ -46,26 +53,13 @@ fi
 for task_file in "$TASK_DIR"/*.json; do
   [[ -f "$task_file" ]] || continue
 
-  TASK_INFO=$(python3 -c "
-import json, re, sys
-with open('$task_file') as f:
-    task = json.load(f)
-desc = task.get('description', '')
-m = re.search(r'pr_number=(\d+)', desc)
-if m:
-    print(json.dumps({
-        'task_id': task.get('id', ''),
-        'subject': task.get('subject', ''),
-        'status': task.get('status', ''),
-        'pr_number': int(m.group(1))
-    }))
-" 2>/dev/null) || continue
+  TASK_INFO=$("$BUN_BIN" "$JSON_HELPER" task-pr-info "$task_file" 2>/dev/null) || continue
 
   [[ -z "$TASK_INFO" ]] && continue
 
-  PR_NUM=$(echo "$TASK_INFO" | python3 -c "import json,sys; print(json.load(sys.stdin)['pr_number'])")
-  TASK_ID=$(echo "$TASK_INFO" | python3 -c "import json,sys; print(json.load(sys.stdin)['task_id'])")
-  TASK_STATUS=$(echo "$TASK_INFO" | python3 -c "import json,sys; print(json.load(sys.stdin)['status'])")
+  PR_NUM=$(echo "$TASK_INFO" | "$BUN_BIN" "$JSON_HELPER" field pr_number)
+  TASK_ID=$(echo "$TASK_INFO" | "$BUN_BIN" "$JSON_HELPER" field task_id)
+  TASK_STATUS=$(echo "$TASK_INFO" | "$BUN_BIN" "$JSON_HELPER" field status)
 
   # Skip already-completed tasks
   if [[ "$TASK_STATUS" == "completed" ]]; then
@@ -78,10 +72,10 @@ if m:
     continue
   }
 
-  STATE=$(echo "$PR_DATA" | python3 -c "import json,sys; print(json.load(sys.stdin)['state'])")
-  MERGED=$(echo "$PR_DATA" | python3 -c "import json,sys; print(json.load(sys.stdin).get('mergedAt') or '')")
-  REVIEW=$(echo "$PR_DATA" | python3 -c "import json,sys; print(json.load(sys.stdin).get('reviewDecision') or 'PENDING')")
-  IS_DRAFT=$(echo "$PR_DATA" | python3 -c "import json,sys; print(json.load(sys.stdin).get('isDraft', False))")
+  STATE=$(echo "$PR_DATA" | "$BUN_BIN" "$JSON_HELPER" field state)
+  MERGED=$(echo "$PR_DATA" | "$BUN_BIN" "$JSON_HELPER" field mergedAt)
+  REVIEW=$(echo "$PR_DATA" | "$BUN_BIN" "$JSON_HELPER" field reviewDecision PENDING)
+  IS_DRAFT=$(echo "$PR_DATA" | "$BUN_BIN" "$JSON_HELPER" field isDraft false)
 
   # Determine action
   if [[ -n "$MERGED" ]]; then
@@ -96,7 +90,7 @@ if m:
   elif [[ "$REVIEW" == "CHANGES_REQUESTED" ]]; then
     ACTION="flag"
     NOTE="PR #${PR_NUM} has changes requested"
-  elif [[ "$IS_DRAFT" == "True" ]]; then
+  elif [[ "$IS_DRAFT" == "true" ]]; then
     ACTION="none"
     NOTE="PR #${PR_NUM} is still a draft"
   else

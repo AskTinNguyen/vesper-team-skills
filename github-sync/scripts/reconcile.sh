@@ -15,6 +15,8 @@ set -euo pipefail
 # Requires: gh CLI (authenticated), CLAUDE_CODE_TASK_LIST_ID set
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+JSON_HELPER="$SCRIPT_DIR/json.ts"
 DRY_RUN=false
 PRS_ONLY=false
 ISSUES_ONLY=false
@@ -91,30 +93,12 @@ if [[ -d "$TASK_DIR" ]]; then
   for task_file in "$TASK_DIR"/*.json; do
     [[ -f "$task_file" ]] || continue
 
-    python3 -c "
-import json, re, sys
-with open('$task_file') as f:
-    task = json.load(f)
-if task.get('status') == 'completed':
-    sys.exit(0)
-desc = task.get('description', '')
-pr_match = re.search(r'pr_number=(\d+)', desc)
-issue_match = re.search(r'issue_number=(\d+)', desc)
-if pr_match or issue_match:
-    kind = 'pr' if pr_match else 'issue'
-    num = pr_match.group(1) if pr_match else issue_match.group(1)
-    print(json.dumps({
-        'task_id': task.get('id', ''),
-        'subject': task.get('subject', ''),
-        'github_type': kind,
-        'github_number': int(num)
-    }))
-" 2>/dev/null || true
+    "$BUN_BIN" "$JSON_HELPER" task-link-info "$task_file" 2>/dev/null || true
   done | while IFS= read -r line; do
     [[ -z "$line" ]] && continue
-    GH_TYPE=$(echo "$line" | python3 -c "import json,sys; print(json.load(sys.stdin)['github_type'])")
-    GH_NUM=$(echo "$line" | python3 -c "import json,sys; print(json.load(sys.stdin)['github_number'])")
-    TASK_ID=$(echo "$line" | python3 -c "import json,sys; print(json.load(sys.stdin)['task_id'])")
+    GH_TYPE=$(echo "$line" | "$BUN_BIN" "$JSON_HELPER" field github_type)
+    GH_NUM=$(echo "$line" | "$BUN_BIN" "$JSON_HELPER" field github_number)
+    TASK_ID=$(echo "$line" | "$BUN_BIN" "$JSON_HELPER" field task_id)
 
     if [[ "$GH_TYPE" == "pr" ]]; then
       STATE=$(gh pr view "$GH_NUM" --json state -q '.state' 2>/dev/null) || STATE="NOT_FOUND"

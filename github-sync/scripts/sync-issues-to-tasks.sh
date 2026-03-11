@@ -10,6 +10,8 @@ set -euo pipefail
 # Output: JSON lines — one object per issue with sync action taken
 
 TASKS_ROOT="${HOME}/.claude/tasks"
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+JSON_HELPER="$(cd "$(dirname "$0")" && pwd)/json.ts"
 LABEL=""
 MILESTONE=""
 LIMIT=50
@@ -51,6 +53,11 @@ if ! command -v gh &>/dev/null; then
   exit 1
 fi
 
+if ! command -v "$BUN_BIN" &>/dev/null; then
+  echo "Error: Bun runtime not found. Expected VESPER_BUN_BIN or bun on PATH." >&2
+  exit 1
+fi
+
 if [[ -z "${CLAUDE_CODE_TASK_LIST_ID:-}" ]]; then
   echo "Error: CLAUDE_CODE_TASK_LIST_ID not set. Start Claude with cc <list-name>." >&2
   exit 1
@@ -69,7 +76,7 @@ ISSUES=$(gh "${GH_ARGS[@]}" 2>/dev/null) || {
   exit 1
 }
 
-ISSUE_COUNT=$(echo "$ISSUES" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))")
+ISSUE_COUNT=$(echo "$ISSUES" | "$BUN_BIN" "$JSON_HELPER" count)
 echo "Found $ISSUE_COUNT open issues" >&2
 
 # Collect existing issue numbers from task descriptions
@@ -77,15 +84,7 @@ existing_issue_numbers() {
   if [[ -d "$TASK_DIR" ]]; then
     for f in "$TASK_DIR"/*.json; do
       [[ -f "$f" ]] || continue
-      python3 -c "
-import json, re, sys
-with open('$f') as fh:
-    task = json.load(fh)
-desc = task.get('description', '')
-m = re.search(r'issue_number=(\d+)', desc)
-if m:
-    print(m.group(1))
-" 2>/dev/null
+      "$BUN_BIN" "$JSON_HELPER" task-metadata "$f" issue_number 2>/dev/null
     done
   fi
 }
@@ -93,21 +92,18 @@ if m:
 EXISTING=$(existing_issue_numbers | sort -u)
 
 # Process each issue
-echo "$ISSUES" | python3 -c "
-import json, sys
-
-issues = json.load(sys.stdin)
-for issue in issues:
-    print(json.dumps(issue))
-" | while IFS= read -r issue_json; do
-  NUMBER=$(echo "$issue_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['number'])")
-  TITLE=$(echo "$issue_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['title'])")
-  AUTHOR_LOGIN=$(echo "$issue_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['author']['login'])")
-  URL=$(echo "$issue_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['url'])")
-  BODY=$(echo "$issue_json" | python3 -c "import json,sys; print(json.load(sys.stdin).get('body','') or '')")
-  LABELS=$(echo "$issue_json" | python3 -c "import json,sys; print(', '.join(l['name'] for l in json.load(sys.stdin).get('labels',[])) or 'none')")
-  MILESTONE_NAME=$(echo "$issue_json" | python3 -c "import json,sys; m=json.load(sys.stdin).get('milestone'); print(m['title'] if m else 'none')")
-  ASSIGNEES=$(echo "$issue_json" | python3 -c "import json,sys; print(', '.join('@'+a['login'] for a in json.load(sys.stdin).get('assignees',[])) or 'unassigned')")
+echo "$ISSUES" | "$BUN_BIN" "$JSON_HELPER" jsonl | while IFS= read -r issue_json; do
+  NUMBER=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field number)
+  TITLE=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field title)
+  AUTHOR_LOGIN=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field author.login)
+  URL=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field url)
+  BODY=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field body)
+  LABELS=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" join labels name ', ' none)
+  MILESTONE_NAME=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" field milestone.title none)
+  ASSIGNEES=$(echo "$issue_json" | "$BUN_BIN" "$JSON_HELPER" join assignees login ', @' unassigned)
+  if [[ "$ASSIGNEES" != "unassigned" ]]; then
+    ASSIGNEES="@${ASSIGNEES}"
+  fi
 
   # Check dedup
   if echo "$EXISTING" | grep -qw "$NUMBER"; then
@@ -129,7 +125,7 @@ Metadata: issue_number=${NUMBER}"
   if [[ "$DRY_RUN" == "true" ]]; then
     echo "{\"issue\": $NUMBER, \"action\": \"would_create\", \"title\": \"Issue #${NUMBER}: ${TITLE}\"}"
   else
-    echo "{\"issue\": $NUMBER, \"action\": \"create\", \"subject\": \"Issue #${NUMBER}: ${TITLE}\", \"description\": $(echo "$DESCRIPTION" | python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))"), \"activeForm\": \"Working on issue #${NUMBER}\"}"
+    echo "{\"issue\": $NUMBER, \"action\": \"create\", \"subject\": \"Issue #${NUMBER}: ${TITLE}\", \"description\": $(echo "$DESCRIPTION" | "$BUN_BIN" "$JSON_HELPER" stringify-stdin), \"activeForm\": \"Working on issue #${NUMBER}\"}"
   fi
 done
 

@@ -10,6 +10,8 @@ set -euo pipefail
 # Output: JSON lines — one object per PR with sync action taken
 
 TASKS_ROOT="${HOME}/.claude/tasks"
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+JSON_HELPER="$(cd "$(dirname "$0")" && pwd)/json.ts"
 LABEL=""
 AUTHOR=""
 LIMIT=50
@@ -51,6 +53,11 @@ if ! command -v gh &>/dev/null; then
   exit 1
 fi
 
+if ! command -v "$BUN_BIN" &>/dev/null; then
+  echo "Error: Bun runtime not found. Expected VESPER_BUN_BIN or bun on PATH." >&2
+  exit 1
+fi
+
 if [[ -z "${CLAUDE_CODE_TASK_LIST_ID:-}" ]]; then
   echo "Error: CLAUDE_CODE_TASK_LIST_ID not set. Start Claude with cc <list-name>." >&2
   exit 1
@@ -69,7 +76,7 @@ PRS=$(gh "${GH_ARGS[@]}" 2>/dev/null) || {
   exit 1
 }
 
-PR_COUNT=$(echo "$PRS" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))")
+PR_COUNT=$(echo "$PRS" | "$BUN_BIN" "$JSON_HELPER" count)
 echo "Found $PR_COUNT open PRs" >&2
 
 # Collect existing PR numbers from task descriptions
@@ -77,15 +84,7 @@ existing_pr_numbers() {
   if [[ -d "$TASK_DIR" ]]; then
     for f in "$TASK_DIR"/*.json; do
       [[ -f "$f" ]] || continue
-      python3 -c "
-import json, re, sys
-with open('$f') as fh:
-    task = json.load(fh)
-desc = task.get('description', '')
-m = re.search(r'pr_number=(\d+)', desc)
-if m:
-    print(m.group(1))
-" 2>/dev/null
+      "$BUN_BIN" "$JSON_HELPER" task-metadata "$f" pr_number 2>/dev/null
     done
   fi
 }
@@ -93,27 +92,17 @@ if m:
 EXISTING=$(existing_pr_numbers | sort -u)
 
 # Process each PR
-CREATED=0
-SKIPPED=0
-
-echo "$PRS" | python3 -c "
-import json, sys
-
-prs = json.load(sys.stdin)
-for pr in prs:
-    row = json.dumps(pr)
-    print(row)
-" | while IFS= read -r pr_json; do
-  NUMBER=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['number'])")
-  TITLE=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['title'])")
-  AUTHOR_LOGIN=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['author']['login'])")
-  HEAD=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['headRefName'])")
-  BASE=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['baseRefName'])")
-  URL=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin)['url'])")
-  BODY=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin).get('body','') or '')")
-  IS_DRAFT=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin).get('isDraft', False))")
-  LABELS=$(echo "$pr_json" | python3 -c "import json,sys; print(', '.join(l['name'] for l in json.load(sys.stdin).get('labels',[])) or 'none')")
-  REVIEW=$(echo "$pr_json" | python3 -c "import json,sys; print(json.load(sys.stdin).get('reviewDecision','') or 'pending')")
+echo "$PRS" | "$BUN_BIN" "$JSON_HELPER" jsonl | while IFS= read -r pr_json; do
+  NUMBER=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field number)
+  TITLE=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field title)
+  AUTHOR_LOGIN=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field author.login)
+  HEAD=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field headRefName)
+  BASE=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field baseRefName)
+  URL=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field url)
+  BODY=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field body)
+  IS_DRAFT=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field isDraft false)
+  LABELS=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" join labels name ', ' none)
+  REVIEW=$(echo "$pr_json" | "$BUN_BIN" "$JSON_HELPER" field reviewDecision pending)
 
   # Check dedup
   if echo "$EXISTING" | grep -qw "$NUMBER"; then
@@ -137,7 +126,7 @@ Metadata: pr_number=${NUMBER}"
     echo "{\"pr\": $NUMBER, \"action\": \"would_create\", \"title\": \"PR #${NUMBER}: ${TITLE}\"}"
   else
     # Output task creation instruction for the calling agent
-    echo "{\"pr\": $NUMBER, \"action\": \"create\", \"subject\": \"PR #${NUMBER}: ${TITLE}\", \"description\": $(echo "$DESCRIPTION" | python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))"), \"activeForm\": \"Reviewing PR #${NUMBER}\"}"
+    echo "{\"pr\": $NUMBER, \"action\": \"create\", \"subject\": \"PR #${NUMBER}: ${TITLE}\", \"description\": $(echo "$DESCRIPTION" | "$BUN_BIN" "$JSON_HELPER" stringify-stdin), \"activeForm\": \"Reviewing PR #${NUMBER}\"}"
   fi
 done
 

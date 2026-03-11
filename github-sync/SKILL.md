@@ -35,6 +35,12 @@ echo "Task list: $CLAUDE_CODE_TASK_LIST_ID"
 gh repo view --json nameWithOwner -q '.nameWithOwner'
 ```
 
+For packaged Vesper or Bun-backed shared skills, prefer:
+
+```bash
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+```
+
 If `CLAUDE_CODE_TASK_LIST_ID` is empty, start Claude with `cc <list-name>` (see `/dispatch`).
 
 ## Quick Start
