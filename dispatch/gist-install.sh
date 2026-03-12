@@ -33,12 +33,12 @@ mkdir -p "$SKILL_DIR/scripts/lib" "$SKILL_DIR/references"
 cat > "$SKILL_DIR/SKILL.md" << 'EOF'
 ---
 name: dispatch
-description: Coordinate complex features using parallel subagent execution. Triggers on "coordinate tasks", "spawn agents", "parallelize", or 5+ implementation steps.
+description: Coordinate multi-step work across parallel agent workers using a shared task ledger and explicit dependencies. Use when a request needs decomposition, worker assignment, monitoring, or recovery.
 ---
 
 # Dispatch
 
-Coordinate complex features using Claude Code's Task system and parallel subagent execution.
+Coordinate complex work using a shared task ledger, explicit dependencies, and Claude Code's task adapter.
 
 ## Installation: The `cc` Command
 
@@ -65,7 +65,7 @@ cc --list               # Show all task lists
 | opus | 30 min | 1 | Architecture, complex logic |
 | sonnet | 15 min | 2 | Features, tests, integrations, task coordination |
 
-**Do NOT use Haiku for dispatch tasks.** Haiku lacks tool awareness and searches the filesystem for TaskList/TaskUpdate instead of using Claude Code's built-in tools. Use Sonnet as the minimum model.
+For tool-heavy coding, use a model that reliably handles the required tools. In Claude Code, Sonnet is the safe default and lighter models may still work for low-risk tasks if they behave well in your environment.
 
 ## Prompt Syntax for Subagents
 
@@ -89,9 +89,9 @@ Use **direct tool invocation syntax**. Subagents interpret verbose descriptions 
 ```bash
 cc my-feature
 
-TaskCreate(subject: "Design API", description: "...", activeForm: "Designing API")
+TaskCreate(subject: "Design API", description: "Define routes, payloads, blockers, and ownership.", activeForm: "Designing API")
 TaskUpdate(taskId: "2", addBlockedBy: ["1"])
-Task(subagent_type: "general-purpose", model: "sonnet", prompt: "...", description: "Task 1")
+Task(subagent_type: "general-purpose", model: "sonnet", prompt: "Complete task 1, then mark it completed.", description: "Task 1")
 TaskList
 ```
 

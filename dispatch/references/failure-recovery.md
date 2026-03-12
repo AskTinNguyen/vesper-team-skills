@@ -86,8 +86,9 @@ if attempt > max_retries:
 
 3. If skipping, update downstream tasks:
    ```
-   // Remove failed task from blockedBy
-   TaskUpdate(taskId: "Y", blockedBy: [...without X...])
+   Edit downstream tasks so they no longer list X as a blocker.
+   If your runtime has task-update primitives, use them.
+   If you are on a shared board, edit the blocker field directly.
    ```
 
 ### 4. File Conflict
@@ -104,11 +105,12 @@ bun run scripts/detect-file-conflicts.ts
 
 **Recovery:**
 1. Identify conflicting changes
-2. Determine which agent's work to keep
-3. Revert other agent's changes:
+2. Snapshot both sides before discarding anything:
    ```bash
-   git checkout HEAD -- <conflicting-file>
+   git status
+   git diff -- <conflicting-file>
    ```
+3. Decide whether to merge the work, keep one side, or reassign a follow-up task
 4. Reset losing task to pending
 5. Add dependency to prevent recurrence:
    ```

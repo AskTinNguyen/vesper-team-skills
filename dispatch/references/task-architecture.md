@@ -2,6 +2,8 @@
 
 This document explains how Claude Code's task system works and how to use it correctly for multi-agent coordination.
 
+This is a Claude-specific adapter reference, not a universal dispatch contract.
+
 ## How Task List IDs Work
 
 Every Claude Code session has a **task list ID** that determines where tasks are stored:

@@ -2,6 +2,8 @@
 
 This document details the Claude Code Task tools used for coordination.
 
+This is an adapter-specific reference. The universal dispatch protocol lives in [../SKILL.md](/Users/tinnguyen/vesper-team-skills/dispatch/SKILL.md) and [runtime-primitives.md](/Users/tinnguyen/vesper-team-skills/dispatch/references/runtime-primitives.md).
+
 ## TaskCreate
 
 Creates a new task in the current task list.
@@ -179,7 +181,7 @@ Spawns a subagent to work on a task. This is the core Task tool for agent orches
 | `subagent_type` | string | Yes | Agent type (usually "general-purpose") |
 | `prompt` | string | Yes | Instructions for the subagent |
 | `description` | string | Yes | Short description shown in UI (3-5 words) |
-| `model` | string | No | Model selection: "opus", "sonnet", "haiku" |
+| `model` | string | No | Model selection for the current Claude adapter, for example "opus", "sonnet", or "haiku" |
 | `run_in_background` | boolean | No | Run without blocking |
 | `allowed_tools` | string[] | No | Tools to grant the agent |
 
@@ -202,6 +204,8 @@ Task(
 | Medium | sonnet | $$ | Standard features, tests, integrations |
 | Low | haiku | $ | Docs, config, simple fixes |
 
+Use the smallest model that reliably handles the tool surface in your environment. For task-heavy coding, `sonnet` is the safe default in Claude Code.
+
 ### Best Practices
 
 1. **Include task context** in prompt - subagent has no prior context
@@ -218,7 +222,7 @@ To spawn multiple agents in parallel, include multiple Task calls in a single me
 
 Task(prompt: "Complete task 2...", model: "sonnet", ...)
 Task(prompt: "Complete task 3...", model: "sonnet", ...)
-Task(prompt: "Complete task 4...", model: "haiku", ...)
+Task(prompt: "Complete task 4...", model: "sonnet", ...)
 ```
 
 All three agents spawn concurrently.

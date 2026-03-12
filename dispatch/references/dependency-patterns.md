@@ -2,6 +2,12 @@
 
 This reference shows common task dependency patterns for different project types.
 
+The examples below use capability tiers instead of product-specific model names:
+
+- `planner`: architecture and sequencing
+- `builder`: most implementation and testing work
+- `lightweight`: low-risk docs or cleanup
+
 ## Pattern Types
 
 ### Linear Chain
@@ -109,14 +115,14 @@ All 4 can spawn in parallel.
 ### New Feature (Full Stack)
 
 ```
-1. Design architecture          opus, no deps
-2. Create database schema       sonnet, blockedBy: 1
-3. Build API endpoints          sonnet, blockedBy: 2
-4. Build UI components          sonnet, blockedBy: 1
-5. Connect UI to API            sonnet, blockedBy: 3, 4
-6. Write unit tests             sonnet, blockedBy: 3, 4
-7. Write E2E tests              sonnet, blockedBy: 5
-8. Documentation                haiku, blockedBy: 5
+1. Design architecture          planner, no deps
+2. Create database schema       builder, blockedBy: 1
+3. Build API endpoints          builder, blockedBy: 2
+4. Build UI components          builder, blockedBy: 1
+5. Connect UI to API            builder, blockedBy: 3, 4
+6. Write unit tests             builder, blockedBy: 3, 4
+7. Write E2E tests              builder, blockedBy: 5
+8. Documentation                lightweight, blockedBy: 5
 ```
 
 **Execution phases:**
@@ -129,11 +135,11 @@ All 4 can spawn in parallel.
 ### Bug Fix
 
 ```
-1. Reproduce and document bug   sonnet, no deps
-2. Write failing test           sonnet, blockedBy: 1
-3. Implement fix                sonnet, blockedBy: 2
-4. Verify fix and tests pass    sonnet, blockedBy: 3
-5. Update related documentation haiku, blockedBy: 4
+1. Reproduce and document bug   builder, no deps
+2. Write failing test           builder, blockedBy: 1
+3. Implement fix                builder, blockedBy: 2
+4. Verify fix and tests pass    builder, blockedBy: 3
+5. Update related documentation lightweight, blockedBy: 4
 ```
 
 **Execution:** Linear chain (each step validates the previous)
@@ -141,14 +147,14 @@ All 4 can spawn in parallel.
 ### Refactoring
 
 ```
-1. Analyze current structure    opus, no deps
-2. Design target architecture   opus, blockedBy: 1
-3. Add adapter/facade layer     sonnet, blockedBy: 2
-4. Migrate component A          sonnet, blockedBy: 3
-5. Migrate component B          sonnet, blockedBy: 3
-6. Migrate component C          sonnet, blockedBy: 3
-7. Remove adapter layer         sonnet, blockedBy: 4, 5, 6
-8. Update tests                 sonnet, blockedBy: 7
+1. Analyze current structure    planner, no deps
+2. Design target architecture   planner, blockedBy: 1
+3. Add adapter/facade layer     builder, blockedBy: 2
+4. Migrate component A          builder, blockedBy: 3
+5. Migrate component B          builder, blockedBy: 3
+6. Migrate component C          builder, blockedBy: 3
+7. Remove adapter layer         builder, blockedBy: 4, 5, 6
+8. Update tests                 builder, blockedBy: 7
 ```
 
 **Execution:**
@@ -159,13 +165,13 @@ All 4 can spawn in parallel.
 ### API Integration
 
 ```
-1. Research external API        sonnet, no deps
-2. Design integration interface opus, blockedBy: 1
-3. Implement API client         sonnet, blockedBy: 2
-4. Add error handling           sonnet, blockedBy: 3
-5. Add retry logic              sonnet, blockedBy: 3
-6. Write integration tests      sonnet, blockedBy: 4, 5
-7. Add monitoring/logging       haiku, blockedBy: 3
+1. Research external API        builder, no deps
+2. Design integration interface planner, blockedBy: 1
+3. Implement API client         builder, blockedBy: 2
+4. Add error handling           builder, blockedBy: 3
+5. Add retry logic              builder, blockedBy: 3
+6. Write integration tests      builder, blockedBy: 4, 5
+7. Add monitoring/logging       lightweight, blockedBy: 3
 ```
 
 **Execution:**
@@ -176,13 +182,13 @@ All 4 can spawn in parallel.
 ### Testing Suite
 
 ```
-1. Set up test infrastructure   sonnet, no deps
-2. Write unit tests - models    sonnet, blockedBy: 1
-3. Write unit tests - services  sonnet, blockedBy: 1
-4. Write unit tests - utils     haiku, blockedBy: 1
-5. Write integration tests      sonnet, blockedBy: 2, 3, 4
-6. Write E2E tests              sonnet, blockedBy: 5
-7. Configure CI pipeline        haiku, blockedBy: 6
+1. Set up test infrastructure   builder, no deps
+2. Write unit tests - models    builder, blockedBy: 1
+3. Write unit tests - services  builder, blockedBy: 1
+4. Write unit tests - utils     lightweight, blockedBy: 1
+5. Write integration tests      builder, blockedBy: 2, 3, 4
+6. Write E2E tests              builder, blockedBy: 5
+7. Configure CI pipeline        lightweight, blockedBy: 6
 ```
 
 ---

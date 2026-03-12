@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# auto-archive.sh - Stop hook to archive tasks when session ends
+# auto-archive.sh - SessionEnd hook to archive tasks when session ends
 #
 # This hook runs asynchronously when a Claude Code session ends,
 # preserving tasks as historical logs before cleanup.
 #
-# Install: Add to ~/.claude/settings.json hooks.Stop
+# Install: Add to ~/.claude/settings.json hooks.SessionEnd
 #
 
 TASKS_DIR="$HOME/.claude/tasks"
@@ -58,7 +58,7 @@ cat > "$ARCHIVE_PATH/manifest.json" << EOF
 {
   "listId": "$LIST_ID",
   "archivedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "trigger": "stop-hook",
+  "trigger": "session-end-hook",
   "taskCount": $TASK_COUNT,
   "completedCount": $COMPLETED,
   "pendingCount": $PENDING,

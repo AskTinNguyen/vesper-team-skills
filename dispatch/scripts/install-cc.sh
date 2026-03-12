@@ -3,7 +3,8 @@
 # Install 'cc' and 'ccd' wrapper commands for Claude Code with task coordination
 #
 
-SKILL_DIR="$HOME/.claude/skills/dispatch"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 CC_SCRIPT="$SKILL_DIR/scripts/cc"
 CCD_SCRIPT="$SKILL_DIR/scripts/ccd"
 
@@ -62,7 +63,7 @@ install_cmd() {
 install_cmd "cc" "$CC_SCRIPT"
 install_cmd "ccd" "$CCD_SCRIPT"
 
-# Install the auto-archive Stop hook
+# Install the auto-archive SessionEnd hook
 HOOK_INSTALLER="$SKILL_DIR/hooks/install-hook.sh"
 if [ -f "$HOOK_INSTALLER" ]; then
   echo ""

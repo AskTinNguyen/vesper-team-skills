@@ -7,7 +7,7 @@
 # This script sets up the Dispatch skill after installation or Team Skills sync.
 # It installs:
 #   - cc and ccd commands (Claude Code wrappers with task coordination)
-#   - Auto-archive Stop hook (preserves tasks when sessions end)
+#   - Auto-archive SessionEnd hook (preserves tasks when sessions end)
 #
 # Safe to run multiple times (idempotent).
 #
