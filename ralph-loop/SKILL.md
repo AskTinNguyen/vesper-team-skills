@@ -25,6 +25,8 @@ triggers:
 
 Ralph Loop is an autonomous coding system that processes a PRD with checkbox-formatted user stories, working through each story automatically until completion. This skill helps you create properly formatted PRDs and understand how to use Ralph Loop effectively.
 
+This packaged skill is Bun-first so it can ship cleanly with Vesper on machines that do not have Python installed.
+
 ### What Ralph Loop Does
 
 - **Autonomy**: Processes multiple stories without constant user intervention
@@ -420,9 +422,13 @@ This section documents all the scripts and files needed to run Ralph Loop via CL
 ralph-loop/
 ├── ralph                    # CLI entry point
 ├── lib/loop.sh              # Core loop logic
+├── lib/state-tools.ts       # Shared Bun utilities for stateful helper commands
 ├── prompts/
 │   ├── build.md             # Build iteration prompt template
 │   └── plan.md              # Planning prompt template
+├── state-manager.ts         # Deterministic JSON state helper for session-driven runs
+├── terminal-guard.ts        # Terminal-state + completion-note helper
+├── resilience-mock-runner.ts # Retry/resume simulation helper
 ├── skills/commit/SKILL.md   # Commit skill for conventional commits
 ├── hooks/
 │   ├── on-complete.sh       # Stop hook (runs on session end)
@@ -569,6 +575,16 @@ MODEL=opus AGENT_TIMEOUT=900 ralph build 5
 RALPH_ROOT=/path/to/prds ralph build
 ```
 
+### Bun Requirement
+
+The optional helper commands below are Bun-based. Inside packaged Vesper on macOS, Linux, and Windows, sessions now receive `VESPER_BUN_BIN` plus a `PATH` entry that points at the bundled Bun runtime, so these helpers work even when the machine does not have Bun installed globally.
+
+Prefer this pattern in scripts and shell snippets:
+
+```bash
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+```
+
 ### PRD File Format
 
 **Location:** `.ralph/prd.md` (default) or `.ralph/PRD-N/prd.md`
@@ -639,3 +655,67 @@ MODEL=opus AGENT_TIMEOUT=1200 ./ralph build 3
 ```
 
 For more details, see the full Ralph Loop documentation.
+
+---
+
+## Optional Bun Helpers For Vesper
+
+Use these only when you want deterministic state, retry bookkeeping, or scheduler-safe shutdown around a session-driven Ralph experiment. The standard `./ralph build` flow does not require them.
+
+```bash
+BUN_BIN="${VESPER_BUN_BIN:-bun}"
+```
+
+### `state-manager.ts`
+
+Persists and updates `ralph-loop.state.json`.
+
+```bash
+# Initialize / sync state from a PRD
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/state-manager.ts sync \
+  --prd /abs/path/to/prd.md \
+  --state /abs/path/to/ralph-loop.state.json \
+  --worker coder \
+  --workspace-root /abs/path/to/workspace
+
+# Begin an attempt
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/state-manager.ts begin \
+  --state /abs/path/to/ralph-loop.state.json \
+  --story-id US-001 \
+  --spawn-run-id run-123 \
+  --session-id session-123
+
+# Mark success
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/state-manager.ts complete \
+  --state /abs/path/to/ralph-loop.state.json \
+  --story-id US-001 \
+  --evidence "ACCEPTANCE: PASS for US-001"
+
+# Mark failure
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/state-manager.ts fail \
+  --state /abs/path/to/ralph-loop.state.json \
+  --story-id US-001 \
+  --error "timeout"
+```
+
+### `terminal-guard.ts`
+
+Determines whether a stateful/session-driven Ralph run is truly terminal and writes a completion note exactly once.
+
+```bash
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/terminal-guard.ts \
+  --state /abs/path/to/ralph-loop.state.json \
+  --completion-note /abs/path/to/ralph-loop.completion.md \
+  --required-consecutive-hits 2
+```
+
+### `resilience-mock-runner.ts`
+
+Simulates pass/fail/retry behavior against a saved state file without needing real spawned sessions.
+
+```bash
+"$BUN_BIN" ~/.vesper/skills/ralph-loop/resilience-mock-runner.ts \
+  --state /abs/path/to/ralph-loop.state.json \
+  --max-actions 5 \
+  --sleep-seconds 0
+```
