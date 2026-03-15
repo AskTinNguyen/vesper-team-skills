@@ -1,6 +1,6 @@
 ---
 name: vesper-option-action-depth
-description: This skill should be used when applying Vesper's desktop lean-in modifier pattern to hover, click, drag, and menu interactions. Triggers: Option hover, Alt hover, scoped delegation, agent actions.
+description: "This skill should be used when applying Vesper's desktop lean-in modifier pattern to hover, click, drag, and menu interactions. Triggers: Option hover, Alt hover, scoped delegation, agent actions."
 ---
 
 # Vesper Option-Action Depth
