@@ -87,6 +87,12 @@ That's it. All skills and commands are now available in your Claude Code session
 | [flowy-flowchart](flowy-flowchart/) | Create flowchart diagrams inline in the conversation |
 | [flowy-ui-mockup](flowy-ui-mockup/) | Create UI mockups for iPhone and iPad apps |
 
+### Game & Unreal
+
+| Skill | Description |
+|-------|-------------|
+| [game-level-building-python](game-level-building-python/) | Generate reusable Unreal Python level-building generators, regional template packs, and configurable detail passes for compounds, gardens, gates, shrines, and other gameplay-first environments |
+
 ### Research & Intelligence
 
 | Skill | Description |

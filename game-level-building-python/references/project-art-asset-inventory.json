@@ -1,0 +1,1484 @@
+{
+  "generated_at_utc": "2026-03-15T13:43:45.125357+00:00",
+  "repo_root": "E:\\S2_",
+  "content_dir": "E:\\S2_\\Content",
+  "total_assets_scanned": 445000,
+  "roles": {
+    "tree": [
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_02_Tree",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_02_Tree.BP_proto_env_L_Decor-Floor_02_Tree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_03_Tree",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_03_Tree.BP_proto_env_L_Decor-Floor_03_Tree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_18_PottedTree",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_18_PottedTree.BP_proto_env_L_Decor-Floor_18_PottedTree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Tree_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Tree_01.BP_proto_env_L_Tree_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Tree_02",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Tree_02.BP_proto_env_L_Tree_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Tree_03",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Tree_03.BP_proto_env_L_Tree_03",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Tree_04",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Tree_04.BP_proto_env_L_Tree_04",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_Foliage_SM_DragonTree_04",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Foliage_SM_DragonTree_04.BP_Foliage_SM_DragonTree_04",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 158,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Foliage_SM_DragonTree_04_NoNanite",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Foliage_SM_DragonTree_04_NoNanite.BP_Foliage_SM_DragonTree_04_NoNanite",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 158,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_GiantTree",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_GiantTree.SM_env_GiantTree",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_GiantTree_02",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_GiantTree_02.SM_env_GiantTree_02",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_GiantTree_High_dec1",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_GiantTree_High_dec1.SM_env_GiantTree_High_dec1",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Generic_Tree_Branches_01",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Generic_Tree_Branches_01/SM_Generic_Tree_Branches_01.SM_Generic_Tree_Branches_01",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      },
+      {
+        "asset_name": "SM_Medium_Tree_01",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Trees/SM_Medium_Tree_01.SM_Medium_Tree_01",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      },
+      {
+        "asset_name": "SM_Medium_Tree_02",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Trees/SM_Medium_Tree_02.SM_Medium_Tree_02",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      },
+      {
+        "asset_name": "SM_Tree_01",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Trees/SM_Tree_01.SM_Tree_01",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      },
+      {
+        "asset_name": "SM_Tree_02",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Trees/SM_Tree_02.SM_Tree_02",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      },
+      {
+        "asset_name": "SM_Tree_Hero_Terrain_01",
+        "asset_path": "/Game/DeepInTheForest/Source/Assets/Trees/SM_Tree_Hero_Terrain_01.SM_Tree_Hero_Terrain_01",
+        "asset_type": "static_mesh",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 133,
+        "note": "deep_in_the_forest"
+      }
+    ],
+    "rockery": [
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_09_RitualStone",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_09_RitualStone.BP_proto_env_L_Decor-Floor_09_RitualStone",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_02_StoneBench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_02_StoneBench.BP_proto_env_M_Chair_02_StoneBench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Rock_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Rock_01.BP_proto_env_M_Rock_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Rock_02",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Rock_02.BP_proto_env_M_Rock_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Rock_03",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Rock_03.BP_proto_env_M_Rock_03",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "SM_env_Loc03_Prototype_Rock_with_Complex_Collision",
+        "asset_path": "/Game/S2/Core_Env/Prototype/SM_env_Loc03_Prototype_Rock_with_Complex_Collision.SM_env_Loc03_Prototype_Rock_with_Complex_Collision",
+        "asset_type": "static_mesh",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 175,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "SM_env_Loc03_Prototype_Rock_with_Complex_Collision_02",
+        "asset_path": "/Game/S2/Core_Env/Prototype/SM_env_Loc03_Prototype_Rock_with_Complex_Collision_02.SM_env_Loc03_Prototype_Rock_with_Complex_Collision_02",
+        "asset_type": "static_mesh",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 175,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "SM_Small_Rock_or_Stone",
+        "asset_path": "/Game/ArtRef/ASIAN_ForestTown_YOS3D/StaticMesh/SM_Small_Rock_or_Stone.SM_Small_Rock_or_Stone",
+        "asset_type": "static_mesh",
+        "source_label": "asian_forest_town_artref",
+        "style_hint": "artref",
+        "score": 168,
+        "note": "asian_forest_town_artref"
+      },
+      {
+        "asset_name": "BP_props_ShelfStone_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_props_ShelfStone_01.BP_props_ShelfStone_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 158,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_RockMountain_A1",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_RockMountain_A1.SM_RockMountain_A1",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_StoneBrick_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_StoneBrick_01.SM_StoneBrick_01",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_Old_Stone_Well_ufhoagrfa_broken",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_Old_Stone_Well_ufhoagrfa_broken.SM_env_Old_Stone_Well_ufhoagrfa_broken",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_Old_Stone_Well_ufhoagrfa_high_Var2",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_Old_Stone_Well_ufhoagrfa_high_Var2.SM_env_Old_Stone_Well_ufhoagrfa_high_Var2",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_StoneTamTinhDoi_module",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_StoneTamTinhDoi_module.SM_env_StoneTamTinhDoi_module",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_prop_TreeRoots_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_prop_TreeRoots_01.SM_env_prop_TreeRoots_01",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_prop_TreeRoots_01_module_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_prop_TreeRoots_01_module_01.SM_env_prop_TreeRoots_01_module_01",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_prop_TreeRoots_01_module_02",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_prop_TreeRoots_01_module_02.SM_env_prop_TreeRoots_01_module_02",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_env_prop_TreeRoots_01_module_03",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_prop_TreeRoots_01_module_03.SM_env_prop_TreeRoots_01_module_03",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      }
+    ],
+    "decor": [
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_14_FlowerVase",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_14_FlowerVase.BP_proto_env_S_Decor-TableTop_14_FlowerVase",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 273,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_15_FlowerVase",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_15_FlowerVase.BP_proto_env_S_Decor-TableTop_15_FlowerVase",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 273,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_16_FlowerVase",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_16_FlowerVase.BP_proto_env_S_Decor-TableTop_16_FlowerVase",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 273,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_20_FlowerVase",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_20_FlowerVase.BP_proto_env_S_Decor-TableTop_20_FlowerVase",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 273,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_04_Altar",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_04_Altar.BP_proto_env_L_Decor-Floor_04_Altar",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_05_Vase",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_05_Vase.BP_proto_env_L_Decor-Floor_05_Vase",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_08_Monument",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_08_Monument.BP_proto_env_L_Decor-Floor_08_Monument",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_14_Burner",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_14_Burner.BP_proto_env_L_Decor-Floor_14_Burner",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_17_Statue",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_17_Statue.BP_proto_env_L_Decor-Floor_17_Statue",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Wall_02_Plaque",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Wall_02_Plaque.BP_proto_env_L_Decor-Wall_02_Plaque",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Decor-Floor_07_Burner",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Floor_07_Burner.BP_proto_env_M_Decor-Floor_07_Burner",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Decor-Floor_09_Statues",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Floor_09_Statues.BP_proto_env_M_Decor-Floor_09_Statues",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Decor-Floor_13_IncenseBurner",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Floor_13_IncenseBurner.BP_proto_env_M_Decor-Floor_13_IncenseBurner",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Decor-TableTop_01_Crate",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-TableTop_01_Crate.BP_proto_env_M_Decor-TableTop_01_Crate",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Decor-Wall_01_Tablet",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Wall_01_Tablet.BP_proto_env_M_Decor-Wall_01_Tablet",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_01_Ledger",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_01_Ledger.BP_proto_env_S_Decor-TableTop_01_Ledger",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_02_MusicBox",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_02_MusicBox.BP_proto_env_S_Decor-TableTop_02_MusicBox",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_S_Decor-TableTop_03_Bracelet",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_S_Decor-TableTop_03_Bracelet.BP_proto_env_S_Decor-TableTop_03_Bracelet",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      }
+    ],
+    "villa": [
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_16_Hill_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_16_Hill_Actor.BP_proto_env_L_Pavilion_16_Hill_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 209,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_17_Island_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_17_Island_Actor.BP_proto_env_L_Pavilion_17_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 209,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_18_Island_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_18_Island_Actor.BP_proto_env_L_Pavilion_18_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 209,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_16_Hill",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_16_Hill.BP_proto_env_L_Pavilion_16_Hill",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 199,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_17_Island",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_17_Island.BP_proto_env_L_Pavilion_17_Island",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 199,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_18_Island",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_18_Island.BP_proto_env_L_Pavilion_18_Island",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 199,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "SM_FloatingIsland",
+        "asset_path": "/Game/DreamscapeSeries/DreamscapeTower/Meshes/Stones/SM_FloatingIsland.SM_FloatingIsland",
+        "asset_type": "static_mesh",
+        "source_label": "dreamscape_tower",
+        "style_hint": "stylized",
+        "score": 143,
+        "note": "dreamscape_tower"
+      },
+      {
+        "asset_name": "SM_island_tree_01_branches_b",
+        "asset_path": "/Game/ArtRef/ASIAN_ForestTown_YOS3D/StaticMesh/SM_island_tree_01_branches_b.SM_island_tree_01_branches_b",
+        "asset_type": "static_mesh",
+        "source_label": "asian_forest_town_artref",
+        "style_hint": "artref",
+        "score": 139,
+        "note": "asian_forest_town_artref"
+      }
+    ],
+    "bench": [
+      {
+        "asset_name": "BP_proto_env_M_Chair_02_StoneBench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_02_StoneBench.BP_proto_env_M_Chair_02_StoneBench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_03_Bench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_03_Bench.BP_proto_env_M_Chair_03_Bench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_07_Bench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_07_Bench.BP_proto_env_M_Chair_07_Bench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_10_Bench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_10_Bench.BP_proto_env_M_Chair_10_Bench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_11_GardenBench",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_11_GardenBench.BP_proto_env_M_Chair_11_GardenBench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype, garden"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_01.BP_proto_env_M_Chair_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_04",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_04.BP_proto_env_M_Chair_04",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_M_Chair_05",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_05.BP_proto_env_M_Chair_05",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "SM_env_prop_Wooden_Chair_01A",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_env_prop_Wooden_Chair_01A.SM_env_prop_Wooden_Chair_01A",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Chair",
+        "asset_path": "/Game/DreamscapeSeries/DreamscapeTower/Meshes/Props/SM_Chair.SM_Chair",
+        "asset_type": "static_mesh",
+        "source_label": "dreamscape_tower",
+        "style_hint": "stylized",
+        "score": 127,
+        "note": "dreamscape_tower"
+      },
+      {
+        "asset_name": "SM_Rockingchair_01",
+        "asset_path": "/Game/ArtRef/ASIAN_ForestTown_YOS3D/StaticMesh/SM_Rockingchair_01.SM_Rockingchair_01",
+        "asset_type": "static_mesh",
+        "source_label": "asian_forest_town_artref",
+        "style_hint": "artref",
+        "score": 123,
+        "note": "asian_forest_town_artref"
+      },
+      {
+        "asset_name": "SM_Bench",
+        "asset_path": "/Game/Massive/MassiveVillage/Mesh/Object/SM_Bench.SM_Bench",
+        "asset_type": "static_mesh",
+        "source_label": "massive_village",
+        "style_hint": "marketplace",
+        "score": 120,
+        "note": "massive_village"
+      }
+    ],
+    "wall": [
+      {
+        "asset_name": "SM_Wall_Panel",
+        "asset_path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel.SM_Wall_Panel",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 190,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "SM_Wall_Panel_2",
+        "asset_path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel_2.SM_Wall_Panel_2",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 190,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "SM_Wall_Panel_3",
+        "asset_path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel_3.SM_Wall_Panel_3",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 190,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Wall_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Wall_01.BP_proto_env_L_Wall_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_Env_cm_Wall_01_Kit_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Wall_01_Kit_01.BP_Env_cm_Wall_01_Kit_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 158,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Wall_01_Kit_02",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Wall_01_Kit_02.BP_Env_cm_Wall_01_Kit_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 158,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_Wall_4_010_2Side",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_Wall_4_010_2Side.SM_Env_Wall_4_010_2Side",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_Wall_4_014_2Side",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_Wall_4_014_2Side.SM_Env_Wall_4_014_2Side",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_Wall_5_012_2side",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_Wall_5_012_2side.SM_Env_Wall_5_012_2side",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_WoodPanel",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_WoodPanel.SM_Env_WoodPanel",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_01.SM_Env_cm_Wall_01_Part_01",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_02",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_02.SM_Env_cm_Wall_01_Part_02",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_03",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_03.SM_Env_cm_Wall_01_Part_03",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_04",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_04.SM_Env_cm_Wall_01_Part_04",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_05",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_05.SM_Env_cm_Wall_01_Part_05",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_06",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_06.SM_Env_cm_Wall_01_Part_06",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_Part_07",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_Part_07.SM_Env_cm_Wall_01_Part_07",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "SM_Env_cm_Wall_01_test_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/SM_Env_cm_Wall_01_test_01.SM_Env_cm_Wall_01_test_01",
+        "asset_type": "static_mesh",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 150,
+        "note": "s2_env_mesh"
+      }
+    ],
+    "gate": [
+      {
+        "asset_name": "BP_proto_env_L_Gate_02_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_02_Actor.BP_proto_env_L_Gate_02_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 238,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_03_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_03_Actor.BP_proto_env_L_Gate_03_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 238,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_04_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_04_Actor.BP_proto_env_L_Gate_04_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 238,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_01.BP_proto_env_L_Gate_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_02",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_02.BP_proto_env_L_Gate_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_03",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_03.BP_proto_env_L_Gate_03",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Gate_04",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Gate_04.BP_proto_env_L_Gate_04",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_01",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_01.BP_Env_cm_Gate_01_Kit_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_01_Spring",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_01_Spring.BP_Env_cm_Gate_01_Kit_01_Spring",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_02",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_02.BP_Env_cm_Gate_01_Kit_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_02_Spring",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_02_Spring.BP_Env_cm_Gate_01_Kit_02_Spring",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_03",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_03.BP_Env_cm_Gate_01_Kit_03",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_03_Spring",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_03_Spring.BP_Env_cm_Gate_01_Kit_03_Spring",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_04",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_04.BP_Env_cm_Gate_01_Kit_04",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_04_Spring",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_04_Spring.BP_Env_cm_Gate_01_Kit_04_Spring",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_05",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_05.BP_Env_cm_Gate_01_Kit_05",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_05_Spring",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_05_Spring.BP_Env_cm_Gate_01_Kit_05_Spring",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      },
+      {
+        "asset_name": "BP_Env_cm_Gate_01_Kit_06",
+        "asset_path": "/Game/S2/Core_Env/Mesh/BP_Env_cm_Gate_01_Kit_06.BP_Env_cm_Gate_01_Kit_06",
+        "asset_type": "blueprint",
+        "source_label": "s2_env_mesh",
+        "style_hint": "project",
+        "score": 203,
+        "note": "s2_env_mesh"
+      }
+    ],
+    "main_hall": [
+      {
+        "asset_name": "BP_Hall",
+        "asset_path": "/Game/Asian_Modular_Temple/Blueprints/BP_Hall.BP_Hall",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 173,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "BP_Hall_2",
+        "asset_path": "/Game/Asian_Modular_Temple/Blueprints/BP_Hall_2.BP_Hall_2",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 173,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "BP_Temple",
+        "asset_path": "/Game/Asian_Modular_Temple/Blueprints/BP_Temple.BP_Temple",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "score": 153,
+        "note": "asian_modular_temple"
+      },
+      {
+        "asset_name": "BP_Temple",
+        "asset_path": "/Game/DeepInTheForest/Blueprints/BP_Temple.BP_Temple",
+        "asset_type": "blueprint",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "score": 141,
+        "note": "deep_in_the_forest"
+      }
+    ],
+    "pavilion": [
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_02_Tea_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_02_Tea_Actor.BP_proto_env_L_Pavilion_02_Tea_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 238,
+        "note": "s2_prototype, tea, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_02_Tea",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_02_Tea.BP_proto_env_L_Pavilion_02_Tea",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype, tea"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_01_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_01_Actor.BP_proto_env_L_Pavilion_01_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_03_Garden_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_03_Garden_Actor.BP_proto_env_L_Pavilion_03_Garden_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, garden, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_04_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_04_Actor.BP_proto_env_L_Pavilion_04_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_06_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_06_Actor.BP_proto_env_L_Pavilion_06_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_07_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_07_Actor.BP_proto_env_L_Pavilion_07_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_08_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_08_Actor.BP_proto_env_L_Pavilion_08_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_09_Grove_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_09_Grove_Actor.BP_proto_env_L_Pavilion_09_Grove_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_10_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_10_Actor.BP_proto_env_L_Pavilion_10_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_11_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_11_Actor.BP_proto_env_L_Pavilion_11_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_12_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_12_Actor.BP_proto_env_L_Pavilion_12_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_13_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_13_Actor.BP_proto_env_L_Pavilion_13_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_14_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_14_Actor.BP_proto_env_L_Pavilion_14_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_15_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_15_Actor.BP_proto_env_L_Pavilion_15_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_16_Hill_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_16_Hill_Actor.BP_proto_env_L_Pavilion_16_Hill_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_17_Island_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_17_Island_Actor.BP_proto_env_L_Pavilion_17_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pavilion_18_Island_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_18_Island_Actor.BP_proto_env_L_Pavilion_18_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      }
+    ],
+    "pond": [
+      {
+        "asset_name": "BP_proto_env_M_Decor-Floor_02_WaterBasin",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Floor_02_WaterBasin.BP_proto_env_M_Decor-Floor_02_WaterBasin",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 228,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pond_01_Actor",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pond_01_Actor.BP_proto_env_L_Pond_01_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 193,
+        "note": "s2_prototype, assembled"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Decor-Floor_16_PondDecors",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_16_PondDecors.BP_proto_env_L_Decor-Floor_16_PondDecors",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      },
+      {
+        "asset_name": "BP_proto_env_L_Pond_01",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pond_01.BP_proto_env_L_Pond_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 183,
+        "note": "s2_prototype"
+      }
+    ],
+    "screen_wall": [
+      {
+        "asset_name": "BP_proto_env_L_Decor-Wall_01_ScreenPanel",
+        "asset_path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Wall_01_ScreenPanel.BP_proto_env_L_Decor-Wall_01_ScreenPanel",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "score": 252,
+        "note": "s2_prototype"
+      }
+    ]
+  },
+  "recommended_palette": {
+    "wall": [
+      {
+        "path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel.SM_Wall_Panel",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel_2.SM_Wall_Panel_2",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/Asian_Modular_Temple/Meshes/SM_Wall_Panel_3.SM_Wall_Panel_3",
+        "asset_type": "static_mesh",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Wall_01.BP_proto_env_L_Wall_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "screen_wall": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Wall_01_ScreenPanel.BP_proto_env_L_Decor-Wall_01_ScreenPanel",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "pond": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Decor-Floor_02_WaterBasin.BP_proto_env_M_Decor-Floor_02_WaterBasin",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pond_01_Actor.BP_proto_env_L_Pond_01_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_16_PondDecors.BP_proto_env_L_Decor-Floor_16_PondDecors",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pond_01.BP_proto_env_L_Pond_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "main_hall": [
+      {
+        "path": "/Game/Asian_Modular_Temple/Blueprints/BP_Hall.BP_Hall",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/Asian_Modular_Temple/Blueprints/BP_Hall_2.BP_Hall_2",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/Asian_Modular_Temple/Blueprints/BP_Temple.BP_Temple",
+        "asset_type": "blueprint",
+        "source_label": "asian_modular_temple",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/DeepInTheForest/Blueprints/BP_Temple.BP_Temple",
+        "asset_type": "blueprint",
+        "source_label": "deep_in_the_forest",
+        "style_hint": "marketplace",
+        "fit_to_bounds": true
+      }
+    ],
+    "villa": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_16_Hill_Actor.BP_proto_env_L_Pavilion_16_Hill_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_17_Island_Actor.BP_proto_env_L_Pavilion_17_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_18_Island_Actor.BP_proto_env_L_Pavilion_18_Island_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_16_Hill.BP_proto_env_L_Pavilion_16_Hill",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "pavilion": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_02_Tea_Actor.BP_proto_env_L_Pavilion_02_Tea_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_02_Tea.BP_proto_env_L_Pavilion_02_Tea",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_01_Actor.BP_proto_env_L_Pavilion_01_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Pavilion_03_Garden_Actor.BP_proto_env_L_Pavilion_03_Garden_Actor",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "rockery": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_09_RitualStone.BP_proto_env_L_Decor-Floor_09_RitualStone",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Chair_02_StoneBench.BP_proto_env_M_Chair_02_StoneBench",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Rock_01.BP_proto_env_M_Rock_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_M_Rock_02.BP_proto_env_M_Rock_02",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ],
+    "tree": [
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_02_Tree.BP_proto_env_L_Decor-Floor_02_Tree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_03_Tree.BP_proto_env_L_Decor-Floor_03_Tree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Decor-Floor_18_PottedTree.BP_proto_env_L_Decor-Floor_18_PottedTree",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      },
+      {
+        "path": "/Game/S2/Core_Env/Prototype/BP_proto_env_L_Tree_01.BP_proto_env_L_Tree_01",
+        "asset_type": "blueprint",
+        "source_label": "s2_prototype",
+        "style_hint": "prototype",
+        "fit_to_bounds": true
+      }
+    ]
+  }
+}

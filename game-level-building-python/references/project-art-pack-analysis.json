@@ -1,0 +1,159 @@
+{
+  "generated_from": [
+    "project-art-asset-inventory.json"
+  ],
+  "analysis_version": 1,
+  "recommended_starting_families": [
+    "s2_core_env_prototype",
+    "s2_core_env_mesh",
+    "asian_modular_temple",
+    "uscans_wind_temple",
+    "bamboo_forest",
+    "deep_in_the_forest"
+  ],
+  "families": {
+    "s2_core_env_prototype": {
+      "display_name": "S2 Core Env Prototype",
+      "path_prefixes": [
+        "/Game/S2/Core_Env/Prototype"
+      ],
+      "strengths": [
+        "pavilions",
+        "ponds",
+        "walls",
+        "gates",
+        "trees",
+        "rockery",
+        "benches",
+        "decor"
+      ],
+      "best_for": [
+        "project-native court and garden generation",
+        "assembled blueprint swaps",
+        "tea courts",
+        "pond courts",
+        "villa retreats"
+      ],
+      "tier": 1
+    },
+    "s2_core_env_mesh": {
+      "display_name": "S2 Core Env Mesh",
+      "path_prefixes": [
+        "/Game/S2/Core_Env/Mesh"
+      ],
+      "strengths": [
+        "gate kits",
+        "wall kits",
+        "larger rockery",
+        "foliage blueprints",
+        "temple support pieces"
+      ],
+      "best_for": [
+        "project-native modular support",
+        "larger precinct edges",
+        "non-prototype support swaps"
+      ],
+      "tier": 1
+    },
+    "asian_modular_temple": {
+      "display_name": "Asian Modular Temple",
+      "path_prefixes": [
+        "/Game/Asian_Modular_Temple"
+      ],
+      "strengths": [
+        "modular walls",
+        "halls",
+        "gates",
+        "roof language",
+        "altar props"
+      ],
+      "best_for": [
+        "formal architecture",
+        "clean modular temple palettes",
+        "wall and hall replacements"
+      ],
+      "tier": 2
+    },
+    "uscans_wind_temple": {
+      "display_name": "USCANS Wind Temple",
+      "path_prefixes": [
+        "/Game/USCANS_WindTemple"
+      ],
+      "strengths": [
+        "large modular compounds",
+        "walls",
+        "pillars",
+        "floors",
+        "roof assemblies"
+      ],
+      "best_for": [
+        "large temple precincts",
+        "compound-scale generators",
+        "fence and wall systems"
+      ],
+      "tier": 2
+    },
+    "bamboo_forest": {
+      "display_name": "Bamboo Forest",
+      "path_prefixes": [
+        "/Game/Bamboo_Forest"
+      ],
+      "strengths": [
+        "bamboo",
+        "ferns",
+        "rocks",
+        "ground cover",
+        "forest edge dressing"
+      ],
+      "best_for": [
+        "foliage dressing",
+        "bamboo garden variants",
+        "overgrown court perimeters"
+      ],
+      "tier": 3
+    },
+    "deep_in_the_forest": {
+      "display_name": "Deep In The Forest",
+      "path_prefixes": [
+        "/Game/DeepInTheForest"
+      ],
+      "strengths": [
+        "mossy walls",
+        "roots",
+        "shrubs",
+        "forest rocks",
+        "ruin foliage"
+      ],
+      "best_for": [
+        "overgrown courts",
+        "ruin gardens",
+        "naturalized precinct dressing"
+      ],
+      "tier": 3
+    }
+  },
+  "starter_palettes": {
+    "project_native_court_garden": {
+      "families": [
+        "s2_core_env_prototype",
+        "s2_core_env_mesh"
+      ],
+      "intent": "Safest first pass for project-native court and garden generation."
+    },
+    "prototype_plus_modular_temple": {
+      "families": [
+        "s2_core_env_prototype",
+        "asian_modular_temple"
+      ],
+      "intent": "Keep project-native pavilions and ponds while using cleaner modular walls and hall language."
+    },
+    "garden_overgrowth_support": {
+      "families": [
+        "s2_core_env_prototype",
+        "bamboo_forest",
+        "deep_in_the_forest"
+      ],
+      "intent": "Layer foliage-heavy dressing and older naturalized edges onto a project-native core."
+    }
+  }
+}

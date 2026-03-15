@@ -5,13 +5,13 @@
     "url": "https://github.com/AskTinNguyen"
   },
   "metadata": {
-    "description": "Plugin marketplace for Vesper Team Skills — 58 skills, 44 commands, and workflows for Claude Code",
+    "description": "Plugin marketplace for Vesper Team Skills — 100+ skills, 44 commands, and workflows for Claude Code",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "vesper-team-skills",
-      "description": "58 skills, 44 commands, and 6 workflows for AI-powered development — multi-agent orchestration, code review, video production, browser automation, and more.",
+      "description": "100+ skills, 44 commands, and 6 workflows for AI-powered development — multi-agent orchestration, code review, video production, browser automation, Unreal tooling, and more.",
       "version": "1.0.0",
       "author": {
         "name": "Tin Nguyen",
