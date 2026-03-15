@@ -98,8 +98,6 @@ git commit -m "$(cat <<'EOF'
 Improve: short description
 
 Longer description of what changed and why.
-
-🤖 Generated with Claude Code
 EOF
 )"
 ```
@@ -124,7 +122,6 @@ What this PR improves.
 How to test the improvement.
 
 ---
-🤖 Generated with Claude Code
 EOF
 )"
 ```
@@ -405,8 +402,6 @@ git commit -m "Add example: {name}
 
 Note: Large media files not included. See ASSETS-NEEDED.md.
 
-🤖 Generated with Claude Code"
-
 gh pr create \
   --title "Add example: {name}" \
   --body "## Summary
@@ -424,9 +419,7 @@ Large media files are gitignored. Users create their own using:
 - /record-demo for screen recordings
 - /generate-voiceover for narration
 - tools/music.py for background music
-
----
-🤖 Generated with Claude Code"
+"
 ```
 
 ---

@@ -214,10 +214,6 @@ This command takes a work document (plan, specification, or todo file) and execu
    feat(scope): description of what and why
 
    Brief explanation if needed.
-
-   🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-   Co-Authored-By: Claude <noreply@anthropic.com>
    EOF
    )"
    ```
@@ -278,8 +274,7 @@ This command takes a work document (plan, specification, or todo file) and execu
    [Link if applicable]
 
    ---
-
-   [![Compound Engineered](https://img.shields.io/badge/Compound-Engineered-6366f1)](https://github.com/kieranklaassen/compound-engineering-plugin) 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   [![Compound Engineered](https://img.shields.io/badge/Compound-Engineered-6366f1)](https://github.com/kieranklaassen/compound-engineering-plugin)
    EOF
    )"
    ```
