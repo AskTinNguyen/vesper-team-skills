@@ -77,6 +77,7 @@ fi
 require_cmd git
 require_cmd gh
 require_cmd node
+require_cmd bun
 
 if [[ ! -f "apps/electron/package.json" ]]; then
   echo "Run this from repo root (apps/electron/package.json not found)." >&2
@@ -103,17 +104,43 @@ if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null 2>&1
   exit 1
 fi
 
-echo "Bumping apps/electron/package.json to $VERSION..."
+echo "Bumping release version markers to $VERSION..."
 node -e "
-  const fs=require('fs');
-  const path='apps/electron/package.json';
-  const data=JSON.parse(fs.readFileSync(path,'utf8'));
-  data.version=process.argv[1];
-  fs.writeFileSync(path, JSON.stringify(data, null, 2)+'\n');
+  const fs = require('fs');
+
+  const jsonPaths = ['apps/electron/package.json'];
+  if (fs.existsSync('apps/viewer/package.json')) {
+    jsonPaths.push('apps/viewer/package.json');
+  }
+
+  for (const path of jsonPaths) {
+    const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+    data.version = process.argv[1];
+    fs.writeFileSync(path, JSON.stringify(data, null, 2) + '\n');
+  }
+
+  const appVersionPath = 'packages/shared/src/version/app-version.ts';
+  const source = fs.readFileSync(appVersionPath, 'utf8');
+  const updated = source.replace(
+    /export const APP_VERSION = '[^']+';/,
+    'export const APP_VERSION = \'' + process.argv[1] + '\';'
+  );
+
+  if (source === updated) {
+    throw new Error('Could not update APP_VERSION in ' + appVersionPath);
+  }
+
+  fs.writeFileSync(appVersionPath, updated);
 " "$VERSION"
 
+echo "Refreshing bun.lock..."
+bun install
+
 echo "Committing release bump..."
-git add apps/electron/package.json
+git add apps/electron/package.json packages/shared/src/version/app-version.ts bun.lock
+if [[ -f "apps/viewer/package.json" ]]; then
+  git add apps/viewer/package.json
+fi
 git commit -m "chore(release): bump desktop version to $VERSION"
 
 echo "Pushing main..."
@@ -121,6 +148,17 @@ git push origin main
 
 echo "Mirroring main -> release..."
 git push origin main:release
+
+EXPECTED_SHA="$(git rev-parse HEAD)"
+ACTUAL_RELEASE_SHA="$(git ls-remote --heads origin release | awk '{print $1}')"
+if [[ -z "$ACTUAL_RELEASE_SHA" ]]; then
+  echo "Could not resolve origin/release after push." >&2
+  exit 1
+fi
+if [[ "$ACTUAL_RELEASE_SHA" != "$EXPECTED_SHA" ]]; then
+  echo "origin/release ($ACTUAL_RELEASE_SHA) does not match expected release commit ($EXPECTED_SHA)." >&2
+  exit 1
+fi
 
 echo "Dispatching workflow $WORKFLOW on ref=release..."
 gh workflow run "$WORKFLOW" --repo "$REPO" --ref release -f force=true

@@ -1,6 +1,6 @@
 ---
 name: vesper-release-distribution
-description: Use this skill to package and distribute a Vesper desktop release (macOS, Windows, Linux) by bumping `apps/electron` version, pushing `main` and `release`, and running the GitHub Desktop build workflow to publish release assets and update manifests.
+description: Use this skill to package and distribute a Vesper desktop release (macOS, Windows, Linux) by bumping all release version markers, pushing `main` and `release`, and running the GitHub Desktop build workflow to publish release assets and update manifests.
 ---
 
 # Vesper Release Distribution
@@ -10,6 +10,9 @@ Use this skill when you want to ship a new desktop release to `sipherxyz/vesper`
 ## What This Skill Automates
 
 - Bumps `apps/electron/package.json` version.
+- Bumps shared release markers such as `packages/shared/src/version/app-version.ts`.
+- Bumps `apps/viewer/package.json` when that legacy workspace still exists.
+- Refreshes `bun.lock` so workspace package versions stay in sync.
 - Commits and pushes to `main`.
 - Mirrors `main` to `release` branch.
 - Triggers `.github/workflows/desktop.yml` on `release`.
@@ -27,12 +30,14 @@ skills/vesper-release-distribution/scripts/publish-release.sh --version 2.7.3
 - Run from repo root on `main`.
 - Working tree should be clean.
 - `gh` must be authenticated for `sipherxyz/vesper`.
-- `bun`, `node`, and `git` must be available.
+- `bun`, `node`, `git`, and `gh` must be available.
 
 ## Notes
 
 - Apple and Windows signing are optional; this flow works unsigned.
 - The workflow runs against `release` to avoid `main` workflow concurrency stalls.
+- The script verifies that `origin/release` matches the pushed release commit before dispatching the workflow.
+- Keep the release version sources in sync; bumping only `apps/electron/package.json` can leave runtime prompts and workspace metadata on stale versions.
 - If workflow fails, inspect the run URL and fix CI before retrying.
 
 ## Optional Flags
