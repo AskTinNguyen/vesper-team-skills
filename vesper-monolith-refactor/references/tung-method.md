@@ -1,10 +1,36 @@
-# Tung's Monolith Refactor Method
+# Facade-First Seam Extraction Pattern
 
-Use this reference when you need the detailed reasoning behind the skill's workflow.
+Use this reference when choosing a seam, deciding what stays in the facade, or checking the provenance behind this skill.
+
+## Contents
+
+- [Provenance](#provenance)
+- [Summary](#summary)
+- [Seam Selection Rubric](#seam-selection-rubric)
+- [Tie-Breaker Worksheet](#tie-breaker-worksheet)
+- [Facade Boundary Rules](#facade-boundary-rules)
+- [Worked Pattern: Main-Process Manager](#worked-pattern-main-process-manager)
+- [Worked Pattern: Renderer Shell](#worked-pattern-renderer-shell)
+- [Examples From `sessions.ts`](#examples-from-sessionsts)
+- [Use On Other Surfaces](#use-on-other-surfaces)
+
+## Provenance
+
+This reference captures the facade-first seam extraction pattern observed in Tung Nguyen's `apps/electron/src/main/sessions.ts` refactor across commits from 2026-03-13 through 2026-03-17.
+
+Representative provenance points:
+
+- `9efcda96c` collaboration callbacks
+- `7a7908042` session storage lifecycle
+- `3b6f91e15` agent runtime creation
+- `24bdab0a9` session model extraction
+- `0c498bb86` processing cancel extraction
+
+Treat this as an observed Vesper pattern, not a timeless repo contract. If an active refactor plan says otherwise, follow the plan.
 
 ## Summary
 
-Tung Nguyen's refactor of `apps/electron/src/main/sessions.ts` suggests a repeatable method for large-file reduction in Vesper:
+The pattern is:
 
 - keep the original owner as a facade
 - select seams that already behave like one job
@@ -45,6 +71,26 @@ Prefer seams with all or most of these properties:
    - `session-model.ts`
    - `agent-runtime-creation.ts`
 
+## Tie-Breaker Worksheet
+
+When several seams look viable, score each candidate from 1-5 on:
+
+| Criterion | 1 | 5 |
+|-----------|---|---|
+| Cohesion | tangled with unrelated behavior | clearly one job |
+| Dependency width | needs most of the owner | narrow parameter bag |
+| Facade safety | forces ordering-sensitive logic out | wrapper can safely stay thin |
+| Code removed | tiny helper only | meaningfully reduces reasoning burden |
+| Testability | hard to verify directly | easy to verify with focused checks |
+
+Choose the highest total.
+
+Tie-break rules:
+
+1. prefer lower-risk seams
+2. prefer seams with clearer verification
+3. prefer seams that leave the owner easier to read even before the next extraction
+
 ## Facade Boundary Rules
 
 Keep these in the original owner when possible:
@@ -64,34 +110,58 @@ Move these to the helper:
 - one action or event family
 - bounded algorithms with explicit inputs
 
-## Likely Step-By-Step Workflow
+## Worked Pattern: Main-Process Manager
 
-Based on the commit history, Tung appears to work from outer to inner:
+Use this shape for owners like `sessions.ts`:
 
-1. wiring and registration groups
-2. feature/action families
-3. event-family handlers
-4. lifecycle and storage seams
-5. runtime/config/state-transition helpers
-6. remaining hard orchestration
+```ts
+// owner facade
+async cancelProcessing(sessionId: string, silent = false) {
+  const managed = this.sessions.get(sessionId)
+  if (!managed?.isProcessing) return
 
-This order lowers risk because it removes obvious separable code first and postpones the most stateful core until the surrounding noise is reduced.
+  for (const childId of this.delegationChildren.get(sessionId) ?? []) {
+    await this.cancelProcessing(childId, true)
+  }
 
-## Commit Pattern
-
-Tung's refactor commits repeatedly communicate:
-
-- what moved out
-- what intentionally stayed in the facade
-- the new helper file
-- the updated line count
-- that checks remained green
-
-Use this reporting shape when continuing the method:
-
-```text
-Extracted [responsibility] into [new file], kept [owner].[method] as a thin wrapper around [remaining boundary concern], and reduced [monolith] to [line count] with checks still green.
+  return cancelManagedProcessing({
+    managed,
+    sessionId,
+    silent,
+    sendEvent: (event, workspaceId) => this.sendEvent(event, workspaceId),
+    persistSession: (targetManaged) => this.persistSession(targetManaged),
+  })
+}
 ```
+
+Why this works:
+
+- the facade still owns guards and recursive fan-out
+- the helper owns the single-session lifecycle
+- dependency flow is explicit
+
+## Worked Pattern: Renderer Shell
+
+Use this shape for route or settings shells:
+
+```tsx
+export function WorkspaceSettingsShell() {
+  const route = useWorkspaceRoute()
+  const viewState = getWorkspaceSettingsViewState(route)
+
+  return (
+    <SettingsLayout viewState={viewState}>
+      <WorkspaceSettingsContent viewState={viewState} />
+    </SettingsLayout>
+  )
+}
+```
+
+Extract to a sibling like `workspace-settings-view-state.ts` when:
+
+- route parsing can stay in the shell
+- view-state derivation is one cohesive job
+- layout boundaries stay stable while state logic moves out
 
 ## Examples From `sessions.ts`
 
@@ -101,7 +171,7 @@ Extracted [responsibility] into [new file], kept [owner].[method] as a thin wrap
 
 ## Use On Other Surfaces
 
-Apply the same method to:
+Apply the same pattern to:
 
 - large main-process managers
 - renderer route shells
