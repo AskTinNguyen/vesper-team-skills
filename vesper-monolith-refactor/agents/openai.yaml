@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vesper Monolith Refactor"
+  short_description: "Split large Vesper files seam by seam"
+  default_prompt: "Refactor the current large Vesper file or feature using Tung Nguyen's facade-first extraction method. Start by identifying the highest-risk contracts, build a seam map, choose one stable seam, keep the original owner as a thin facade, extract to an adjacent job-named module, run targeted verification, and report what moved, what stayed, and the next likely seam."
