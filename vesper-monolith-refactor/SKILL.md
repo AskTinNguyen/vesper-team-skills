@@ -1,112 +1,154 @@
 ---
 name: vesper-monolith-refactor
-description: This skill should be used when refactoring a large Vesper file, feature, or component into smaller modules without changing behavior. Use it for breaking up monoliths such as main-process managers, React shells, or mixed-responsibility services by following Tung Nguyen's facade-first, seam-by-seam extraction method.
+description: This skill should be used when decomposing an oversized Vesper owner seam by seam into adjacent modules without changing behavior, especially requests to split `sessions.ts`, large managers, route shells, or mixed-responsibility services. Use it for facade-first extraction, not local cleanup and not total-LOC minimization.
 ---
 
 # Vesper Monolith Refactor
 
-Refactor large Vesper files into smaller modules without losing behavioral trust.
+Use the facade-first seam extraction pattern observed in the `sessions.ts` refactor to split large Vesper owners safely.
 
 ## When To Use
 
 Use this skill when:
 - A Vesper file is too large to reason about safely.
-- A service, manager, or React shell mixes several responsibilities.
-- You want to split code incrementally instead of rewriting it.
-- The user asks to "break up", "modularize", "extract", "slim down", or "refactor" a large file or feature.
-- You want to follow Tung Nguyen's `sessions.ts` extraction style.
+- A main-process manager, route shell, settings surface, or mixed-responsibility service needs to be decomposed seam by seam.
+- The user asks to break up, modularize, extract, or slim down one large owner without changing behavior.
+- The current task is architectural reduction of one oversized owner, not broad product redesign.
 
-## Core Method
+## When This Does Not Apply
 
-Apply Tung's method by default:
+- Use `code-simplifier` for local cleanup, small readability passes, or recent-edit simplification.
+- Use `reducing-entropy` when the user explicitly wants the smallest possible total codebase, even if that means deletion instead of better separation.
+- Use `build-electron-features` for new feature work spanning `main` / `preload` / `renderer`.
 
-1. Keep the original owner alive as a facade.
-2. Extract one stable seam at a time.
-3. Move the seam into an adjacent job-named module.
-4. Preserve guards, orchestration order, recursion, and boundary side effects in the facade.
-5. Verify the moved seam before touching the next one.
-6. Report what moved, what stayed, and how much the monolith shrank.
+## Before You Start
 
-## Execution Workflow
+Baseline checklist:
 
-1. Identify the risky contracts first.
-   Add or extend focused tests for the user-visible flows most likely to regress.
+- Run `git status --short`.
+- Record the current owner size with `wc -l <owner-file>`.
+- Capture the import/export surface with `rg -n "^(import|export|class|function)" <owner-file>`.
+- Find nearby focused tests with `rg --files apps/electron/src packages/shared/src tests | rg "<feature>|__tests__|<owner-name>"`.
+- If an active refactor plan already exists, read and update it instead of starting a second plan from scratch.
 
-2. Build a seam map.
-   List 3-7 extraction candidates and choose the smallest one that:
-   - already behaves like one job
-   - can take explicit dependencies
-   - can leave a thin wrapper behind
-   - will remove a meaningful block of code
+Required reading before extraction:
 
-3. Extract adjacent to the owner.
-   Create a nearby module named after the job, not the old line range.
+| Target area | Read first |
+|-------------|------------|
+| Session/runtime/message flow | `docs/internals/session-lifecycle.md`, `docs/internals/message-routing.md`, `docs/internals/agent-spawning.md` |
+| Permissions or tool execution | `docs/internals/permissions.md`, `docs/internals/code-mode.md`, `docs/internals/platform-tools.md` |
+| Scheduler or long-running execution | `docs/internals/scheduler.md`, `docs/internals/factory-production.md`, `docs/internals/fresh-supervisor-loop.md` |
+| Team/delegation/orchestration | `docs/internals/agent-teams.md`, `docs/internals/factory-production.md` |
+| Browser or automation seams | `docs/internals/browser-automation.md`, `docs/internals/code-mode.md` |
+| Skills or MCP surfaces | `docs/internals/skills-system.md`, `docs/internals/mcp-sources.md` |
 
-4. Keep the facade thin but authoritative.
-   Leave in the original file:
-   - preflight guards
-   - recursive fan-out
-   - orchestration order
-   - compatibility entrypoints
-   - delicate event/persistence boundaries
+If seam choice is unclear, read `references/commit-sequence.md` for the observed extraction order from the `sessions.ts` case study.
 
-5. Inject dependencies explicitly.
-   Prefer a narrow parameter bag and explicit callbacks over reaching into wide shared state.
+## Core Loop
 
-6. Verify narrowly, then widen only if needed.
-   Start with the seam's direct tests plus typecheck.
+1. Build a seam map with 3-7 candidates.
+   Use the seam-selection worksheet in `references/tung-method.md` and choose the highest-scoring stable seam. Break ties by lower risk and better testability.
 
-7. Commit or report in Tung style.
-   Always state:
-   - what moved
-   - what intentionally stayed
-   - the new file(s)
-   - verification run
-   - file size reduction if meaningful
+2. Extract to an adjacent job-named module.
+   Move one cohesive job into a nearby file or sibling folder named after the behavior, not the old line range.
 
-## Tung's Practical Order
+3. Keep the original owner as the facade.
+   Leave guards, orchestration order, recursion/cascades, compatibility entrypoints, and delicate event or persistence boundaries in the original owner.
 
-When the seam order is not obvious, prefer this progression:
+4. Verify the seam before touching the next one.
+   Use the verification matrix below. If no focused verification path exists for a risky seam, add that first or stop.
 
-1. Wiring and registration groups
-2. Feature or action families
-3. Event-family handlers
-4. Lifecycle and storage seams
-5. Runtime/config/state-transition seams
-6. Remaining hard orchestration
+5. Report and update the running plan.
+   Record what moved, what stayed, what verification ran, and the next likely seam so another agent can resume without reconstructing context from git history.
 
-This keeps early passes lower-risk and makes later core extractions easier.
+## Verification Matrix
 
-For the detailed rubric and a reconstructed commit-by-commit phase order, read:
-- `references/tung-method.md`
-- `references/commit-sequence.md`
+| Seam type | Minimum verification | Widen when |
+|-----------|----------------------|------------|
+| Main-process helper or lifecycle extraction | `bun run typecheck:all` and `bun test --filter <feature-or-entrypoint>` | Add `bun run lint:electron` when shared desktop contracts or Electron app surfaces changed |
+| Renderer shell, route, or state extraction | `bun run typecheck:all` and `bun test --filter <component-or-route>` | Add `bun run test:e2e` when navigation, layout, hover, focus, or real Electron behavior changed |
+| IPC, persistence, or workspace contract extraction | `bun run typecheck:all`, `bun test --filter <feature>`, and `bun run test:integration` | Widen to Electron E2E if the regression depends on actual renderer/main-process interaction |
+| Path, config, deep-link, or instance-isolation changes | `bun run typecheck:all` and `bun run verify:instance-isolation` | Add targeted integration or E2E if startup or restored-window behavior changed |
+
+Pass/fail rules:
+
+- Do not call a seam complete if the minimum row for that seam did not run.
+- If the seam changes `main` / `preload` / `renderer` contracts together, widen at least one layer beyond typecheck.
+- If a seam has no direct tests and is high-risk, add a focused regression test before continuing.
+
+## Vesper Refactor Safety Checklist
+
+- Preserve parity-by-design: keep one shared core logic path for human and agent flows where the feature already requires it.
+- Do not bypass JSONL/session storage APIs with raw file mutations for session data.
+- Do not hardcode `~/.vesper` or `vesper://`; use `CONFIG_DIR` and the deep-link helpers.
+- Do not duplicate permission mode logic or create a parallel permission state path.
+- Keep the `render_ui` marker contract stable.
+- Do not strand logic in only `renderer` or only agent paths when the feature is supposed to serve both.
+
+## Success Criteria
+
+- The original owner still acts as the stable facade for guards, ordering, recursion, or boundary side effects.
+- One adjacent job-named module now owns the extracted seam with explicit inputs or callbacks.
+- The minimum verification row for that seam ran and passed.
+- The active refactor plan or handoff notes now record what moved, what stayed, and the next seam.
+
+## Stop Conditions And Recovery
+
+Pause and reassess if:
+
+- the helper needs broad ambient access to most of the original owner
+- the extraction forces guards, recursion, and orchestration order to move out together
+- circular imports appear
+- the wrapper grows instead of shrinks
+- no trustworthy verification path exists
+
+Recovery options:
+
+- shrink the seam
+- add the missing regression test first
+- leave a thicker facade wrapper for this pass
+- revert the seam and pick a smaller extraction target
 
 ## Guardrails
 
 - Do not start with a full rewrite.
-- Do not move guards, recursion, and orchestration order out in the same step unless the seam is tiny and well-tested.
-- Do not create generic `utils.ts` dumping grounds; create job-named adjacent modules.
-- Do not split one behavior across multiple new files in the first pass.
+- Do not create generic `utils.ts` dumping grounds.
+- Do not split one behavior across several new files in the first pass.
 - Do not claim progress from file count alone; behavior and trust matter more than fragmentation.
 - Do not run broad cleanup across unrelated concerns while extracting one seam.
 
-## Vesper-Specific Guidance
+## Composing With Other Skills
 
-- For large main-process owners, preserve IPC/session/runtime boundaries in the facade until the seam is proven.
-- For renderer shells, keep navigation, route parsing, and user-visible layout boundaries stable while extracting inner state/effect logic.
-- Prefer adjacent folders like `apps/electron/src/main/sessions/` over generic shared folders unless the seam is truly cross-domain.
-- If a repo already has a refactor plan, update it as you go so later agents can resume without reconstructing the seam map from git history.
+| Skill | Usage |
+|-------|-------|
+| `vesper-electron-testing` | Add renderer or Electron regression coverage after shell/state refactors |
+| `verify-and-ship` | Run final verification, commit, push, and optionally create a PR |
+| `code-simplifier` | Do a focused cleanup pass after the seam is safely extracted |
+| `reducing-entropy` | Switch here if the user explicitly wants total code size reduced rather than better decomposition |
 
 ## Response Contract
 
 When using this skill, report:
+
 - the chosen seam
-- why it was chosen over nearby seams
+- why it beat nearby seams
 - what stayed in the facade
 - what verification ran
-- what the next likely seam is
+- any stop conditions hit
+- the next likely seam
+
+Mirror this level of specificity:
+
+```text
+Chosen seam: processing cancel
+Why it won: one cohesive cancellation lifecycle, narrow dependency bag, direct regression path
+Stayed in facade: early return, delegation-child cascade, public entrypoint
+Verification: bun run typecheck:all; bun test --filter processing
+Stop conditions: none
+Next seam: processing stop
+```
 
 ## References
 
-- `references/tung-method.md`
-- `references/commit-sequence.md`
+- Use `references/tung-method.md` for seam scoring, facade-boundary rules, worked patterns, and provenance.
+- Use `references/commit-sequence.md` for the observed extraction order and case-study chronology from the `sessions.ts` refactor.
