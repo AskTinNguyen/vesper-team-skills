@@ -29,6 +29,7 @@ That's it. All skills and commands are now available in your Claude Code session
 | [code-review-expert](code-review-expert/) | Expert code review with a senior engineer lens — SOLID violations, security risks |
 | [code-simplifier](code-simplifier/) | Simplify and refine code for clarity and maintainability |
 | [code-quality-hook](code-quality-hook/) | PostToolUse hook that checks code quality after Edit/Write operations |
+| [tdd-failing-tests-loop](tdd-failing-tests-loop/) | Drive contract-first refactors with strict failing-tests-first TDD |
 | [reducing-entropy](reducing-entropy/) | Minimize total codebase size — biases toward deletion |
 | [verify-and-ship](verify-and-ship/) | Verify agent work output, commit, push, and create PRs |
 | [scheduled-codebase-review](scheduled-codebase-review/) | Periodic deep reviews of the entire codebase using multi-agent analysis |
