@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pi Autoresearch Setup"
+  short_description: "Set up Pi autoresearch in a new repo"
+  default_prompt: "Use $pi-autoresearch-bootstrap to set up pi-autoresearch in this repository from scratch."
