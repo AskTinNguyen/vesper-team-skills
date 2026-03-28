@@ -5,7 +5,7 @@ description: Use when implementing, porting, or reviewing a bundled code-mode wo
 
 # Code Mode Porting
 
-Port Vesper's current code-mode architecture as a reusable pattern, not as a literal copy.
+Port Vesper's bundled workspace gateway architecture as a reusable pattern, not as a literal copy.
 
 The goal is to give another agent app:
 
@@ -33,18 +33,30 @@ Do not use this skill when:
 - the real problem is provider auth, source mounting, or UI transport rather than workspace gateway design
 - you need Vesper-specific product guidance more than a portable architecture
 
+## Relationship To Other Skills
+
+Use `model-shaped-harness` when the main problem is mounted-surface optimization, pack design, or profile shaping after the gateway architecture already exists.
+
+Use `agent-native-architecture` when the work is broader than code mode and you need parity-by-design, shared core service logic, or a product-level agent architecture.
+
+Use `mcp-api-productization` only when the hard part is the external MCP contract, versioning, or API-boundary durability rather than the bundled gateway design itself.
+
 ## Read In This Order
 
 1. Portable core:
    `references/portable-core.md`
-2. Vesper-derived seams to strip or replace:
+2. Response contract and worked example:
+   `references/gateway-response-contract.md`
+3. Vesper-derived seams to strip or replace:
    `references/vesper-specific-adaptations.md`
-3. Step-by-step implementation path:
-   `references/implementation-playbook.md`
 4. Ship gate:
    `references/validation-checklist.md`
-5. Execute the work:
+5. Troubleshooting when validation fails:
+   `references/troubleshooting.md`
+6. Execute the work:
    `workflows/port-code-mode.md`
+7. Canonical phase-by-phase implementation path:
+   `workflows/implementation-playbook.md`
 
 ## Core Rule
 
@@ -67,7 +79,7 @@ Replace these with your app's own concepts:
 - server names
 - product-specific orchestration flows
 
-## Deliverable
+## Success Criteria
 
 A good result should be easy to summarize as:
 
@@ -79,3 +91,20 @@ A good result should be easy to summarize as:
 - timeout and retry semantics:
 - provider/model shaping:
 - validation evidence:
+
+Back that summary with real artifacts:
+
+- tool-surface inventory
+- direct-vs-bundled classification table
+- success and timeout response examples
+- validation checklist results
+
+## References
+
+- portable architecture: `references/portable-core.md`
+- response contract and worked example: `references/gateway-response-contract.md`
+- Vesper-specific seams to replace: `references/vesper-specific-adaptations.md`
+- ship gate: `references/validation-checklist.md`
+- troubleshooting: `references/troubleshooting.md`
+- execution router: `workflows/port-code-mode.md`
+- implementation phases: `workflows/implementation-playbook.md`

@@ -95,3 +95,15 @@ If you only have time for a small suite, cover these:
 8. explicit specialized-pack discovery
 9. timeout with completed/in-flight reporting
 10. concurrent failure with partial side-effect warning
+
+## Verification Evidence To Keep
+
+Record these artifacts before trimming the direct surface:
+
+1. tool-surface inventory
+2. direct-vs-bundled classification table
+3. one success response payload
+4. one structured failure or timeout payload
+5. one safe-mode discovery result
+6. one safe-mode mutation rejection result
+7. one code-mode on/off registration diff

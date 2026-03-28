@@ -1,9 +1,13 @@
 <required_reading>
 Read these first:
 - `../references/portable-core.md`
+- `../references/gateway-response-contract.md`
 - `../references/vesper-specific-adaptations.md`
-- `../references/implementation-playbook.md`
 - `../references/validation-checklist.md`
+- `./implementation-playbook.md`
+
+Load this only if rollout checks fail:
+- `../references/troubleshooting.md`
 </required_reading>
 
 # Port Code Mode
@@ -19,18 +23,36 @@ Before coding:
 3. Separate direct-only tools from bundled candidates.
 4. Pick the gateway transport.
 
+Do not start implementation until you can show:
+
+- one tool-surface inventory
+- one direct-vs-bundled classification table
+- one chosen transport and isolation primitive
+- one named permission boundary that already owns real side effects
+
 ## Workflow
 
-1. Write the bundled-vs-direct classification rules.
-2. Define the runtime tool descriptor shape.
-3. Implement pack-aware catalog helpers.
-4. Implement the host dispatcher.
-5. Implement the worker sandbox.
-6. Add whole-block timeout and partial-result tracking.
-7. Add gateway-boundary permission checks.
-8. Shape prompt instructions for the target model/runtime families.
-9. Preserve backward compatibility when code mode is off.
-10. Run the validation checklist before trimming the direct surface.
+1. Execute the phases in `workflows/implementation-playbook.md`.
+2. For each phase, capture:
+   - what artifact you produced
+   - how you verified it
+   - what fallback you will use if the phase is blocked
+3. Adopt one concrete success payload and one timeout or partial-failure payload from `../references/gateway-response-contract.md`.
+4. Run `../references/validation-checklist.md` before trimming the direct surface.
+5. Load `../references/troubleshooting.md` immediately if validation exposes call-ID drift, policy regressions, timeout ambiguity, or sandbox leaks.
+
+## Evidence To Collect
+
+Do not call the port ready until you have:
+
+- tool-surface inventory
+- direct-vs-bundled classification table
+- transport and isolation decision
+- one success response example
+- one timeout or partial-failure response example
+- permission-mode matrix
+- code mode on/off registration matrix
+- validation checklist results
 
 ## Decision Gates
 
@@ -53,3 +75,5 @@ The port is ready when:
 5. policy still holds through the bundled path
 6. model-specific prompt shaping is intentional
 7. the validation checklist passes
+8. response payloads show completed and in-flight call handling
+9. the direct-vs-bundled split is documented in code and docs

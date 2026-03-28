@@ -33,7 +33,7 @@ Keep the role, not the literal names.
 What matters:
 
 - one dedicated gateway surface
-- one direct surface for always-individual tools
+- one or more direct/runtime-specific surfaces for always-individual tools and runtime-native capabilities
 
 ## Turn Profiles
 
@@ -53,11 +53,13 @@ Portable takeaway:
 
 ## Source And MCP Model
 
-Vesper blends:
+In the Claude code-mode path, Vesper blends:
 
 - built-in MCP servers
 - active source servers
 - provider-shaped prompt context
+
+Vesper also has other runtime-specific surfaces, including the PI workspace harness and Pi plugin tools. Do not collapse those into a fake "one direct surface" model when porting the architecture.
 
 If your app does not have MCP or source activation, keep the same concept at a higher level:
 
@@ -122,6 +124,7 @@ Use these when deriving the pattern:
 - `packages/shared/src/agent/runtime/shared/runtime-tools/runtime-tool-catalog.ts`
 - `packages/shared/src/agent/provider-harness-profile.ts`
 - `packages/shared/src/agent/session-scoped-tools.ts`
+- `packages/shared/src/agent/runtime/pi/pi-runtime-adapter.ts`
 
 ## What To Strip First In A Port
 
