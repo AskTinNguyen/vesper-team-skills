@@ -13,6 +13,45 @@ That's it. All skills and commands are now available in your Claude Code session
 
 ## Skills
 
+### Upstream Lifecycle Pack
+
+This repo now also vendors the full **`addyosmani/agent-skills`** lifecycle pack and keeps it available as first-class skills inside `vesper-team-skills`.
+
+**Imported upstream skills:**
+- `using-agent-skills`
+- `spec-driven-development`
+- `planning-and-task-breakdown`
+- `incremental-implementation`
+- `test-driven-development`
+- `code-review-and-quality`
+- `debugging-and-error-recovery`
+- `context-engineering`
+- `api-and-interface-design`
+- `frontend-ui-engineering`
+- `security-and-hardening`
+- `performance-optimization`
+- `code-simplification`
+- `git-workflow-and-versioning`
+- `ci-cd-and-automation`
+- `documentation-and-adrs`
+- `shipping-and-launch`
+- `deprecation-and-migration`
+- `browser-testing-with-devtools`
+- `idea-refine`
+
+**Refresh from upstream:**
+
+```bash
+./scripts/import-agent-skills --source ~/agent-skills/skills
+```
+
+This refreshes the imported skill directories in this repo and re-links them into common local skill roots:
+- `~/.vesper/skills`
+- `~/.claude/skills`
+- `~/.codex/skills`
+
+Upstream provenance and license are kept in [`third_party/agent-skills/`](third_party/agent-skills/).
+
 ### Multi-Agent Orchestration
 
 | Skill | Description |
