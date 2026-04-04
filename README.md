@@ -13,6 +13,45 @@ That's it. All skills and commands are now available in your Claude Code session
 
 ## Skills
 
+### Upstream Lifecycle Pack
+
+This repo now also vendors the full **`addyosmani/agent-skills`** lifecycle pack and keeps it available as first-class skills inside `vesper-team-skills`.
+
+**Imported upstream skills:**
+- `using-agent-skills`
+- `spec-driven-development`
+- `planning-and-task-breakdown`
+- `incremental-implementation`
+- `test-driven-development`
+- `code-review-and-quality`
+- `debugging-and-error-recovery`
+- `context-engineering`
+- `api-and-interface-design`
+- `frontend-ui-engineering`
+- `security-and-hardening`
+- `performance-optimization`
+- `code-simplification`
+- `git-workflow-and-versioning`
+- `ci-cd-and-automation`
+- `documentation-and-adrs`
+- `shipping-and-launch`
+- `deprecation-and-migration`
+- `browser-testing-with-devtools`
+- `idea-refine`
+
+**Refresh from upstream:**
+
+```bash
+./scripts/import-agent-skills --source ~/agent-skills/skills
+```
+
+This refreshes the imported skill directories in this repo and re-links them into common local skill roots:
+- `~/.vesper/skills`
+- `~/.claude/skills`
+- `~/.codex/skills`
+
+Upstream provenance and license are kept in [`third_party/agent-skills/`](third_party/agent-skills/).
+
 ### Multi-Agent Orchestration
 
 | Skill | Description |
@@ -80,6 +119,7 @@ That's it. All skills and commands are now available in your Claude Code session
 |-------|-------------|
 | [agent-native-architecture](agent-native-architecture/) | Build applications where agents are first-class citizens |
 | [model-shaped-harness](model-shaped-harness/) | Design low-token, high-capability model-facing tool harnesses with code mode and profile-driven mounting |
+| [code-mode-porting](code-mode-porting/) | Port Vesper’s code-mode workspace gateway into other agent apps with a portable core, host policy boundary, and sandboxed execution model |
 | [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
 | [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
