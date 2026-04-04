@@ -1,0 +1,10 @@
+# Local workspace/runtime state
+.memory-index/
+.worktrees/
+sessions/
+mission-control/
+heartbeats.json
+
+# Python cache
+__pycache__/
+*.pyc
