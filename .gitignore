@@ -5,6 +5,11 @@ sessions/
 mission-control/
 heartbeats.json
 
+# Local persona/workspace config
+config.json
+personas.json
+personas/
+
 # Python cache
 __pycache__/
 *.pyc
