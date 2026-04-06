@@ -122,6 +122,9 @@ Upstream provenance and license are kept in [`third_party/agent-skills/`](third_
 | [code-mode-porting](code-mode-porting/) | Port Vesper’s code-mode workspace gateway into other agent apps with a portable core, host policy boundary, and sandboxed execution model |
 | [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
+| [shadcn-component-reference-davinci](shadcn-component-reference-davinci/) | Harvest the strongest shadcn-style reference examples and extract reusable UI patterns |
+| [vesper-premium-ui-remix-davinci](vesper-premium-ui-remix-davinci/) | Translate borrowed UI patterns into premium Vesper-style interfaces |
+| [vesper-reference-ui-pipeline-davinci](vesper-reference-ui-pipeline-davinci/) | Orchestrate reference selection, Vesper translation, implementation, and final polish |
 | [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
 | [build-electron-features](build-electron-features/) | Build full-stack features for the Vesper Electron app |
 | [electron-ui-inspector](electron-ui-inspector/) | Build live Electron UI inspectors with runtime toggles, structured context capture, and agent parity tooling |
@@ -169,6 +172,15 @@ Upstream provenance and license are kept in [`third_party/agent-skills/`](third_
 |-------|-------------|
 | [every-style-editor](every-style-editor/) | Review and edit copy for Every's style guide compliance |
 | [sales-materials-creator](sales-materials-creator/) | Create sales decks and pitch decks using a feelings-first philosophy |
+
+### Reference-to-Vesper UI Suite
+
+These three skills work best as a sequence when adapting reference examples into premium product UI:
+- [`shadcn-component-reference-davinci`](shadcn-component-reference-davinci/)
+- [`vesper-premium-ui-remix-davinci`](vesper-premium-ui-remix-davinci/)
+- [`vesper-reference-ui-pipeline-davinci`](vesper-reference-ui-pipeline-davinci/)
+
+Bundle guide: [`docs/skill-bundles/vesper-reference-ui-suite.md`](docs/skill-bundles/vesper-reference-ui-suite.md)
 
 ## Commands
 
