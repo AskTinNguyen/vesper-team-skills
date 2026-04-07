@@ -119,6 +119,7 @@ Upstream provenance and license are kept in [`third_party/agent-skills/`](third_
 |-------|-------------|
 | [agent-native-architecture](agent-native-architecture/) | Build applications where agents are first-class citizens |
 | [model-shaped-harness](model-shaped-harness/) | Design low-token, high-capability model-facing tool harnesses with code mode and profile-driven mounting |
+| [meta-agent-harness-optimizer](meta-agent-harness-optimizer/) | Study, extend, port, or operationalize the canvas-org/meta-agent architecture for continual harness optimization, with separate references for scripts, tool calls, methods, prompts, and an execution workflow |
 | [code-mode-porting](code-mode-porting/) | Port Vesper’s code-mode workspace gateway into other agent apps with a portable core, host policy boundary, and sandboxed execution model |
 | [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
