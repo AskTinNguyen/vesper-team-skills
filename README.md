@@ -123,6 +123,7 @@ Upstream provenance and license are kept in [`third_party/agent-skills/`](third_
 | [code-mode-porting](code-mode-porting/) | Port Vesper’s code-mode workspace gateway into other agent apps with a portable core, host policy boundary, and sandboxed execution model |
 | [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
 | [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
+| [vesper-style](vesper-style/) | Canonical Vesper UI design brain for warm editorial, tactile, contrast-safe, human-led product surfaces |
 | [shadcn-component-reference-davinci](shadcn-component-reference-davinci/) | Harvest the strongest shadcn-style reference examples and extract reusable UI patterns |
 | [vesper-premium-ui-remix-davinci](vesper-premium-ui-remix-davinci/) | Translate borrowed UI patterns into premium Vesper-style interfaces |
 | [vesper-reference-ui-pipeline-davinci](vesper-reference-ui-pipeline-davinci/) | Orchestrate reference selection, Vesper translation, implementation, and final polish |
