@@ -38,6 +38,10 @@ This repo now also vendors the full **`addyosmani/agent-skills`** lifecycle pack
 - `deprecation-and-migration`
 - `browser-testing-with-devtools`
 - `idea-refine`
+- `doubt-driven-development`
+- `interview-me`
+- `observability-and-instrumentation`
+- `source-driven-development`
 
 **Refresh from upstream:**
 
@@ -51,6 +55,20 @@ This refreshes the imported skill directories in this repo and re-links them int
 - `~/.codex/skills`
 
 Upstream provenance and license are kept in [`third_party/agent-skills/`](third_party/agent-skills/).
+
+### Upstream Rails / 37signals Pack
+
+This repo also vendors the upstream Rails/37signals skill pack from Marc Köhlbrugge's 37signals style guide work.
+
+**Imported upstream skills:**
+- `dhh`
+- `rails-best-practices-core`
+- `rails-hotwire-realtime`
+- `rails-jobs`
+- `rails-migrations`
+- `rails-security-multitenancy`
+- `rails-testing`
+- `rails-webhooks`
 
 ### Multi-Agent Orchestration
 

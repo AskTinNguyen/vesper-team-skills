@@ -24,12 +24,19 @@ On-device semantic search engine for markdown documents, notes, transcripts, and
 QMD must be installed globally:
 
 ```bash
-bun install -g https://github.com/tobi/qmd
+npm install -g @tobilu/qmd
+# or
+bun install -g @tobilu/qmd
+
+# Run without installing:
+npx @tobilu/qmd ...
+bunx @tobilu/qmd ...
 ```
 
 **Requirements:**
-- Bun >= 1.0.0
-- macOS users need Homebrew SQLite for extension support
+- Node.js >= 22.0.0 for npm/global installs
+- Bun is supported as an alternate runtime
+- macOS users may need Homebrew SQLite for extension support
 - Windows support available (cross-platform paths)
 
 Verify installation:
@@ -72,24 +79,27 @@ qmd query "best practices for API design"
 
 | Option | Purpose |
 |--------|---------|
-| `-n <num>` | Results count (default: 5; 20 for --files/--json) |
+| `-n <num>` | Results count (default: 5; 20 for file/JSON-style outputs) |
 | `-c, --collection` | Restrict to specific collection |
 | `--all` | Return all matches |
 | `--min-score <num>` | Minimum relevance threshold |
 | `--full` | Display complete document content |
-| `--line-numbers` | Include line numbers in output |
+| `--full-path` | Print filesystem paths instead of `qmd://` URIs when possible |
+| `--no-line-numbers` | Disable line numbers in `get` and `multi-get` output |
 | `--index <name>` | Use named index |
 
 ### Output Formats
 
 ```bash
-qmd search "query" --json      # Structured JSON with snippets
-qmd search "query" --files     # Tab-separated: docid, score, filepath, context
-qmd search "query" --md        # Markdown formatted
-qmd search "query" --csv       # Comma-separated values
-qmd search "query" --xml       # XML structure
+qmd search "query" --format json   # Structured JSON with snippets
+qmd search "query" --format files  # Tab-separated: docid, score, filepath, context
+qmd search "query" --format md     # Markdown formatted
+qmd search "query" --format csv    # Comma-separated values
+qmd search "query" --format xml    # XML structure
 qmd search "query" --full      # Complete document content
 ```
+
+Legacy aliases (`--json`, `--files`, `--md`, `--csv`, `--xml`) still work, but upstream now prefers `--format <kind>`.
 
 Default output is colorized CLI (honors `NO_COLOR` env variable).
 
@@ -108,6 +118,7 @@ qmd get "abc123"
 
 # Get specific lines
 qmd get ~/notes/meeting.md -l 50 --from 100
+qmd get "#abc123:120:40"   # 40 lines starting at line 120
 
 # Batch retrieval with glob pattern
 qmd multi-get "meetings/*.md" --max-bytes 50000
@@ -164,8 +175,9 @@ qmd embed -f
 # Re-index collections (detect file changes)
 qmd update
 
-# Re-index and pull latest from git repos
-qmd update --pull
+# If a collection needs to pull from git before re-indexing, configure a per-collection update command
+qmd collection update-cmd docs "git -C ~/work/docs pull --ff-only"
+qmd update
 
 # Show index health and stats
 qmd status
@@ -222,6 +234,17 @@ Three GGUF models auto-download to `~/.cache/qmd/models/`:
 
 QMD can run as an MCP server for AI agent integration.
 
+By default it uses stdio. For a shared long-lived server that avoids repeated model loading, use HTTP transport:
+
+```bash
+qmd mcp --http                 # localhost:8181
+qmd mcp --http --port 8080     # custom port
+qmd mcp --http --daemon        # background daemon
+qmd mcp stop                   # stop daemon
+```
+
+The HTTP server exposes `POST /mcp` for Streamable HTTP and `GET /health` for liveness.
+
 ### Configure for Claude Code
 
 Add to `~/.claude/settings.json`:
@@ -256,12 +279,12 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 
 | Tool | Purpose |
 |------|---------|
-| `qmd_search` | BM25 keyword search (supports collection filter) |
-| `qmd_vsearch` | Semantic vector search (supports collection filter) |
-| `qmd_query` | Hybrid search with reranking (supports collection filter) |
-| `qmd_get` | Retrieve document by path or docid (with fuzzy matching suggestions) |
-| `qmd_multi_get` | Batch retrieval by glob pattern, list, or docids |
-| `qmd_status` | Index health and collection info |
+| `query` | Search with typed sub-queries (`lex`/`vec`/`hyde`), combined via RRF + reranking |
+| `get` | Retrieve document by path or docid, including `file:from:count` ranges |
+| `multi_get` | Batch retrieval by glob pattern, comma-separated list, or docids |
+| `status` | Index health and collection info |
+
+Use the plural `collections` array to scope MCP `query` calls. The singular `collection` parameter is ignored by upstream validation.
 
 ## Understanding Scores
 
@@ -525,13 +548,14 @@ qmd cleanup
 5. **Use `--files` output** for agent workflows - it's parseable and includes docids
 6. **Add context descriptions** to improve search relevance
 
-## Recent Updates (Jan 2026)
+## Recent Updates (May 2026)
 
-- **Windows support** - Cross-platform path handling (#51)
-- **Org-mode support** - Title extraction for `.org` files (#50)
-- **CPU-only fix** - Sequential embedding prevents race conditions (#54)
-- **Collection filtering** - Fixed `collectionName` parameter in vector search (#61)
-- **Docid lookup** - More lenient matching with quotes support (#39)
+- **Package name** - Install from npm as `@tobilu/qmd`
+- **Line ranges** - `qmd get` accepts `:from:count` suffixes and line numbers are on by default
+- **Output format selector** - Prefer `--format <json|files|md|csv|xml>` over legacy boolean aliases
+- **MCP HTTP transport** - `qmd mcp --http` keeps models loaded across requests
+- **Collection scoping** - MCP query uses plural `collections`
+- **Git refresh** - Use `qmd collection update-cmd`; do not rely on `qmd update --pull`
 
 ## Reference
 
