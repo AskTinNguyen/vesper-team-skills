@@ -82,7 +82,7 @@ Why: Vesper’s dev protocol bootstrap expects `process.argv[1]` to be the app p
 Use the bundled CDP capture helper:
 
 ```bash
-/Users/tinnguyen/vesper-team-skills/vesper-ui-visual-polish/scripts/cdp-screenshot.js \
+/Users/tinnguyen/vesper-team-skills/vesper-app-skills/vesper-ui-visual-polish/scripts/cdp-screenshot.js \
   --route 'docs/page/getting-started/index' \
   --workspace-id 'ws_123' \
   --wait-for 'Getting Started with Vesper' \
@@ -98,7 +98,7 @@ open /tmp/vesper-ui-before.png
 After edits:
 
 ```bash
-/Users/tinnguyen/vesper-team-skills/vesper-ui-visual-polish/scripts/cdp-screenshot.js \
+/Users/tinnguyen/vesper-team-skills/vesper-app-skills/vesper-ui-visual-polish/scripts/cdp-screenshot.js \
   --route 'docs/page/getting-started/index' \
   --workspace-id 'ws_123' \
   --wait-for 'Getting Started with Vesper' \

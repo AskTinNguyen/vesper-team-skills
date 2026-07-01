@@ -13,14 +13,18 @@ That's it. All skills and commands are now available in your Claude Code session
 
 ## Skills
 
-This repository intentionally keeps the active skill surface capped at **100 discoverable `SKILL.md` files**. Older, narrower, duplicate, or project-specific skill packages are kept recoverable under [`archive/skills/`](archive/skills/) with `SKILL.archived.md` filenames so they do not load by default.
+This repository intentionally keeps the active skill surface capped below **100 discoverable `SKILL.md` files**. Older, narrower, duplicate, or project-specific skill packages are kept recoverable under [`archive/skills/`](archive/skills/) with `SKILL.archived.md` filenames so they do not load by default.
 
-The current active set is documented in the latest upkeep report:
+The current active set has **88 discoverable `SKILL.md` files** after the follow-up pruning pass. Vesper app-focused skills live under [`vesper-app-skills/`](vesper-app-skills/) so they stay active while remaining grouped away from general-purpose skills.
+
+The active set and archive decisions are documented in the latest upkeep reports:
 
 - [2026-07-01 skill garden report](docs/skill-upkeep/2026-07-01-skill-garden.md)
 - [2026-07-01 archive manifest](archive/skills/2026-07-01-skill-garden/MANIFEST.md)
+- [2026-07-01 follow-up pruning report](docs/skill-upkeep/2026-07-01-followup-pruning.md)
+- [2026-07-01 follow-up archive manifest](archive/skills/2026-07-01-followup-pruning/MANIFEST.md)
 
-The retained surface favors broad workhorse skills for agent orchestration, Vesper/Electron development, source-driven implementation, testing, GitHub/release workflow, skill upkeep, and a small media/research utility set. Restore archived skills only when they are actively needed or when they have been consolidated into a stronger umbrella skill.
+The retained surface favors broad workhorse skills for agent orchestration, Vesper app development, source-driven implementation, testing, GitHub/release workflow, skill upkeep, and a small media/research utility set. Restore archived skills only when they are actively needed or when they have been consolidated into a stronger umbrella skill.
 
 To verify the active cap:
 
