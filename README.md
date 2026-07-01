@@ -13,194 +13,20 @@ That's it. All skills and commands are now available in your Claude Code session
 
 ## Skills
 
-### Upstream Lifecycle Pack
+This repository intentionally keeps the active skill surface capped at **100 discoverable `SKILL.md` files**. Older, narrower, duplicate, or project-specific skill packages are kept recoverable under [`archive/skills/`](archive/skills/) with `SKILL.archived.md` filenames so they do not load by default.
 
-This repo now also vendors the full **`addyosmani/agent-skills`** lifecycle pack and keeps it available as first-class skills inside `vesper-team-skills`.
+The current active set is documented in the latest upkeep report:
 
-**Imported upstream skills:**
-- `using-agent-skills`
-- `spec-driven-development`
-- `planning-and-task-breakdown`
-- `incremental-implementation`
-- `test-driven-development`
-- `code-review-and-quality`
-- `debugging-and-error-recovery`
-- `context-engineering`
-- `api-and-interface-design`
-- `frontend-ui-engineering`
-- `security-and-hardening`
-- `performance-optimization`
-- `code-simplification`
-- `git-workflow-and-versioning`
-- `ci-cd-and-automation`
-- `documentation-and-adrs`
-- `shipping-and-launch`
-- `deprecation-and-migration`
-- `browser-testing-with-devtools`
-- `idea-refine`
-- `doubt-driven-development`
-- `interview-me`
-- `observability-and-instrumentation`
-- `source-driven-development`
+- [2026-07-01 skill garden report](docs/skill-upkeep/2026-07-01-skill-garden.md)
+- [2026-07-01 archive manifest](archive/skills/2026-07-01-skill-garden/MANIFEST.md)
 
-**Refresh from upstream:**
+The retained surface favors broad workhorse skills for agent orchestration, Vesper/Electron development, source-driven implementation, testing, GitHub/release workflow, skill upkeep, and a small media/research utility set. Restore archived skills only when they are actively needed or when they have been consolidated into a stronger umbrella skill.
+
+To verify the active cap:
 
 ```bash
-./scripts/import-agent-skills --source ~/agent-skills/skills
+find . -name SKILL.md -type f | wc -l
 ```
-
-This refreshes the imported skill directories in this repo and re-links them into common local skill roots:
-- `~/.vesper/skills`
-- `~/.claude/skills`
-- `~/.codex/skills`
-
-Upstream provenance and license are kept in [`third_party/agent-skills/`](third_party/agent-skills/).
-
-### Upstream Rails / 37signals Pack
-
-This repo also vendors the upstream Rails/37signals skill pack from Marc Köhlbrugge's 37signals style guide work.
-
-**Imported upstream skills:**
-- `dhh`
-- `rails-best-practices-core`
-- `rails-hotwire-realtime`
-- `rails-jobs`
-- `rails-migrations`
-- `rails-security-multitenancy`
-- `rails-testing`
-- `rails-webhooks`
-
-### Multi-Agent Orchestration
-
-| Skill | Description |
-|-------|-------------|
-| [dispatch](dispatch/) | Coordinate complex features with parallel subagent execution |
-| [agent-supervisor](agent-supervisor/) | Monitor task lists, detect gaps, and track agent status without doing implementation |
-| [github-sync](github-sync/) | Synchronize GitHub PRs and issues into the Claude Code task list |
-| [ralph-loop](ralph-loop/) | Trigger and manage Ralph Loop autonomous coding workflows |
-
-### Code Quality & Review
-
-| Skill | Description |
-|-------|-------------|
-| [code-review-expert](code-review-expert/) | Expert code review with a senior engineer lens — SOLID violations, security risks |
-| [code-simplifier](code-simplifier/) | Simplify and refine code for clarity and maintainability |
-| [code-quality-hook](code-quality-hook/) | PostToolUse hook that checks code quality after Edit/Write operations |
-| [tdd-failing-tests-loop](tdd-failing-tests-loop/) | Drive contract-first refactors with strict failing-tests-first TDD |
-| [reducing-entropy](reducing-entropy/) | Minimize total codebase size — biases toward deletion |
-| [verify-and-ship](verify-and-ship/) | Verify agent work output, commit, push, and create PRs |
-| [scheduled-codebase-review](scheduled-codebase-review/) | Periodic deep reviews of the entire codebase using multi-agent analysis |
-
-### Project Management & Planning
-
-| Skill | Description |
-|-------|-------------|
-| [ship-notes](ship-notes/) | Generate release notes from recent git activity |
-| [last7days](last7days/) | Review the last 7 days of activity in a git repository |
-| [agent-changelog](agent-changelog/) | Compile an agent-optimized changelog from git history |
-| [compound-docs](compound-docs/) | Capture solved problems as categorized documentation |
-| [feature-specification](feature-specification/) | Write comprehensive feature specifications for product and engineering |
-
-### CLAUDE.md & Skills Authoring
-
-| Skill | Description |
-|-------|-------------|
-| [claude-md-improver](claude-md-improver/) | Audit and improve CLAUDE.md files in repositories |
-| [claudemd-reviewer](claudemd-reviewer/) | Review and analyze CLAUDE.md hierarchy in repositories |
-| [create-agent-skills](create-agent-skills/) | Expert guidance for creating and refining Claude Code skills |
-| [skill-creator](skill-creator/) | Guide for creating effective skills |
-| [skill-enricher](skill-enricher/) | Cross-reference a skill with its source repo to fill gaps |
-| [skill-qa-release-guardian](skill-qa-release-guardian/) | Automated release QA with UI testing, regression verification, and bug reporting |
-| [claude-code-hooks](claude-code-hooks/) | Implement pre-hooks and post-hooks for Claude Code |
-
-### Video & Media Production
-
-| Skill | Description |
-|-------|-------------|
-| [remotion](remotion/) | Create programmatic videos using React with Remotion |
-| [launchpad-remotion](launchpad-remotion/) | Reusable components and brand assets for the trycua/launchpad Remotion monorepo |
-| [ffmpeg](ffmpeg/) | Video and audio processing — format conversion, resizing, compression |
-| [playwright-recording](playwright-recording/) | Record browser interactions as video using Playwright |
-| [gemini-imagegen](gemini-imagegen/) | Generate and edit images using the Gemini API |
-
-### Browser Automation & Testing
-
-| Skill | Description |
-|-------|-------------|
-| [agent-browser](agent-browser/) | Browser automation using Vercel's agent-browser CLI |
-| [webapp-testing](webapp-testing/) | Test local web applications using Playwright |
-| [electron-cdp-testing](electron-cdp-testing/) | Automated E2E testing for Electron apps using Chrome DevTools Protocol |
-
-### Architecture & Design
-
-| Skill | Description |
-|-------|-------------|
-| [agent-native-architecture](agent-native-architecture/) | Build applications where agents are first-class citizens |
-| [model-shaped-harness](model-shaped-harness/) | Design low-token, high-capability model-facing tool harnesses with code mode and profile-driven mounting |
-| [meta-agent-harness-optimizer](meta-agent-harness-optimizer/) | Study, extend, port, or operationalize the canvas-org/meta-agent architecture for continual harness optimization, with separate references for scripts, tool calls, methods, prompts, and an execution workflow |
-| [code-mode-porting](code-mode-porting/) | Port Vesper’s code-mode workspace gateway into other agent apps with a portable core, host policy boundary, and sandboxed execution model |
-| [architectural-review](architectural-review/) | Review architectural drawings, floor plans, and interior design proposals |
-| [frontend-design](frontend-design/) | Create distinctive, production-grade frontend interfaces |
-| [vesper-style](vesper-style/) | Canonical Vesper UI design brain for warm editorial, tactile, contrast-safe, human-led product surfaces |
-| [shadcn-component-reference-davinci](shadcn-component-reference-davinci/) | Harvest the strongest shadcn-style reference examples and extract reusable UI patterns |
-| [vesper-premium-ui-remix-davinci](vesper-premium-ui-remix-davinci/) | Translate borrowed UI patterns into premium Vesper-style interfaces |
-| [vesper-reference-ui-pipeline-davinci](vesper-reference-ui-pipeline-davinci/) | Orchestrate reference selection, Vesper translation, implementation, and final polish |
-| [edit-with-ai-pattern](edit-with-ai-pattern/) | Build "Edit with AI" features for natural language editing of settings and data |
-| [build-electron-features](build-electron-features/) | Build full-stack features for the Vesper Electron app |
-| [electron-ui-inspector](electron-ui-inspector/) | Build live Electron UI inspectors with runtime toggles, structured context capture, and agent parity tooling |
-| [flowy-flowchart](flowy-flowchart/) | Create flowchart diagrams inline in the conversation |
-| [flowy-ui-mockup](flowy-ui-mockup/) | Create UI mockups for iPhone and iPad apps |
-
-### Game & Unreal
-
-| Skill | Description |
-|-------|-------------|
-| [game-level-building-python](game-level-building-python/) | Generate reusable Unreal Python level-building generators, regional template packs, and configurable detail passes for compounds, gardens, gates, shrines, and other gameplay-first environments |
-
-### Research & Intelligence
-
-| Skill | Description |
-|-------|-------------|
-| [github-intel](github-intel/) | Discover trending repos, research AI coding tools, extract code patterns |
-| [social30days](social30days/) | Research a topic from the last 30 days on social media |
-| [news30days](news30days/) | Research a topic from the last 30 days in news outlets |
-| [last30days](last30days/) | Research a topic from the last 30 days on Reddit + X + Web |
-| [qmd-search](qmd-search/) | On-device semantic search for markdown documents |
-
-### Ruby & Rails
-
-| Skill | Description |
-|-------|-------------|
-| [dhh-rails-style](dhh-rails-style/) | Write Ruby and Rails code in DHH's 37signals style |
-| [andrew-kane-gem-writer](andrew-kane-gem-writer/) | Write Ruby gems following Andrew Kane's patterns |
-| [dspy-ruby](dspy-ruby/) | Build type-safe, composable LLM applications with DSPy.rb |
-
-### DevOps & Utilities
-
-| Skill | Description |
-|-------|-------------|
-| [git-worktree](git-worktree/) | Manage Git worktrees for isolated parallel development |
-| [rclone](rclone/) | Upload, sync, and manage files across cloud storage providers |
-| [messaging-integration](messaging-integration/) | Production-ready patterns for WhatsApp, Slack, and Telegram integration |
-| [setup-statusline-advanced](setup-statusline-advanced/) | Set up an advanced Claude Code statusline with real-time session metrics |
-| [3-layer-memory](3-layer-memory/) | Three-layer compounding memory system for AI assistants |
-| [heartbeat-implementation](heartbeat-implementation/) | Implement periodic heartbeat systems in AI agent applications |
-
-### Writing & Style
-
-| Skill | Description |
-|-------|-------------|
-| [every-style-editor](every-style-editor/) | Review and edit copy for Every's style guide compliance |
-| [sales-materials-creator](sales-materials-creator/) | Create sales decks and pitch decks using a feelings-first philosophy |
-
-### Reference-to-Vesper UI Suite
-
-These three skills work best as a sequence when adapting reference examples into premium product UI:
-- [`shadcn-component-reference-davinci`](shadcn-component-reference-davinci/)
-- [`vesper-premium-ui-remix-davinci`](vesper-premium-ui-remix-davinci/)
-- [`vesper-reference-ui-pipeline-davinci`](vesper-reference-ui-pipeline-davinci/)
-
-Bundle guide: [`docs/skill-bundles/vesper-reference-ui-suite.md`](docs/skill-bundles/vesper-reference-ui-suite.md)
 
 ## Commands
 
@@ -278,7 +104,6 @@ Run these with `/command-name` in Claude Code.
 | Command | Description |
 |---------|-------------|
 | `/skills` | List installed skills or create new ones |
-| `/skill` | Explicitly invoke a skill by name |
 | `/create-agent-skill` | Create or edit Claude Code skills |
 | `/heal-skill` | Fix incorrect SKILL.md files |
 | `/generate_command` | Create a new custom slash command |
@@ -287,13 +112,7 @@ Run these with `/command-name` in Claude Code.
 
 ## Quick Start
 
-After installation, skills activate automatically based on what you're doing. You can also invoke them explicitly:
-
-```
-/skill dispatch         # Coordinate parallel agents
-/skill code-review      # Run expert code review
-/skill remotion         # Create programmatic videos
-```
+After installation, skills activate automatically based on what you're doing. Use `/skills` to inspect the available skill surface in a Claude Code session.
 
 For multi-agent orchestration, start with:
 

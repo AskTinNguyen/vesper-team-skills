@@ -2,6 +2,7 @@
 
 These skills were removed from the active catalog and archived here for reference:
 
+- `2026-07-01-skill-garden` - batch archive from the 2026-07-01 skill upkeep pass; see [`2026-07-01-skill-garden/MANIFEST.md`](2026-07-01-skill-garden/MANIFEST.md)
 - `file-todos`
 - `qwen-edit`
 - `elevenlabs`
