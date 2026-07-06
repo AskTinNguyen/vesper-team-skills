@@ -1,6 +1,6 @@
 ---
 name: vesper-release-distribution
-description: Use this skill to ship, rerun, or debug a Vesper desktop release using the current package-version-driven workflow: validate `apps/electron/package.json`, keep required release version markers in sync, inspect the desktop `prepare-release` gate, verify release artifacts, publish or update the GitHub release, and confirm mirroring to `sipherxyz/vesper-internal-release`.
+description: "Use this skill to ship, rerun, or debug a Vesper desktop release using the current package-version-driven workflow: validate `apps/electron/package.json`, keep required release version markers in sync, inspect the desktop `prepare-release` gate, verify release artifacts, publish or update the GitHub release, and confirm mirroring to `sipherxyz/vesper-internal-release`."
 ---
 
 # Vesper Release Distribution

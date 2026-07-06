@@ -1,4 +1,5 @@
 ---
+name: skill
 description: Explicitly invoke a skill by name
 argument-hint: "<skill-name> [task description]"
 ---
