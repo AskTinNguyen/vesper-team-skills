@@ -51,6 +51,14 @@ Report:
 - Validation command or checks performed.
 - Any intentionally skipped dirty files or unrelated repo state.
 
+## Weekly proactive curation lessons
+
+- When this skill itself is installed across apps, verify its support files too: `references/cross-app-skill-sync.md` and `references/weekly-curation-frontmatter-and-sync.md` should exist anywhere `skill-library-curation/SKILL.md` is installed, unless that runtime intentionally strips references.
+- Quote YAML `description:` values that contain colons, inline paths, backticks, or long package/workflow labels; unquoted descriptions can parse in one app but fail during full-library validation.
+- Treat obvious missing command-skill names as safe metadata fixes. For slash-command skill files such as `commands/skill.md`, add the command name (`name: skill`) rather than reporting it as a vague follow-up.
+- If backup repo push is rejected because remote `main` advanced, fetch and rebase before pushing; keep the commit scoped to intentional skill-library changes and re-check `git status --short` after the rebase because new unrelated untracked paths may appear.
+- In backup repos, stage the actual tracked path reported by git. Some command skills are tracked as lowercase files such as `commands/skill.md`, even when runtime skill packages use directory-level `SKILL.md`.
+
 ## Pitfalls
 
 - Do not confuse a research note with a skill. A skill must change future agent behavior.
