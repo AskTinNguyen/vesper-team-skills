@@ -1,0 +1,4 @@
+interface:
+  display_name: "Image to Three.js"
+  short_description: "Build procedural Three.js models from images"
+  default_prompt: "Use $img2threejs to rebuild this reference image as a procedural, animation-ready Three.js model."
