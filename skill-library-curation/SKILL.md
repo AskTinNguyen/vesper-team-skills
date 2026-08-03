@@ -60,6 +60,7 @@ Report:
 - After any fetch/rebase during backup push, re-run the changed-skill validation against both runtime installs and the backup repo. Remote changes can alter inventory counts or nearby files even when the local commit rebases cleanly.
 - In backup repos, stage the actual tracked path reported by git. Some command skills are tracked as lowercase files such as `commands/skill.md`, even when runtime skill packages use directory-level `SKILL.md`.
 - For scheduled/proactive curation runs, still make a small safe improvement when there is a clear signal; after syncing a skill across runtimes, verify the installed copies by comparing content hashes, not just file existence.
+- For repeatable validation during weekly runs, use `references/weekly-curation-validation-pattern.md` for the frontmatter/link/hash checks and report fields.
 - When a runtime `SKILL.md` has a broken relative link to a reference that actually lives in a sibling skill package, prefer a minimal relative-link fix such as `../other-skill/references/file.md` over copying the reference file. This preserves ownership and avoids duplicated stale references.
 - Treat broad local-reference scans as triage signals, not authoritative findings: Markdown/code examples can look like links. Auto-fix only high-confidence broken references with an obvious existing target; report script/resource gaps and duplicate-name drift as follow-up candidates.
 
