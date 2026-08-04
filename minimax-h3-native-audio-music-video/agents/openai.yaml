@@ -1,0 +1,4 @@
+interface:
+  display_name: "MiniMax H3 Native-Audio Music Video"
+  short_description: "Create music videos with exact supplied audio"
+  default_prompt: "Use $minimax-h3-native-audio-music-video to create a continuity-linked MiniMax H3 music video from my song."

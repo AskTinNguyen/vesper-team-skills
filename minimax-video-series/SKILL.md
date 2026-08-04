@@ -7,6 +7,8 @@ description: Generate, direct, edit, review, resume, verify, assemble, and publi
 
 Use the installed MiniMax H3 ComfyUI pipeline as a supervised, resumable production system. Treat every generated chapter as a pending take until it passes visual review. Never propagate a rejected final frame.
 
+For supplied-song music videos, exact audio preservation, vocal lip-sync direction, or RIFE delivery, also use `$minimax-h3-native-audio-music-video`. Its Ref2VA/native-audio graph is different from this skill's standard FL2VA generation graph.
+
 ## Load only what the task needs
 
 - Read [references/configuration.md](references/configuration.md) before creating or changing a series config.
