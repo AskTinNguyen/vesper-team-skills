@@ -13,6 +13,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from h3_prompt import compile_chapter_prompt, normalize_runtime
+
 
 SAVE_NODE = "92"
 
@@ -30,6 +32,7 @@ def load_config(path: Path) -> dict:
     numbers = [int(item["number"]) for item in data["chapters"]]
     if numbers != sorted(numbers) or len(numbers) != len(set(numbers)):
         raise RuntimeError("Chapter numbers must be unique and ascending")
+    data["runtime"] = normalize_runtime(data["runtime"])
     data["_config_path"] = str(path.resolve())
     return data
 
@@ -125,26 +128,33 @@ def input_image_name(cfg: dict, number: int) -> str:
     return relative.as_posix()
 
 
+def optional_input_image_name(cfg: dict, value: str | None) -> str | None:
+    if not value:
+        return None
+    root = paths(cfg)["input"].resolve()
+    image = Path(value)
+    image = image.resolve() if image.is_absolute() else (root / image).resolve()
+    try:
+        relative = image.relative_to(root)
+    except ValueError as exc:
+        raise RuntimeError(f"Optional frame must be inside {root}: {image}") from exc
+    if not image.exists():
+        raise FileNotFoundError(image)
+    return relative.as_posix()
+
+
 def output_prefix(cfg: dict, item: dict) -> str:
     subdir = Path(cfg["series"]["output_subdir"]).as_posix().strip("/")
     return f"{subdir}/{int(item['number']):03d}-{slugify(item['title'])}"
 
 
 def build_prompt(cfg: dict, item: dict) -> str:
-    return (
-        f"{cfg['style_lock']}\n\n"
-        f"MOVEMENT — {item.get('movement', 'Sequence')}\n"
-        f"CHAPTER {int(item['number']):03d} — {item['title']}\n"
-        f"{item['prompt']}\n\n"
-        f"Transition language: {item.get('transition', 'clean held tableau')}. "
-        "Treat this as motivated in-shot direction, not an accidental hard cut.\n"
-        f"Audio: {item.get('audio_prompt', 'restrained native stereo ambience, no intelligible dialogue')}."
-    )
+    return compile_chapter_prompt(cfg, item)
 
 
-def graph(cfg: dict, item: dict, image_name: str) -> dict:
+def graph(cfg: dict, item: dict, image_name: str, last_image_name: str | None = None) -> dict:
     rt, models = cfg["runtime"], cfg["models"]
-    return {
+    result = {
         "1": {"class_type": "LoadImage", "inputs": {"image": image_name}},
         "6": {"class_type": "UNETLoader", "inputs": {"unet_name": models["unet"], "weight_dtype": "default"}},
         "13": {"class_type": "CLIPLoader", "inputs": {"clip_name": models["text_encoder"], "type": "minimax", "device": "default"}},
@@ -165,6 +175,10 @@ def graph(cfg: dict, item: dict, image_name: str) -> dict:
         "91": {"class_type": "CreateVideo", "inputs": {"images": ["10", 0], "audio": ["23", 0], "fps": float(rt["fps"]), "bit_depth": 8}},
         SAVE_NODE: {"class_type": "SaveVideo", "inputs": {"video": ["91", 0], "filename_prefix": output_prefix(cfg, item), "format": "auto", "codec": "auto"}},
     }
+    if last_image_name:
+        result["2"] = {"class_type": "LoadImage", "inputs": {"image": last_image_name}}
+        result["104"]["inputs"]["last_frame"] = ["2", 0]
+    return result
 
 
 def probe(video: Path) -> dict:
@@ -265,7 +279,10 @@ def cmd_preflight(cfg: dict, _args: argparse.Namespace) -> None:
         stats = request_json(cfg, "/system_stats")
         notes.append(f"ComfyUI API: ok; devices={len(stats.get('devices', []))}")
         objects = request_json(cfg, "/object_info", timeout=60)
-        required_nodes = set(graph(cfg, cfg["chapters"][0], Path(cfg["initial_frame"]).name)[key]["class_type"] for key in graph(cfg, cfg["chapters"][0], Path(cfg["initial_frame"]).name))
+        first = cfg["chapters"][0]
+        last_name = optional_input_image_name(cfg, first.get("last_frame"))
+        preflight_graph = graph(cfg, first, Path(cfg["initial_frame"]).name, last_name)
+        required_nodes = {node["class_type"] for node in preflight_graph.values()}
         missing_nodes = sorted(required_nodes - set(objects))
         if missing_nodes:
             failures.append("Missing ComfyUI node classes: " + ", ".join(missing_nodes))
@@ -274,6 +291,10 @@ def cmd_preflight(cfg: dict, _args: argparse.Namespace) -> None:
     try:
         input_image_name(cfg, int(cfg["chapters"][0]["number"]))
         notes.append("initial frame: ok")
+        for item in cfg["chapters"]:
+            if item.get("last_frame"):
+                optional_input_image_name(cfg, item["last_frame"])
+                notes.append(f"chapter {int(item['number'])} last frame: ok")
     except Exception as exc:
         failures.append(str(exc))
     print("\n".join(notes + failures))
@@ -295,11 +316,13 @@ def cmd_render(cfg: dict, args: argparse.Namespace) -> None:
         if not previous or previous.get("state") != "accepted":
             raise RuntimeError(f"Chapter {numbers[index - 1]} must be accepted first")
     image_name = input_image_name(cfg, args.chapter)
+    last_image_name = optional_input_image_name(cfg, item.get("last_frame"))
     queued_input = paths(cfg)["input"] / image_name
     queued_input_hash = sha256(queued_input)
+    queued_last_hash = sha256(paths(cfg)["input"] / last_image_name) if last_image_name else None
     started = time.time()
     response = request_json(cfg, "/prompt", {
-        "prompt": graph(cfg, item, image_name),
+        "prompt": graph(cfg, item, image_name, last_image_name),
         "client_id": f"{cfg['series']['slug']}-{args.chapter:03d}-{int(started)}",
     })
     if response.get("node_errors"):
@@ -333,6 +356,13 @@ def cmd_render(cfg: dict, args: argparse.Namespace) -> None:
         "prompt": build_prompt(cfg, item),
         "input_image": image_name,
         "input_sha256": queued_input_hash,
+        "last_frame": last_image_name,
+        "last_frame_sha256": queued_last_hash,
+        "runtime": {
+            "width": int(cfg["runtime"]["width"]), "height": int(cfg["runtime"]["height"]),
+            "length": int(cfg["runtime"]["length"]), "fps": int(cfg["runtime"]["fps"]),
+            "duration_seconds": float(cfg["runtime"]["duration_seconds"]),
+        },
         "prompt_id": prompt_id,
         "render_seconds": round(time.time() - started, 2),
         "media": summary,
@@ -370,6 +400,10 @@ def cmd_accept(cfg: dict, args: argparse.Namespace) -> None:
     current_input_hash = sha256(input_path)
     if current_input_hash != attempt.get("input_sha256"):
         raise RuntimeError("Chapter input image changed after the render was queued")
+    if attempt.get("last_frame"):
+        last_path = paths(cfg)["input"] / attempt["last_frame"]
+        if sha256(last_path) != attempt.get("last_frame_sha256"):
+            raise RuntimeError("Chapter last-frame image changed after the render was queued")
     attempt.update({
         "state": "accepted", "reviewed_at": now(), "review_notes": args.notes or "accepted",
         "video_sha256": video_hash,

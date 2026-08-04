@@ -1,4 +1,4 @@
 interface:
   display_name: "MiniMax Video Series"
-  short_description: "Generate, review, manage, and publish video series"
-  default_prompt: "Use $minimax-video-series to create and publish a continuity-linked local video series."
+  short_description: "Direct and verify local MiniMax H3 video series"
+  default_prompt: "Use $minimax-video-series to create a continuity-linked local MiniMax H3 video series with supervised review."

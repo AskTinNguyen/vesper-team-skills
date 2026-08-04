@@ -9,9 +9,9 @@
   "runtime": {
     "comfy_url": "http://127.0.0.1:8188",
     "comfy_root": "C:\\Users\\Admin\\ComfyUI",
-    "width": 640,
-    "height": 800,
-    "length": 362,
+    "duration_seconds": 15,
+    "aspect_ratio": "4:5",
+    "quality": "preview",
     "fps": 24,
     "steps": 20,
     "poll_seconds": 15
@@ -31,6 +31,7 @@
       "movement": "Act I",
       "prompt": "The protagonist notices one glowing seed and kneels beside it. End on a clean centered close-up of the unopened seed.",
       "audio_prompt": "quiet room tone, one soft heartbeat, faint seed hum, no dialogue",
+      "music_prompt": "N/A",
       "transition": "shape match from the centered seed",
       "seed": 2026080401
     },
@@ -40,6 +41,7 @@
       "movement": "Act I",
       "prompt": "The centered seed opens once and a single luminous root enters a narrow crack. Follow only the root. End with the filament centered in full-frame black.",
       "audio_prompt": "tiny shell crack, root fibers, low subterranean tone, no dialogue",
+      "music_prompt": "N/A",
       "transition": "continuous push through the dark crack",
       "seed": 2026080402
     }

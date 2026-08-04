@@ -14,7 +14,7 @@ Start from `assets/series.example.json`. Paths may be absolute. `initial_frame` 
 Required top-level objects:
 
 - `series`: title, slug, output subdirectory, manifest name.
-- `runtime`: ComfyUI URL/root, width, height, length, fps, steps.
+- `runtime`: ComfyUI URL/root, duration/aspect/quality (or explicit dimensions/length), fps, and steps.
 - `models`: ComfyUI-relative model names for UNet, text encoder, video VAE, and audio VAE.
 - `style_lock`: global identity, visual language, framing, anatomy, and negative constraints.
 - `initial_frame`: first image, relative to the ComfyUI input directory or absolute within it.
@@ -30,16 +30,19 @@ Each chapter requires:
   "movement": "Act I",
   "prompt": "One principal visual action and an explicit end tableau.",
   "audio_prompt": "specific ambience, no dialogue",
+  "music_prompt": "N/A",
   "transition": "foreground object wipe",
   "seed": 2026080401
 }
 ```
 
+Optionally add `"last_frame": "desired-ending.png"` to use first/last-frame conditioning. The file must be inside ComfyUI's `input` directory. It is hashed when queued and checked again at acceptance.
+
 Chapter numbers must be unique and ascending. Titles determine safe output slugs. Seeds must be integers and should remain stable across retries unless prompt-only corrections fail.
 
 ## Chapter design
 
-The installed workflow produces 362 frames at 24 fps, approximately 15.083 seconds. Treat that as one cinematic sentence, not a complete scene. Put exposition in staging and image relationships rather than dialogue.
+The standard workflow produces 362 frames at 24 fps, approximately 15.083 seconds. Treat that as one cinematic sentence, not a complete scene. Put exposition in staging and image relationships rather than dialogue.
 
 For exact continuation:
 
@@ -52,6 +55,20 @@ For exact continuation:
 Useful end states include full-frame bark, darkness, flare, eye, reflection, portal, seed, leaf, doorway, held wide composition, or a centered object. Avoid ending on mid-morph anatomy, rapid camera motion, crowded faces, or an unresolved occlusion.
 
 ## Model and runtime defaults
+
+For new configs, prefer:
+
+```json
+{
+  "duration_seconds": 15,
+  "aspect_ratio": "4:5",
+  "quality": "preview",
+  "fps": 24,
+  "steps": 20
+}
+```
+
+The runtime normalizer derives 640 x 800 and 362 frames. Legacy configs with explicit `width`, `height`, and `length` remain supported when dimensions are multiples of 32 and length follows `17k+5`. See [official-h3-workflow.md](official-h3-workflow.md) for the full preset table, trained duration range, prompt contract, and mode limits.
 
 Known working internal names:
 

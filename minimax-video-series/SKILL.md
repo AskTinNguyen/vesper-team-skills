@@ -10,6 +10,7 @@ Use the installed MiniMax H3 ComfyUI pipeline as a supervised, resumable product
 ## Load only what the task needs
 
 - Read [references/configuration.md](references/configuration.md) before creating or changing a series config.
+- Read [references/official-h3-workflow.md](references/official-h3-workflow.md) when choosing I2V versus first/last-frame mode, changing runtime profiles, or writing timed/audio prompts.
 - Read [references/direction-and-review.md](references/direction-and-review.md) when planning prompts, transitions, identity locks, or evaluating a take.
 - Read [references/archive-site.md](references/archive-site.md) only when staging or publishing the archive site.
 
@@ -28,7 +29,14 @@ Do not assume the server, models, paths, or GPU state are unchanged. Run preflig
 
 ### 1. Inspect and preflight
 
-Copy [assets/series.example.json](assets/series.example.json) into the project area, customize it, then run:
+Copy [assets/series.example.json](assets/series.example.json) into the project area and customize it. Inspect the resolved dimensions, frame count, and exact compiled prompt:
+
+```powershell
+python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\h3_prompt.py" profile --duration 15 --aspect 4:5 --quality preview
+python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\h3_prompt.py" compile --config C:\path\series.json --chapter 1
+```
+
+Then run:
 
 ```powershell
 python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\series_pipeline.py" preflight --config C:\path\series.json
@@ -46,6 +54,8 @@ Write a chapter beat for every 15-second unit. Give each chapter:
 - a motivated transition or clean final tableau;
 - a final 12–15-frame near-still hold;
 - audio ambience with no intelligible dialogue unless requested.
+
+The pipeline compiles these fields into MiniMax's official `integrated_multimodal_description`, `overall_soundscape`, and `non_diegetic_music` structure. Add `music_prompt`; use `N/A` when no score is wanted. Add an optional chapter `last_frame` only when an exact terminal composition is intentional and the source image is inside ComfyUI `input`.
 
 For longer stories, group 5–10 chapters into movements with a dramatic question, reversal, and end condition. Keep the identity/style lock global; put only the changing action in chapter prompts.
 
