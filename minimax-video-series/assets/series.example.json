@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "series": {
+    "title": "Example Continuation",
+    "slug": "example-continuation",
+    "output_subdir": "video/example-continuation",
+    "manifest": "series-manifest.json"
+  },
+  "runtime": {
+    "comfy_url": "http://127.0.0.1:8188",
+    "comfy_root": "C:\\Users\\Admin\\ComfyUI",
+    "width": 640,
+    "height": 800,
+    "length": 362,
+    "fps": 24,
+    "steps": 20,
+    "poll_seconds": 15
+  },
+  "models": {
+    "unet": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+    "text_encoder": "MiniMax-H3\\qwen3vl_32b_minimax_h3_ultra_uncensored_heretic_int8_convrot.safetensors",
+    "video_vae": "minimax_h3_video_vae_fp16.safetensors",
+    "audio_vae": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  "style_lock": "Continue exactly from <Picture 1>, preserving its composition for the opening second. Lock the same protagonist identity, anatomy, clothing, palette, rendering medium, line language, and vertical 4:5 framing. Use one principal action and at most one secondary reaction. Keep face and hands stable. No extra limbs, duplicate protagonist, text, captions, logos, abrupt morphing, or uncontrolled character duplication. Settle into the requested clean final tableau and hold nearly still for the final 12 to 15 frames.",
+  "initial_frame": "unquiet-series-chapter-11-start.png",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Opening",
+      "movement": "Act I",
+      "prompt": "The protagonist notices one glowing seed and kneels beside it. End on a clean centered close-up of the unopened seed.",
+      "audio_prompt": "quiet room tone, one soft heartbeat, faint seed hum, no dialogue",
+      "transition": "shape match from the centered seed",
+      "seed": 2026080401
+    },
+    {
+      "number": 2,
+      "title": "First Root",
+      "movement": "Act I",
+      "prompt": "The centered seed opens once and a single luminous root enters a narrow crack. Follow only the root. End with the filament centered in full-frame black.",
+      "audio_prompt": "tiny shell crack, root fibers, low subterranean tone, no dialogue",
+      "transition": "continuous push through the dark crack",
+      "seed": 2026080402
+    }
+  ],
+  "archive": {
+    "site_root": "C:\\Users\\Admin\\minimax-video-gallery",
+    "public_series_subdir": "public/series",
+    "public_url": "https://unquiet-archive.asktinnguyen.chatgpt.site",
+    "max_file_bytes": 25000000
+  }
+}

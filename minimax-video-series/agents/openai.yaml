@@ -1,0 +1,4 @@
+interface:
+  display_name: "MiniMax Video Series"
+  short_description: "Generate, review, manage, and publish video series"
+  default_prompt: "Use $minimax-video-series to create and publish a continuity-linked local video series."
