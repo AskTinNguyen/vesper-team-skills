@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "runtime": {
+    "duration_seconds": 10,
+    "aspect_ratio": "4:5",
+    "quality": "preview",
+    "fps": 24
+  },
+  "style_lock": "Preserve the same performer identity, anatomy, wardrobe, palette, lighting, rendering medium, and vertical composition from <Picture 1>. Keep the face, hands, and background stable. Do not add text, logos, duplicate performers, extra limbs, or unrelated scene changes.",
+  "speakers": {
+    "S1": {
+      "description": "The on-screen lead singer",
+      "voice": "the exact voice, timing, pitch, and timbre supplied by <Audio 1>"
+    }
+  },
+  "segments": [
+    {
+      "number": 1,
+      "title": "Vocal phrase",
+      "performance": "vocal",
+      "speaker_id": "S1",
+      "music_role": "soundtrack",
+      "shots": [
+        {
+          "action": "The singer raises one hand toward the pale branches while preserving the established pose and screen direction.",
+          "camera": {
+            "type": "Push In",
+            "amplitude": "small",
+            "speed": "slow",
+            "target_phrase": "toward the singer's face"
+          }
+        }
+      ],
+      "lyrics": {
+        "language": "English",
+        "text": "Replace this with exact, verified supplied lyrics."
+      },
+      "audio_prompt": "No separate environmental or physical-action sounds are audible above the supplied track.",
+      "music_prompt": "A slow electronic pulse supports sustained low strings while the original dynamics rise gradually across the excerpt.",
+      "transition": "a stable centered final pose"
+    },
+    {
+      "number": 2,
+      "title": "Instrumental phrase",
+      "performance": "instrumental",
+      "music_role": "soundtrack",
+      "prompt": "The performer turns toward the drifting branches and marks the beat with one restrained hand movement.",
+      "camera": {
+        "type": "Truck Right",
+        "amplitude": "small",
+        "speed": "slow",
+        "target_phrase": "while preserving the performer's profile"
+      },
+      "audio_prompt": "No separate environmental or physical-action sounds are audible above the supplied track.",
+      "music_prompt": "The supplied instrumental continues at a moderate tempo with steady percussion, low strings, and one gradual decrease in volume.",
+      "transition": "a near-still profile held through the accepted continuation frame"
+    }
+  ]
+}

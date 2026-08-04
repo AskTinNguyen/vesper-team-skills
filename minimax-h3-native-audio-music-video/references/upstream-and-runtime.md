@@ -10,6 +10,8 @@
 
 The native-audio node imports Torch, TorchAudio, and ComfyUI internals. It does not execute subprocesses, read credentials, scan user files, or make network calls. It encodes the supplied waveform with the H3 audio VAE, pads/trims the audio latent to the target shape, applies a zero audio noise mask, and returns the supplied audio to the video mux.
 
+The installed workflow's editable prompt placeholder is locally adapted to the official three-field base contract plus `<Picture 1>`/`<Audio 1>` Ref2VA references. The upstream graph remains local because the source repository publishes no license. Use `official-prompt-adapter.md` for the boundary between official rules and local inference.
+
 ## Frame interpolation
 
 - Repository: `https://github.com/Fannovel16/ComfyUI-Frame-Interpolation`

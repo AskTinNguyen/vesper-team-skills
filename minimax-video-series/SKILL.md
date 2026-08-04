@@ -12,6 +12,8 @@ For supplied-song music videos, exact audio preservation, vocal lip-sync directi
 ## Load only what the task needs
 
 - Read [references/configuration.md](references/configuration.md) before creating or changing a series config.
+- Read [references/official-h3-workflow.md](references/official-h3-workflow.md) when choosing T2VA, I2VA, FL2VA, or L2VA, or when changing runtime profiles.
+- Read [references/minimax-h3-official-prompt-contract.md](references/minimax-h3-official-prompt-contract.md) before writing timed shots, camera moves, dialogue, singing, voiceover, visible text, or generated audio.
 - Read [references/direction-and-review.md](references/direction-and-review.md) when planning prompts, transitions, identity locks, or evaluating a take.
 - Read [references/archive-site.md](references/archive-site.md) only when staging or publishing the archive site.
 
@@ -24,13 +26,21 @@ For supplied-song music videos, exact audio preservation, vocal lip-sync directi
 - Current production reference: `C:\Users\Admin\ComfyUI\generate_unquiet_series_30.py`
 - Current output: `C:\Users\Admin\ComfyUI\output\video\unquiet-series`
 
-Do not assume the server, models, paths, or GPU state are unchanged. Run preflight first.
+Do not assume the server, models, paths, GPU state, or prompt schema are unchanged. Run prompt lint and preflight first.
 
 ## Core workflow
 
 ### 1. Inspect and preflight
 
-Copy [assets/series.example.json](assets/series.example.json) into the project area, customize it, then run:
+Copy [assets/series.example.json](assets/series.example.json) into the project area and customize it. Resolve the frame grid, lint every prompt, and inspect the exact compiled text before rendering:
+
+```powershell
+python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\h3_prompt.py" profile --duration 15 --aspect 4:5 --quality preview
+python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\h3_prompt.py" lint --config C:\path\series.json
+python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\h3_prompt.py" compile --config C:\path\series.json --chapter 1
+```
+
+Then run:
 
 ```powershell
 python "$env:USERPROFILE\.codex\skills\minimax-video-series\scripts\series_pipeline.py" preflight --config C:\path\series.json
@@ -48,6 +58,10 @@ Write a chapter beat for every 15-second unit. Give each chapter:
 - a motivated transition or clean final tableau;
 - a final 12–15-frame near-still hold;
 - audio ambience with no intelligible dialogue unless requested.
+
+Prefer structured `shots` when using multiple cuts, camera grammar, dialogue, singing, voiceover, or visible text. Keep chapter titles, movement labels, review notes, and other manifest metadata out of the generated prompt. The compiler emits only visible or audible direction using the official three-field contract.
+
+Use T2VA or L2VA only for the first standalone/prequel chapter. Default continuation chapters to I2VA; select FL2VA only when a deliberate compatible `last_frame` is supplied.
 
 For longer stories, group 5–10 chapters into movements with a dramatic question, reversal, and end condition. Keep the identity/style lock global; put only the changing action in chapter prompts.
 
@@ -72,7 +86,7 @@ The command records a pending take and creates a versioned six-frame review shee
 
 Open the review sheet with the local image viewer and inspect the video itself when motion or audio is ambiguous. Apply the rubric in [references/direction-and-review.md](references/direction-and-review.md). State the concrete evidence for acceptance or rejection.
 
-Accept only when the opening inherits the source image, identity and anatomy remain stable, the requested action reads, style remains coherent, and the final frame is usable as the next shot.
+Accept only when the opening inherits the source image, identity and anatomy remain stable, the requested action and camera grammar read correctly, requested cuts occur at plausible times, style remains coherent, audio behavior matches the compiled fields, and the final frame is usable as the next shot.
 
 Accept and extract the exact continuation frame:
 
@@ -143,6 +157,8 @@ Update the site copy and chapter metadata, run its lint/test/build checks, then 
 
 - Preserve user files and accepted takes. Rerenders create new attempts; rejection moves only the active pending take.
 - Keep seeds, exact prompts, transitions, media metadata, states, paths, review notes, and attempts in the manifest.
+- Keep stable `(S1)`, `(S2)`, ... identities in the top-level speakers registry. Preserve user-provided dialogue, lyrics, punctuation, language, and visible text verbatim.
+- Treat prompt-lint errors as render blockers. Resolve warnings deliberately and record exceptions.
 - Persist accepted-video, initial-frame, and continuation-frame SHA-256 values; keep legacy-boundary provenance under `upstream`.
 - Resume from the manifest; do not infer state from the newest filename when an active attempt is recorded.
 - Never render chapter N+1 from a pending or rejected chapter N.

@@ -30,7 +30,10 @@ def main() -> None:
     parser.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     args = parser.parse_args()
     root = args.comfy_root.resolve()
+    skill_root = Path(__file__).resolve().parents[1]
     required = {
+        "prompt_compiler": skill_root / "scripts" / "native_audio_prompt.py",
+        "prompt_example": skill_root / "assets" / "music-video.example.json",
         "audio_lock": root / "custom_nodes" / "ComfyUI-H3-NativeAudioLock" / "__init__.py",
         "music_workflow": root / "user" / "default" / "workflows" / "MiniMaxH3_NativeAudio_MusicVideo_TEMPLATE.json",
         "rife_workflow": root / "user" / "default" / "workflows" / "RIFE_WAN_Method_Interpolation_TEMPLATE.json",
@@ -66,6 +69,15 @@ def main() -> None:
                 failures.append("music workflow is not configured for the Ref2VA INT8 model")
             if not clip.get("widgets_values") or "heretic_int8_convrot" not in clip["widgets_values"][0]:
                 failures.append("music workflow is not configured for the installed Heretic MiniMax encoder")
+            prompt = next((node for node in workflow.get("nodes", []) if node.get("type") == "PrimitiveStringMultiline"), {})
+            prompt_text = str((prompt.get("widgets_values") or [""])[0])
+            for field in (
+                "integrated_multimodal_description:",
+                "overall_soundscape:",
+                "non_diegetic_music:",
+            ):
+                if field not in prompt_text:
+                    failures.append(f"music workflow prompt template omits {field}")
         if workflow_name == "rife_workflow":
             rife = next((node for node in workflow.get("nodes", []) if node.get("type") == "RIFE VFI"), {})
             if not rife.get("widgets_values") or rife["widgets_values"][0] != "rife47.pth":

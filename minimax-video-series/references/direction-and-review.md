@@ -8,6 +8,7 @@
 4. Per-take review rubric
 5. Movement-level self-analysis
 6. Rerender strategy
+7. Fixed-seed prompt A/B
 
 ## Story architecture
 
@@ -35,6 +36,8 @@ Use this order:
 8. Transition language.
 9. Audio ambience.
 10. Negative constraints targeted to known drift.
+
+Compile this direction through the official mode header and three-field contract. Keep chapter numbers, titles, movement names, and review commentary in the manifest rather than the model prompt. Use structured shots for exact cut times, camera grammar, speech, lyrics, voiceover, or visible text; run prompt lint before rendering.
 
 Describe what must remain stable positively, then exclude recurring failure modes. Spatial restrictions are stronger than vague quality words: “rear view only; camera passes completely beyond her” is more useful than “high quality anatomy.”
 
@@ -64,9 +67,12 @@ Inspect the six-frame sheet and the video. Score each item pass/fail:
 - Restraint: no unrelated character, object, transformation, or uncontrolled duplication appears.
 - Style: rendering medium, palette, line language, and aspect ratio remain coherent.
 - Camera: movement is intentional and does not fight the action.
+- Prompt conformance: requested cut timing, camera motion, exact words, visible text, and audio roles match the compiled prompt.
 - Transition: final state is simple enough to seed the next clip.
 - Hold: last 12–15 frames are nearly still.
 - Audio: ambience fits, stereo track exists, no unwanted intelligible speech or abrupt artifact.
+
+For dialogue or singing, verify speaker identity, exact supplied words, language, delivery, and lip behavior across every cut. For voiceover, require closed on-screen lips. For visible text, compare the render against the exact requested string rather than accepting a near spelling.
 
 Reject on identity/anatomy drift, an unusable final frame, missing main action, or a style rupture that changes the story world. Minor divergence may be accepted only when it improves the narrative and remains chainable; record that judgment in review notes.
 
@@ -96,3 +102,9 @@ Change one variable per attempt:
 5. Change the seed only after prompt corrections.
 
 Never propagate a take merely because rendering was expensive.
+
+## Fixed-seed prompt A/B
+
+Before adopting a prompt-compiler or contract change in production, compare baseline and candidate with the same reference frames, source audio where applicable, seed, model, dimensions, length, sampler, scheduler, and steps. Change only the compiled prompt.
+
+Use the shortest trained grid length that exercises the feature. Cover I2VA, FL2VA, NativeAudio vocal, and NativeAudio instrumental cases when the change touches shared grammar. Score both takes with the per-take rubric plus exact requested cut/camera/text/audio behavior. Preserve prompts, hashes, runtime settings, and review notes; do not call a compiler change better from one favorable seed.
