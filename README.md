@@ -13,9 +13,9 @@ That's it. All skills and commands are now available in your Claude Code session
 
 ## Skills
 
-This repository intentionally keeps the active skill surface capped below **100 discoverable `SKILL.md` files**. Older, narrower, duplicate, or project-specific skill packages are kept recoverable under [`archive/skills/`](archive/skills/) with `SKILL.archived.md` filenames so they do not load by default.
+This repository intentionally keeps the active skill surface close to **100 discoverable `SKILL.md` files**. Older, narrower, duplicate, or project-specific skill packages are kept recoverable under [`archive/skills/`](archive/skills/) with `SKILL.archived.md` filenames so they do not load by default.
 
-The current active set has **93 discoverable `SKILL.md` files**. Vesper app-focused skills live under [`vesper-app-skills/`](vesper-app-skills/) so they stay active while remaining grouped away from general-purpose skills.
+The current active set has **101 discoverable `SKILL.md` files**. Vesper app-focused skills live under [`vesper-app-skills/`](vesper-app-skills/) so they stay active while remaining grouped away from general-purpose skills.
 
 The active set and archive decisions are documented in the latest upkeep reports:
 

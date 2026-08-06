@@ -1,0 +1,6 @@
+interface:
+  display_name: "Bro"
+  short_description: "Plain, concise, human communication"
+  default_prompt: "Use $bro to make this session plain, concise, and natural."
+policy:
+  allow_implicit_invocation: false
