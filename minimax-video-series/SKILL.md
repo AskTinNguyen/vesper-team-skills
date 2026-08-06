@@ -9,6 +9,8 @@ Use the installed MiniMax H3 ComfyUI pipeline as a supervised, resumable product
 
 For supplied-song music videos, exact audio preservation, vocal lip-sync direction, or RIFE delivery, also use `$minimax-h3-native-audio-music-video`. Its Ref2VA/native-audio graph is different from this skill's standard FL2VA generation graph.
 
+For Director timelines, whole-shot previews, local range retakes, or controlled Spectrum acceleration A/B tests, also use `$minimax-h3-director-suite`. Keep its experimental sampler results separate from accepted native continuity takes until they pass review.
+
 ## Load only what the task needs
 
 - Read [references/configuration.md](references/configuration.md) before creating or changing a series config.

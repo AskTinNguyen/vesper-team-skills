@@ -1,0 +1,4 @@
+interface:
+  display_name: "MiniMax H3 Director Suite"
+  short_description: "Direct H3 timelines and safe sampling tests"
+  default_prompt: "Use $minimax-h3-director-suite to plan and validate a MiniMax H3 Director workflow."
