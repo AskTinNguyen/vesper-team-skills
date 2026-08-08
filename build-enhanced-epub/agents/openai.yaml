@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Enhanced EPUB"
+  short_description: "Build searchable offline EPUBs with story maps"
+  default_prompt: "Use $build-enhanced-epub to turn my authorized source into a validated offline EPUB with arc and intent navigation."
