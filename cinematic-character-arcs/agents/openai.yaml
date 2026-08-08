@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Character Arcs"
+  short_description: "Design positive, flat, and negative change arcs"
+  default_prompt: "Use $cinematic-character-arcs to design the arc for a protagonist."

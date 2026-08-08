@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Craft Pipeline"
+  short_description: "End-to-end cinematic production workflows and skill routing"
+  default_prompt: "Use $cinematic-craft-pipeline to plan the full production pipeline for a cinematic scene or film."

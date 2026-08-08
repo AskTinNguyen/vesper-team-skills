@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Master Shots"
+  short_description: "Camera setups and moves for dialogue, action, coverage"
+  default_prompt: "Use $cinematic-master-shots to select camera setups for a scene."

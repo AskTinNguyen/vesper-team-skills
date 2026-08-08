@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Story Structure"
+  short_description: "Screenplay structure: beats, sequences, three-act, mythic arc"
+  default_prompt: "Use $cinematic-story-structure to structure a screenplay from logline to scene outline."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Game Cinematics"
+  short_description: "Cinematic craft applied to games and real-time cameras"
+  default_prompt: "Use $cinematic-game-cinematics to design cinematic game sequences and real-time camera systems."
