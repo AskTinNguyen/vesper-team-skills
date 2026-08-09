@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>H3 Clip Control Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07090d; --panel:#0d1117; --panel2:#11161e; --line:#1c2430;
+    --ink:#e8ecf2; --dim:#8a94a6; --faint:#566070;
+    --red:#ff4d2e; --blue:#3fa2ff; --green:#46e07c; --amber:#ffc24b; --cyan:#49e0e0;
+    --mono:'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    --disp:'Bebas Neue', 'Oswald', 'Arial Narrow', sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:var(--mono);font-size:14px;-webkit-font-smoothing:antialiased}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(63,162,255,.10), transparent 60%),
+      radial-gradient(1000px 500px at 95% -5%, rgba(255,77,46,.10), transparent 55%),
+      linear-gradient(180deg,#07090d 0%,#0a0e13 100%);
+    overflow-x:hidden;
+  }
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;z-index:0;
+    background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+    background-size:44px 44px;}
+  .wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:26px 28px 80px}
+
+  /* masthead */
+  .mast{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px;
+    animation:rise .5s ease both}
+  .brand{line-height:.85}
+  .brand .kicker{letter-spacing:.32em;font-size:11px;color:var(--faint);text-transform:uppercase}
+  .brand h1{margin:8px 0 0;font-family:var(--disp);font-weight:400;font-size:52px;letter-spacing:.02em;
+    background:linear-gradient(90deg,#fff 0%,#d7def0 55%,var(--blue) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand h1 em{font-style:normal;color:var(--red);-webkit-text-fill-color:var(--red)}
+  .status-chip{display:flex;gap:8px;align-items:center;background:var(--panel);
+    border:1px solid var(--line);border-radius:6px;padding:10px 14px;font-size:12px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--faint)}
+  .dot.live{background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 1.4s infinite}
+  .dot.working{background:var(--amber);box-shadow:0 0 12px var(--amber);animation:pulse .9s infinite}
+  .dot.error{background:var(--red);box-shadow:0 0 12px var(--red)}
+  #refreshAt{color:var(--faint);font-size:11px}
+
+  /* overall progress strip */
+  .strip{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:18px;
+    animation:rise .5s .05s ease both}
+  .strip .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .strip .big{font-family:var(--disp);font-size:26px;letter-spacing:.03em}
+  .strip .big b{color:var(--green);font-weight:400}
+  .ticks{display:grid;grid-template-columns:repeat(40,1fr);gap:4px;height:20px}
+  .tick{background:#161d26;border:1px solid #1b232f;border-radius:2px;transition:background .3s}
+  .tick.done{background:var(--green);border-color:var(--green);box-shadow:0 0 6px rgba(70,224,124,.5)}
+  .tick.work{background:linear-gradient(90deg,var(--amber),transparent);animation:shim 1.2s infinite}
+  .tick.err{background:var(--red);border-color:var(--red)}
+  .strip .meta{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;color:var(--dim);font-size:12px}
+  .strip .meta b{color:var(--ink);font-weight:500}
+
+  /* live render panel */
+  .live{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-bottom:22px;animation:rise .5s .1s ease both}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+  .panel h2{margin:0 0 14px;font-family:var(--disp);font-weight:400;font-size:20px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:10px}
+  .panel h2 .bar{width:8px;height:8px;background:var(--red);border-radius:1px}
+  .now{min-height:118px;display:flex;flex-direction:column;justify-content:center}
+  .now .seg-line{font-family:var(--disp);font-size:64px;line-height:.9;letter-spacing:.02em}
+  .now .seg-line small{font-family:var(--mono);font-size:15px;color:var(--dim);letter-spacing:0;vertical-align:middle}
+  .now .meta{color:var(--dim);font-size:12px;margin-top:10px;word-break:break-all}
+  .now .meta b{color:var(--ink);font-weight:500}
+  #elapsed{color:var(--amber);font-weight:700}
+  .idle-txt{color:var(--faint);font-size:14px}
+  .refbox{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel2);min-height:150px;
+    display:flex;align-items:center;justify-content:center}
+  .refbox img{width:100%;height:150px;object-fit:cover;display:block}
+  .refbox .ph{color:var(--faint);font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+
+  /* segment grid */
+  .gridhead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 2px 10px}
+  .gridhead h2{margin:0;font-family:var(--disp);font-weight:400;font-size:22px;letter-spacing:.08em;text-transform:uppercase}
+  .legend{display:flex;gap:16px;font-size:11px;color:var(--faint)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:9px;height:9px;border-radius:2px;display:inline-block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:10px}
+  .seg{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:12px 12px 10px;
+    cursor:pointer;transition:transform .12s,border-color .12s,background .12s;overflow:hidden}
+  .seg:hover{transform:translateY(-2px);border-color:#2b3744;background:var(--panel2)}
+  .seg .num{font-family:var(--disp);font-size:30px;line-height:1;color:#dfe6f0}
+  .seg .badge{position:absolute;top:10px;right:10px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 6px;border-radius:3px;border:1px solid;background:rgba(0,0,0,.3)}
+  .seg.done .badge{color:var(--green);border-color:rgba(70,224,124,.4)}
+  .seg.working{border-color:rgba(255,194,75,.5)}
+  .seg.working .badge,.seg.queued .badge{color:var(--amber);border-color:rgba(255,194,75,.4)}
+  .seg.queued{opacity:.8}
+  .seg.finalizing .badge{color:var(--cyan);border-color:rgba(73,224,224,.4)}
+  .seg.pending{opacity:.55}
+  .seg.pending .badge{color:var(--faint);border-color:#2a3442}
+  .seg.error .badge{color:var(--red);border-color:var(--red)}
+  .seg .info{margin-top:8px;font-size:11px;color:var(--dim);display:flex;flex-direction:column;gap:2px}
+  .seg .info b{color:var(--ink);font-weight:500}
+  .seg .dur{font-size:11px;color:var(--green)}
+  .seg .workline{height:3px;border-radius:2px;margin-top:8px;background:#1b232f;overflow:hidden}
+  .seg .workline i{display:block;height:100%;width:20%;background:var(--amber);animation:shim 1s infinite}
+
+  /* footer status */
+  .foot{margin-top:20px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;
+    gap:16px;color:var(--faint);font-size:11px;flex-wrap:wrap}
+  #lastLog{word-break:break-word;flex:1}
+
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(4,6,9,.78);backdrop-filter:blur(4px);z-index:20;
+    display:none;align-items:center;justify-content:center;padding:24px}
+  .modal.open{display:flex;animation:rise .18s ease}
+  .modal .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;max-width:760px;width:100%;
+    padding:20px;position:relative}
+  .modal .close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--dim);font-size:22px;
+    cursor:pointer;font-family:var(--mono)}
+  .modal .close:hover{color:#fff}
+  .modal video{width:100%;border-radius:6px;background:#000;border:1px solid var(--line)}
+  .modal .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:12px;color:var(--dim);margin-top:14px}
+  .modal .kv b{color:var(--ink);font-weight:500}
+  .modal h3{margin:0 0 12px;font-family:var(--disp);font-weight:400;font-size:26px;letter-spacing:.04em}
+  .modal h3 small{color:var(--faint);font-size:13px;letter-spacing:0;font-family:var(--mono)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes shim{from{transform:translateX(-100%)}to{transform:translateX(320%)}}
+  @media(max-width:760px){.live{grid-template-columns:1fr} .brand h1{font-size:38px} .strip .meta{flex-direction:column;gap:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <div class="kicker">MiniMax&nbsp;H3 · Ref2VA · Local Render</div>
+      <h1>H3 <em>//</em> CONTROL ROOM</h1>
+    </div>
+    <div class="status-chip"><span class="dot" id="statusDot"></span><span id="statusTxt">connecting</span></div>
+  </header>
+
+  <section class="strip">
+    <div class="row">
+      <div class="big"><b id="doneCount">0</b> / <span id="totalCount">40</span> clips</div>
+      <div id="refreshAt"></div>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <div class="meta">
+      <span>Remaining <b id="remaining">-</b></span>
+      <span>Avg / clip <b id="avg">-</b></span>
+      <span>Est. completion <b id="eta">-</b></span>
+    </div>
+  </section>
+
+  <section class="live">
+    <div class="panel">
+      <h2><span class="bar"></span>Now Rendering</h2>
+      <div class="now" id="nowBox">
+        <div class="seg-line">— <small>idle</small></div>
+        <div class="meta" id="nowMeta">waiting for an active render</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2><span class="bar"></span>Starting Frame</h2>
+      <div class="refbox" id="refBox"><div class="ph">no reference</div></div>
+    </div>
+  </section>
+
+  <div class="gridhead">
+    <h2>Segment Track</h2>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--green)"></i>done</span>
+      <span><i class="sw" style="background:var(--amber)"></i>rendering</span>
+      <span><i class="sw" style="background:var(--cyan)"></i>finalizing</span>
+      <span><i class="sw" style="background:#2a3442"></i>pending</span>
+      <span><i class="sw" style="background:var(--red)"></i>error</span>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <footer class="foot">
+    <span id="lastLog">no log data</span>
+    <span id="queueTxt"></span>
+  </footer>
+</div>
+
+<div class="modal" id="modal">
+  <div class="card">
+    <button class="close" id="modalClose">&times;</button>
+    <h3 id="modalTitle">Segment</h3>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let lastElapsed=null, tickInt=null;
+
+function mb(n){ if(n==null)return'–'; return (n/1048576).toFixed(1)+' MB'; }
+function dur(n){ if(n==null)return'–'; const s=Math.round(n); const m=Math.floor(s/60), ss=s%60;
+  return (m? m+'m ':'')+ss+'s'; }
+function clock(sec){ if(sec==null)return'–'; sec=Math.round(sec);
+  const m=Math.floor(sec/60), h=Math.floor(m/60); const mm=m%60;
+  return (h? h+'h ':'')+(mm<10&&h?'0':'')+mm+'m '+String(sec%60).padStart(2,'0')+'s'; }
+function esc(x){ return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function stateDot(p){
+  const w=p.working;
+  const dot=$('#statusDot'), txt=$('#statusTxt');
+  if(w&&w.state==='working'){dot.className='dot working';txt.textContent='rendering seg '+w.seg;}
+  else if(p.done>=p.total){dot.className='dot live';txt.textContent='build complete';}
+  else if(w){dot.className='dot working';txt.textContent='seg '+w.seg+' '+w.state;}
+  else if(p.queue&&p.queue.pending.length){dot.className='dot';txt.textContent='queued';}
+  else {dot.className='dot live';txt.textContent='idle — awaiting driver';}
+}
+
+function render(p){
+  $('#doneCount').textContent=p.done; $('#totalCount').textContent=p.total;
+  $('#remaining').textContent=p.remaining;
+  $('#avg').textContent=p.avg_seconds? clock(p.avg_seconds):'–';
+  $('#eta').textContent=p.eta_seconds? clock(p.eta_seconds):'–';
+  $('#refreshAt').textContent='updated '+new Date().toLocaleTimeString();
+
+  const ticks=$('#ticks'); ticks.innerHTML='';
+  p.segments.forEach(s=>{
+    const t=document.createElement('div');
+    t.className='tick '+(s.status==='done'?'done':s.status==='working'?'work':s.status==='error'?'err':'');
+    ticks.appendChild(t);
+  });
+
+  const now=$('#nowBox');
+  if(p.working){
+    now.innerHTML=`<div class="seg-line">SEG ${String(p.working.seg).padStart(2,'0')} <small>${esc(p.working.state)}</small></div>
+      <div class="meta">Elapsed <b id="elapsed">${clock(p.working.elapsed)}</b> · prompt <b>${esc(p.working.prompt_id)}</b></div>`;
+    lastElapsed=p.working.elapsed;
+    if(tickInt) clearInterval(tickInt);
+    if(p.working.started){
+      const st=new Date(p.working.started.replace(' ','T')).getTime();
+      tickInt=setInterval(()=>{ const e=Math.max(0,(Date.now()-st)/1000); const el=$('#elapsed'); if(el) el.textContent=clock(e); },1000);
+    }
+    const rb=$('#refBox');
+    if(p.working.ref) rb.innerHTML=`<img src="/refs/${encodeURIComponent(p.working.ref)}" alt="start frame">`;
+    else rb.innerHTML=`<div class="ph">no reference</div>`;
+  } else {
+    if(tickInt){clearInterval(tickInt);tickInt=null;}
+    now.innerHTML=p.done>=p.total
+      ? `<div class="seg-line">DONE <small>complete</small></div><div class="meta">All ${p.total} clips rendered</div>`
+      : `<div class="idle-txt">no active render</div>`;
+    $('#refBox').innerHTML=`<div class="ph">no reference</div>`;
+  }
+  stateDot(p);
+
+  const grid=$('#grid'); grid.innerHTML='';
+  p.segments.forEach(s=>{
+    const el=document.createElement('div');
+    el.className='seg '+s.status;
+    const badge={done:'done',working:'render',queued:'queued',finalizing:'mux',pending:'pending',error:'error'}[s.status]||s.status;
+    let info=`<div class="info">`;
+    if(s.video){ info+=`<span>${esc(s.video_name)}</span><span class="dur">${dur(s.duration)} · ${mb(s.size)}</span>`; }
+    else if(s.status==='working'){ info+=`<div class="workline"><i></i></div><span>${s.seg>1?'ref extracted':'queued'}</span>`; }
+    else if(s.status==='finalizing'){ info+=`<span>writing file…</span>`; }
+    else if(s.status==='error'){ info+=`<span>failed — see log</span>`; }
+    else { info+=`<span>awaiting</span>`; }
+    info+=`</div>`;
+    el.innerHTML=`<div class="num">${String(s.seg).padStart(2,'0')}</div><div class="badge">${badge}</div>`+info;
+    el.addEventListener('click',()=>openModal(s));
+    grid.appendChild(el);
+  });
+
+  const q=p.queue;
+  $('#queueTxt').textContent='queue · running '+(q?q.running.length:0)+' / pending '+(q?q.pending.length:0);
+  $('#lastLog').textContent='> '+esc(p.last_log||'');
+}
+
+function openModal(s){
+  $('#modalTitle').innerHTML=`Segment ${String(s.seg).padStart(2,'0')} <small>· ${esc(s.status)}</small>`;
+  let body='';
+  if(s.video_url){
+    body+=`<video controls preload="metadata" src="${s.video_url}"></video>`;
+  } else {
+    body+=`<div class="refbox" style="height:220px">${s.ref
+      ? `<img src="/refs/${encodeURIComponent(s.ref)}" alt="start frame">`
+      : `<div class="ph">no preview yet</div>`}</div>`;
+  }
+  body+=`<div class="kv">
+    <span>Status</span><b>${esc(s.status)}</b>
+    <span>Prompt ID</span><b>${esc(s.prompt_id||'–')}</b>
+    <span>Seed</span><b>${esc(s.seed||'–')}</b>
+    <span>Ref frame</span><b>${esc(s.ref||'–')}</b>
+    <span>Started</span><b>${esc(s.ts||'–')}</b>
+    <span>Duration</span><b>${dur(s.duration)}</b>
+    <span>Size</span><b>${mb(s.size)}</b>
+    <span>File</span><b style="word-break:break-all">${esc(s.video_name||'–')}</b>
+  </div>`;
+  $('#modalBody').innerHTML=body;
+  $('#modal').classList.add('open');
+}
+$('#modalClose').addEventListener('click',()=>$('#modal').classList.remove('open'));
+$('#modal').addEventListener('click',e=>{ if(e.target.id==='modal') $('#modal').classList.remove('open'); });
+
+async function poll(){
+  try{
+    const r=await fetch('/api/progress?_='+Date.now());
+    const p=await r.json();
+    render(p);
+  }catch(e){
+    $('#statusTxt').textContent='tracker offline';
+    $('#statusDot').className='dot error';
+  }
+}
+poll();
+setInterval(poll,3000);
+</script>
+</body>
+</html>
