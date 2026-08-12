@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Interface Sounds"
+  short_description: "Add lightweight, accessible synthesized UI sounds"
+  default_prompt: "Use $add-interface-sounds to add a thoughtful, accessible sound palette to this site or app."
