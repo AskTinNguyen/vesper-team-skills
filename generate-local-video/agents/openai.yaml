@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Local Video"
+  short_description: "Generate MiniMax H3 videos on this computer"
+  default_prompt: "Use $generate-local-video to create a local video from my prompt."

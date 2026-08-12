@@ -1,0 +1,4 @@
+interface:
+  display_name: "H3 Context Loop"
+  short_description: "Generate reviewable long-form MiniMax H3 videos"
+  default_prompt: "Use $h3-context-loop to plan and render a connected long-form MiniMax H3 video."

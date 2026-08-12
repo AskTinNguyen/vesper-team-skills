@@ -1,13 +1,15 @@
 ---
 name: h3-clip-chain
-description: Chain MiniMax H3 ComfyUI clips into a single long-form video with an automated continuation loop and a live HTML progress tracker. Use when the user wants a long (multi-minute) video built from the local MiniMax H3 pipeline, chained continuation clips, a "10 minute video" from a short prompt, automatic segment-to-segment rendering, or an interactive dashboard to monitor clip generation progress.
+description: Chain MiniMax H3 clips into a single long-form video with an automated final-frame continuation loop and a live HTML progress tracker. Use for an unattended, simple, multi-minute H3 extension, a "10 minute video" from a short prompt, automatic segment-to-segment rendering, or a progress dashboard. Use `$h3-context-loop` instead for multi-scene production, generated-audio continuity, reviewable rerolls, or continuity that needs more than the previous final frame.
 ---
 
 # MiniMax H3 clip chain
 
 Render a short source clip once, then keep extending it into a long video: each
 next segment starts from the previous clip's final frame and reuses the same
-workflow. A companion dashboard tracks every segment live.
+workflow. A companion dashboard tracks every segment live. This is a fast,
+unattended final-frame handoff; it does not carry the preceding video-motion or
+generated-audio context, so do not use it for a controlled narrative seam.
 
 ## Prerequisites
 
@@ -61,6 +63,10 @@ launch either process in a hidden background window with redirected logs.
 
 - Resume-safe: rerun the same `--run-dir` to continue from the last completed clip.
 - A failed render logs its status and halts the loop instead of wasting GPU time.
+- Write every beat as a small variation of the same ongoing action, and end it in
+  a pose the next segment can plausibly inherit from one image. Use
+  `$h3-context-loop` when a beat requires a precise new location, action,
+  character state, camera move, music, or dialogue handoff.
 - On a long build, keep updates to the user flowing: poll `chain.log` or the
   tracker endpoint and report progress at least every minute.
 - Do not widen server exposure, update models, or queue other work into the same
