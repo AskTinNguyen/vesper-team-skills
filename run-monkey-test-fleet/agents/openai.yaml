@@ -1,0 +1,4 @@
+interface:
+  display_name: "Monkey-Test Fleet Orchestrator"
+  short_description: "Turn adversarial findings into verified fixes"
+  default_prompt: "Use $run-monkey-test-fleet to triage this monkey-test dossier, run parallel implementation and independent review fleets, integrate every cleared fix, and produce evidence-backed closure."
