@@ -1,0 +1,7 @@
+interface:
+  display_name: "UI SFX"
+  short_description: "Add semantic, accessible interface sounds with UI SFX"
+  default_prompt: "Use $uisfx to add a restrained, accessible semantic sound layer to this site or app. Choose a coherent pack, map real outcomes to valid cues, clean up loops, preserve visual feedback, and verify the integration."
+
+policy:
+  allow_implicit_invocation: true
