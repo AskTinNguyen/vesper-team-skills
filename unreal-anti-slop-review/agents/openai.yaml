@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unreal Anti-Slop Adjudication"
+  short_description: "Frozen-surface Unreal contract adjudication"
+  default_prompt: "Use $unreal-anti-slop-review to adjudicate this frozen Unreal surface and return a validator-complete packet."
