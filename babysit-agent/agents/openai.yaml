@@ -1,0 +1,4 @@
+interface:
+  display_name: "S2 Agent Babysitter"
+  short_description: "Keep a target agent progressing through blockers"
+  default_prompt: "Use $babysit-agent to supervise the target agent until its assigned outcome is complete, safely unblock it, and escalate only authority or tool barriers that cannot be resolved."
