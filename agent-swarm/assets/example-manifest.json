@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "provider": "codex",
+  "provider_args": {
+    "codex": ["--json"],
+    "claude": ["--output-format", "json"]
+  },
+  "max_workers": 2,
+  "capture_max_bytes": 1048576,
+  "require_approval": true,
+  "result_dir": "results",
+  "packets": [
+    {
+      "id": "research-runtime",
+      "owner": "research-a",
+      "prompt": "Inspect the assigned runtime surface and return evidence only.",
+      "approved": false,
+      "timeout_seconds": 600
+    },
+    {
+      "id": "research-tests",
+      "owner": "research-b",
+      "provider": "claude",
+      "prompt": "Identify focused offline tests for the assigned change.",
+      "approved": false,
+      "timeout_seconds": 600
+    },
+    {
+      "id": "independent-review",
+      "owner": "reviewer",
+      "prompt": "Review the two completed research packets and return accepted, rejected, conflicting, and unresolved findings.",
+      "approved": false,
+      "depends_on": ["research-runtime", "research-tests"],
+      "timeout_seconds": 600
+    }
+  ]
+}
