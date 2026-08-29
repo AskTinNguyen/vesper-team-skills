@@ -1,10 +1,7 @@
 ---
 name: write-clearly-word-order
-description: "The ORDER OF WORDS section (Rules 15-45) of Abbott's 'How to Write Clearly': sentence-level clarity and force through word order - emphasis positioning, proximity of related words, the principle of suspense, repetition of subjects/prepositions/conjunctions, climax, antithesis, and one-principal-subject sentences. Use when a draft is correct word-by-word but muddled, awkward, or weak at the sentence level."
-version: 1.0.0
-author: Hermes (adapted from Edwin A. Abbott, "How to Write Clearly", 1883)
+description: "The ORDER OF WORDS section (Rules 15-45) of Abbott's 'How to Write Clearly' for substantive human-facing narrative, marketing, editorial, rhetorical, or stakeholder prose: emphasis, proximity, suspense, repetition, climax, antithesis, and sentence focus. Use only after the write-clearly umbrella has activated for in-scope prose, or when the user explicitly invokes this sub-skill. Do not self-trigger for agent or system prompts, operational instructions, runbooks, coding tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages, or short utility text."
 license: MIT
-platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [writing, clarity, syntax, word-order, emphasis, suspense, composition]

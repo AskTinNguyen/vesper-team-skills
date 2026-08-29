@@ -1,10 +1,7 @@
 ---
 name: write-clearly-brevity
-description: "The BREVITY section (Rules 46-56) of Abbott's 'How to Write Clearly': achieving brevity without losing clarity - metaphor and general terms for compression, phrase-to-word, participles, implied statements, omission of conjunctions, imperative for 'if', apposition, condensation, and avoiding tautology. Rule 56 is the governing caution: clearness first. Use when a draft is correct but wordy."
-version: 1.0.0
-author: Hermes (adapted from Edwin A. Abbott, "How to Write Clearly", 1883)
+description: "The BREVITY section (Rules 46-56) of Abbott's 'How to Write Clearly' for tightening substantive human-facing narrative, marketing, editorial, rhetorical, or stakeholder prose without losing clarity. Use only after the write-clearly umbrella has activated for in-scope prose, or when the user explicitly invokes this sub-skill. Do not self-trigger for agent or system prompts, operational instructions, runbooks, coding tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages, or short utility text."
 license: MIT
-platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [writing, brevity, concision, editing, tautology, composition]

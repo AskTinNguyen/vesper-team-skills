@@ -1,10 +1,7 @@
 ---
 name: write-clearly-words
-description: "The WORDS section (Rules 1-14b) of Abbott's 'How to Write Clearly': choosing the exact word, avoiding exaggeration and circumlocution, handling ambiguous small words (not/and/any/only/that/certain), keeping pronouns and relative pronouns unambiguous, preferring particular terms, and managing metaphor. Use when a draft has a word-choice, precision, or ambiguity problem at the vocabulary level."
-version: 1.0.0
-author: Hermes (adapted from Edwin A. Abbott, "How to Write Clearly", 1883)
+description: "The WORDS section (Rules 1-14b) of Abbott's 'How to Write Clearly' for substantive human-facing narrative, marketing, editorial, rhetorical, or stakeholder prose: exact word choice, ambiguity, pronouns, relatives, and metaphor. Use only after the write-clearly umbrella has activated for in-scope prose, or when the user explicitly invokes this sub-skill. Do not self-trigger for agent or system prompts, operational instructions, runbooks, coding tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages, or short utility text."
 license: MIT
-platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [writing, clarity, word-choice, ambiguity, metaphor, composition]

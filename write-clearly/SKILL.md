@@ -1,10 +1,7 @@
 ---
 name: write-clearly
-description: "Umbrella skill for all clear-writing work derived from Edwin A. Abbott's 'How to Write Clearly' (1883). Load this first to route any drafting or revision task to the right sub-skill. Points to write-clearly-words, write-clearly-word-order, write-clearly-brevity, and write-clearly-revise. Use whenever you must draft, review, revise, or critique text for clarity and force."
-version: 1.0.0
-author: Hermes (adapted from Edwin A. Abbott, "How to Write Clearly", 1883)
+description: "Clear-writing framework derived from Edwin A. Abbott's 'How to Write Clearly' (1883), for substantive human-facing prose such as narrative marketing, articles, essays, speeches, editorial copy, and stakeholder communications. Use when the user explicitly requests this framework or when the primary deliverable is substantial audience-facing prose that needs clarity, force, or literary revision. Routes to write-clearly-words, write-clearly-word-order, write-clearly-brevity, and write-clearly-revise. Do not invoke for agent or system prompts, operational instructions, runbooks, coding tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages, or short utility text unless the user explicitly names this skill. Do not infer activation merely because a task involves drafting, editing, or revision."
 license: MIT
-platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [writing, clarity, composition, editing, rhetoric, prose]
@@ -12,6 +9,18 @@ metadata:
 ---
 
 # Write Clearly (Abbott)
+
+## Activation boundary
+
+Use this family for substantive prose written for human readers, especially narrative,
+marketing, editorial, rhetorical, or stakeholder communication. Do not use it for agent
+prompts, system prompts, operational recovery instructions, runbooks, coding instructions,
+technical troubleshooting, status messages, ordinary assistant replies, commit messages,
+or other short utility text unless the user explicitly invokes `write-clearly`.
+
+The presence of words such as *write*, *draft*, *edit*, *revise*, *clarify*, or *prompt*
+does not activate this skill by itself. When the requested artifact primarily instructs a
+machine or coordinates technical work, use the task's technical workflow instead.
 
 This is the router and index for the **write-clearly** family. It encodes the complete
 method of *How to Write Clearly: Rules and Exercises on English Composition* by

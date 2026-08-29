@@ -1,10 +1,7 @@
 ---
 name: write-clearly-revise
-description: "The revision and validation workflow for the write-clearly family. Runs any draft through Abbott's 56 rules as a three-part checklist (words, word-order, brevity), performs self-critique against the source text, then validates the result with a multi-subagent orchestration (clarity reviewer, brevity reviewer, evidence/examples verifier, and a red-team challenger). Use whenever a finished or drafted piece must be verified for clarity and force before delivery."
-version: 1.0.0
-author: Hermes (adapted from Edwin A. Abbott, "How to Write Clearly", 1883)
+description: "Revision and multi-review validation for substantive human-facing narrative, marketing, editorial, rhetorical, or stakeholder prose already routed through the write-clearly family. Runs Abbott's words, word-order, and brevity passes, then clarity, brevity, evidence, and red-team review. Use only when the user explicitly requests rigorous validation or when an in-scope, high-stakes prose deliverable clearly warrants it. Do not invoke for agent or system prompts, operational instructions, runbooks, coding tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages, short utility text, or merely because another skill produced a draft."
 license: MIT
-platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [writing, revision, editing, validation, subagents, composition]
@@ -13,10 +10,13 @@ metadata:
 
 # Write Clearly — REVISE (self-critique + multi-subagent validation)
 
-This is the workflow to run any draft through Abbott's rules to a verified result. It has
+This is the workflow to run an in-scope human-facing prose draft through Abbott's rules to a verified result. It has
 three stages: **(A) checklist revision**, **(B) self-critique against the source**, and
 **(C) multi-subagent validation**. It works for prose, essays, emails, documentation,
-release notes, prompts — any English that must be clear and forcible.
+articles, narrative marketing, speeches, editorial copy, and stakeholder communications.
+It does not apply to agent or system prompts, operational instructions, runbooks, coding
+tasks, technical troubleshooting, status updates, ordinary chat replies, commit messages,
+or short utility text unless the user explicitly invokes `write-clearly-revise`.
 
 ## A. Checklist revision (three passes)
 
