@@ -32,7 +32,7 @@ Use when maintaining a collection of agent skills across Hermes, Codex, Vesper, 
    - Merge into an umbrella skill.
    - Archive stale/unsafe/unmaintained material.
 4. **Apply small, reviewable changes.** Prefer targeted edits or creating clearly named new skill directories. Avoid mixing unrelated cleanups in one commit.
-5. **Sync installs.** Copy curated skills to the requested app roots. Preserve resource directories (`references/`, `scripts/`, `templates/`, `assets/`). For cross-app Hermes/Codex/Vesper syncs, consult `references/cross-app-skill-sync.md` for known runtime roots, validation checks, and backup-repo staging discipline.
+5. **Sync installs.** Copy curated skills to the requested app roots. Preserve resource directories (`references/`, `scripts/`, `templates/`, `assets/`). For cross-app Hermes/Codex/Vesper syncs, consult `references/cross-app-skill-sync.md` for known runtime roots, validation checks, and backup-repo staging discipline. When the task is to pull a source repo and propose which newly available skills to install, use `references/latest-upstream-skill-proposal.md` for the comparison and recommendation pattern.
 6. **Validate.** For every changed skill:
    - `SKILL.md` exists.
    - YAML frontmatter includes `name` and `description`.
@@ -63,6 +63,10 @@ Report:
 - For repeatable validation during weekly runs, use `references/weekly-curation-validation-pattern.md` for the frontmatter/link/hash checks and report fields.
 - When a runtime `SKILL.md` has a broken relative link to a reference that actually lives in a sibling skill package, prefer a minimal relative-link fix such as `../other-skill/references/file.md` over copying the reference file. This preserves ownership and avoids duplicated stale references.
 - Treat broad local-reference scans as triage signals, not authoritative findings: Markdown/code examples can look like links. Auto-fix only high-confidence broken references with an obvious existing target; report script/resource gaps and duplicate-name drift as follow-up candidates.
+- If the requested backup repo path is missing but a likely repo exists elsewhere (for example under `~/Projects/`), do not silently substitute it. Report the path mismatch, skip backup commits unless the requested path is present, and list any dirty state in the adjacent repo as intentionally skipped.
+- When fixing a broken local resource link in a skill synced across runtimes, update only the affected runtime copies, then verify both the target resource exists and the synced `SKILL.md` hashes match. Do not create a backup commit unless the scoped backup repo is present and clean enough to stage only the intended change.
+- When broad link validation flags Markdown links inside explicit examples, treat them as high-confidence false positives only if the surrounding text is clearly illustrative (for example, "Examples:" or a pattern snippet) and the target file is not part of the skill package. Prefer converting the example link to inline code over creating empty placeholder files.
+- In proactive weekly runs, if the active curation skill itself has newer support files in one runtime than the other app copies, syncing that one package plus hash-verifying every copied support file is a safe small improvement; still skip backup commits when the scoped backup repo path is missing.
 
 ## Pitfalls
 
