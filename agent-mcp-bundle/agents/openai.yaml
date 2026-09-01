@@ -1,0 +1,4 @@
+interface:
+  display_name: "Human-Gated Agent MCP Bundle"
+  short_description: "Deploy scoped MCP editing with human approval"
+  default_prompt: "Use $agent-mcp-bundle to add and deploy a scoped, human-gated MCP content API for this project."
