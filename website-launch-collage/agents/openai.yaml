@@ -1,0 +1,4 @@
+interface:
+  display_name: "Website Launch Collage"
+  short_description: "Create screenshot-led launch graphics"
+  default_prompt: "Use $website-launch-collage to create a polished internal launch graphic from these product screenshots."
