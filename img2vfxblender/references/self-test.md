@@ -1,0 +1,12 @@
+# Repeatable self-test
+
+Run from a fresh output directory and keep test renders and `.blend` files out of the skill package. No structural test needs an Unreal Editor or UI automation. The included Blender fixture is a NineTails-oriented example, while the contract tests are host-independent.
+
+1. Run `python -B <skill>/scripts/test_vfx_contract.py`. The suite builds a synthetic study catalog and challenges missing source coverage, stale hashes, derived-only critical evidence, falsely measured timing, missing samples, stale renders and incorrect clear/isolation labels. Structural checks do not judge appearance.
+2. If the host provides a compatible study catalog, import one or more real entries with `python <skill>/scripts/vfx_contract.py from-study --catalog <catalog.json> --effect <effect-id> --out <project>/contract.json`, then run the study-stage validator. The S2/NineTails catalog is an example host input; it is intentionally not bundled here.
+3. For the optional NineTails fixture, run `blender --background --factory-startup --python-exit-code 1 --python <skill>/scripts/build_example.py -- --catalog <catalog.json> --effect SP-02 --out <new-project>`. Repeat for MV-06 and CB-05 when those IDs exist in the supplied catalog. The builder refuses an existing output directory and supports only those three low-detail fixture IDs; other recipes need explicit authoring.
+4. Reopen each produced `effect_v01.blend`, run `capture_vfx.py` as shown in `SKILL.md`, and verify the manifest with `vfx_contract.py verify`.
+5. Dispatch a fresh independent critic with the contract, admitted references and actual renders. Forward-test unresolved classifications, a new image-only request and an engine-export request. Do not provide expected answers to the agent doing the task.
+6. Fix demonstrated workflow or visual defects, preserve raw feedback and rerun only affected tests/evidence. Report which studies were contract-tested, which scenes were rendered, and which claims remain unassessed. Never call a low-detail fixture an AAA reconstruction.
+
+The builder authors low-detail curves, rings and grains with proposed frame timing. It is an executable example of layer separation and capture conventions, not an automatic source-image reconstruction algorithm. Video timing match, production density, full flipbook/export parity and actual engine runtime remain separate work unless exercised explicitly.

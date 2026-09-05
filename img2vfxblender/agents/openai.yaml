@@ -1,0 +1,4 @@
+interface:
+  display_name: "Image to VFX Blender"
+  short_description: "Reconstruct animated VFX in Blender with evidence gates"
+  default_prompt: "Use $img2vfxblender to turn this VFX reference into an editable, reviewable Blender prototype and an explicit engine handoff."
